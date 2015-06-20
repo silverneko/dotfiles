@@ -12,7 +12,7 @@ ln -svf ${BASEDIR}/vimrc ~/.vimrc
 ln -svfn ${BASEDIR}/vim/ ~/.vim
 
 # xmonad
-cp -f ${BASEDIR}/xmonad.hs ~/.xmonad/xmonad.hs
+ln -svf ${BASEDIR}/xmonad.hs ~/.xmonad/xmonad.hs
 
 # xmobar
 ln -svf ${BASEDIR}/xmobarrc ~/.xmobarrc

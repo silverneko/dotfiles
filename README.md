@@ -1,6 +1,14 @@
 # dotfiles
 My dotfiles
 
+Type `./install.sh` in the command line to use.
+
+Remember to install:
+- xmonad
+- stalonetray
+- vim
+- xmobar
+- zsh
 
 ## vim cheatsheet
 
