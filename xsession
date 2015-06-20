@@ -35,5 +35,6 @@ stalonetray &
 #disable the fucking touchpad on startup
 # xinput set-prop 'ETPS/2 Elantech Touchpad' 'Device Enabled' 0 &
 
+export PATH="$HOME/.cabal/bin:$PATH"
 exec xmonad
 
