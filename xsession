@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-PATH=$PATH:$HOME/.cabal/bin
-
 #wallpaper
 feh $HOME/.dotfiles/img/air.png --bg-fill &
 

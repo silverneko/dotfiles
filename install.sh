@@ -22,3 +22,6 @@ ln -svf ${BASEDIR}/stalonetrayrc ~/.stalonetrayrc
 
 # xsession
 ln -svf ${BASEDIR}/xsession ~/.xsession
+
+# zsh
+ln -svf ${BASEDIR}/zshrc ~/.zshrc
