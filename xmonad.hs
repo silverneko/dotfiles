@@ -30,6 +30,7 @@ myKeys conf@(XConfig {modMask = modm}) = fromList $
   -- launching and killing programs
   , ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((modm .|. shiftMask, xK_f     ), spawn "nemo") -- %! Launch file manager
+  , ((modm .|. shiftMask, xK_w     ), spawn "google-chrome") -- %! Launch web browser
   , ((modm,               xK_p     ), spawn "xfce4-appfinder") -- %! Launch appfinder
   , ((modm .|. shiftMask, xK_p     ), spawn "synapse") -- %! Launch launcher
   , ((modm .|. shiftMask, xK_c     ), kill) -- %! Close the focused window
