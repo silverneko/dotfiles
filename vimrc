@@ -45,6 +45,7 @@ autocmd BufNewFile,BufRead *.hs let b:Compiler = 'runghc'
 autocmd BufNewFile,BufRead *.tex let b:Compiler = 'viewpdf'
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead makefile set noexpandtab
+autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 com Compile call COMPILE()

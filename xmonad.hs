@@ -27,6 +27,9 @@ myKeys conf@(XConfig {modMask = modm}) = fromList $
   , ((modm,               xK_F10   ), spawn "amixer -D pulse set Master toggle")
   , ((modm,               xK_F11   ), spawn "amixer -D pulse set Master on && amixer -D pulse set Master 3%-")
   , ((modm,               xK_F12   ), spawn "amixer -D pulse set Master on && amixer -D pulse set Master 3%+")
+  , ((noModMask,          xK_Print ), spawn "gnome-screenshot") -- %! Screenshot
+  , ((modm,               xK_Print ), spawn "gnome-screenshot -i")
+
   -- launching and killing programs
   , ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
   , ((modm .|. shiftMask, xK_f     ), spawn "nemo") -- %! Launch file manager
