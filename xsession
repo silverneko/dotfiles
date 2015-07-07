@@ -13,12 +13,16 @@ xcompmgr -D2 -fF &
 #authenticate for programs like mintupdate
 /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 
-cinnamon-settings-daemon &
+# cinnamon-settings-daemon &
+gnome-settings-daemon &
 # /usr/lib/notification-daemon/notification-daemon
 # cinnamon-screensaver &
 start-pulseaudio-x11 &
 nm-applet &
 xscreensaver -no-splash &
+
+xfce4-volumed &
+xfce4-power-manager &
 
 #dropbox
 dropbox start -i &
