@@ -10,8 +10,7 @@ Config
   , allDesktops = True
   , overrideRedirect = True
   , commands = 
-  --  [ Run MultiCpu [ "--template", "Cpu: <vbar0> <vbar1> <vbar2> <vbar3> <vbar4> <vbar5> <vbar6> <vbar7>" --total0
-    [ Run MultiCpu [ "--template", "Cpu: <vbar0> <vbar1> <vbar2> <vbar3>" --total0
+    [ Run MultiCpu [ "--template", "Cpu: <vbar0> <vbar1> <vbar2> <vbar3> <vbar4> <vbar5> <vbar6> <vbar7>" --total0
                    , "--Low", "35"
                    , "--High", "75"
                    , "--low", "#B0FF79"
@@ -52,6 +51,5 @@ Config
     ]
   , sepChar = "%"
   , alignSep = "}{"
-  -- , template = " %StdinReader% }{ %multicpu%  %memory%  %swap%  Vol: %volume%  %date% "
-  , template = " %StdinReader% }{ %multicpu%  %memory%  %swap%  Vol: %volume% %battery% %date% "
+  , template = " %StdinReader% }{ %multicpu%  %memory%  %swap%  Vol: %volume%  %date% "
   }
