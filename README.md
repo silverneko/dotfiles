@@ -9,6 +9,7 @@ Remember to install:
 - vim
 - xmobar
 - zsh
+- synapse (`sudo add-apt-repository ppa:synapse-core/ppa`)
 
 ## vim cheatsheet
 
