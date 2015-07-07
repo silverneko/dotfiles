@@ -36,6 +36,8 @@ mintupdate-launcher &
 #tray
 stalonetray &
 
+deluge &
+
 #disable the fucking touchpad on startup
 # xinput set-prop 'ETPS/2 Elantech Touchpad' 'Device Enabled' 0 &
 
