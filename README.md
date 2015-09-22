@@ -4,12 +4,14 @@ My dotfiles
 Type `./install.sh` in the command line to use.
 
 Remember to install:
-- xmonad
-- stalonetray
-- vim
-- xmobar
 - zsh
+- vim
+- xmonad
+- xmobar
+- stalonetray
 - synapse (`sudo add-apt-repository ppa:synapse-core/ppa`)
+- xfce4-terminal (for better transparency than cinnamon-terminal)
+- glipper (clipboard manager)
 
 ## vim cheatsheet
 
