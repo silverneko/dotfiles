@@ -28,7 +28,7 @@ set shiftwidth=2
 set softtabstop=2
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
-set listchars=trail:·,tab:»\              ",eol:↲
+set listchars=trail:␣,tab:»\              ",eol:↲
 set list
 
 set backspace=indent,eol,start

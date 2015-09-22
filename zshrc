@@ -84,5 +84,5 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 source $HOME/.rvm/scripts/rvm
 export PATH="$HOME/.cabal/bin:$PATH"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-welcome-message
+# welcome-message
 

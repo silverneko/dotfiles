@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
 #wallpaper
-feh $HOME/.dotfiles/img/air.png --bg-fill &
+# feh $HOME/.dotfiles/img/air.png --bg-fill &
+feh $HOME/.dotfiles/img/capricar.png --bg-fill &
 
 #enable composite windows
 xcompmgr -D2 -fF &
@@ -36,7 +37,10 @@ mintupdate-launcher &
 #tray
 stalonetray &
 
-deluge &
+#clipboard manager
+glipper &
+
+#deluge &
 
 #disable the fucking touchpad on startup
 # xinput set-prop 'ETPS/2 Elantech Touchpad' 'Device Enabled' 0 &

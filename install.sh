@@ -12,6 +12,7 @@ ln -svf ${BASEDIR}/vimrc ~/.vimrc
 ln -svfn ${BASEDIR}/vim/ ~/.vim
 
 # xmonad
+mkdir ~/.xmonad
 ln -svf ${BASEDIR}/xmonad.hs ~/.xmonad/xmonad.hs
 
 # xmobar
