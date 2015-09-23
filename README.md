@@ -7,7 +7,7 @@ Remember to install:
 - zsh
 - vim
 - xmonad
-- xmobar
+- xmobar (`cabal install xmobar --flags="all_extensions"`)
 - stalonetray
 - synapse (`sudo add-apt-repository ppa:synapse-core/ppa`)
 - xfce4-terminal (for better transparency than cinnamon-terminal)

@@ -2,7 +2,7 @@
 
 #wallpaper
 # feh $HOME/.dotfiles/img/air.png --bg-fill &
-feh $HOME/.dotfiles/img/capricar.png --bg-fill &
+feh $HOME/.dotfiles/img/capricar.jpg --bg-fill &
 
 #enable composite windows
 xcompmgr -D2 -fF &
@@ -16,7 +16,7 @@ xcompmgr -D2 -fF &
 
 cinnamon-settings-daemon &
 # gnome-settings-daemon &
-# /usr/lib/notification-daemon/notification-daemon
+/usr/lib/notification-daemon/notification-daemon &
 # cinnamon-screensaver &
 start-pulseaudio-x11 &
 nm-applet &
@@ -44,6 +44,8 @@ glipper &
 
 #disable the fucking touchpad on startup
 # xinput set-prop 'ETPS/2 Elantech Touchpad' 'Device Enabled' 0 &
+
+export XDG_CURRENT_DESKTOP=xmonad
 
 export PATH="$HOME/.cabal/bin:$PATH"
 exec xmonad
