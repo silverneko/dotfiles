@@ -12,6 +12,9 @@ Remember to install:
 - synapse (`sudo add-apt-repository ppa:synapse-core/ppa`)
 - xfce4-terminal (for better transparency than cinnamon-terminal)
 - glipper (clipboard manager)
+- git (`sudo add-apt-repository ppa:git-core/ppa`)
+- xcompmgr
+- feh
 
 ## vim cheatsheet
 
