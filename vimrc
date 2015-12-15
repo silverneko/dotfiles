@@ -41,7 +41,7 @@ let b:Compiler = 'nil'
 let g:tex_flavor = 'latex'
 autocmd BufNewFile,BufRead * let b:Compiler = 'nil' | colorscheme nolife
 autocmd BufNewFile,BufRead *.c,*.cpp let b:Compiler = 'clang'
-autocmd BufNewFile,BufRead *.hs let b:Compiler = 'runghc'
+autocmd BufNewFile,BufRead *.hs let b:Compiler = 'GHCi'
 autocmd BufNewFile,BufRead *.tex let b:Compiler = 'viewpdf'
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead makefile set noexpandtab
@@ -89,11 +89,11 @@ func SwitchCompiler()
     echo "compiler collection : clang"
     let b:Compiler = 'clang'
   endif
-  if b:Compiler == 'runghc'
+  if b:Compiler == 'GHCi'
     let b:Compiler = 'ghc'
     echo "compiler : Glasgow Haskell Compiler"
   elseif b:Compiler == 'ghc'
-    let b:Compiler = 'runghc'
+    let b:Compiler = 'GHCi'
     echo "compiler : runhaskell"
   endif
   if b:Compiler == 'viewpdf'
@@ -128,8 +128,8 @@ func COMPILE()
       exec "!clang++ % -Wall -o %< -std=c++11"
     endif
   elseif &filetype == 'haskell'
-    if b:Compiler == 'runghc'
-      exec "!runhaskell %"
+    if b:Compiler == 'GHCi'
+      exec "!ghci %"
     else
       exec "!ghc % -o %< -threaded -O"
     endif
