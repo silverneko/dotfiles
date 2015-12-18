@@ -3,6 +3,8 @@ My dotfiles
 
 Type `./install.sh` in the command line to use.
 
+May need to put `default-session.desktop` into somewhere like `/usr/share/Xsession/` and set the permission to `root:root 644`.
+
 Remember to install:
 - zsh
 - vim

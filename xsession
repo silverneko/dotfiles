@@ -22,6 +22,9 @@ start-pulseaudio-x11 &
 nm-applet &
 xscreensaver -no-splash &
 
+# fire up nemo desktop / FM
+nemo -n &
+
 # xfce4-volumed &
 # xfce4-power-manager &
 

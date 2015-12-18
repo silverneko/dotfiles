@@ -92,12 +92,11 @@ myWorkspaces =
 myLayoutHook = renamed [CutWordsLeft 1] $ 
   fullscreenFocus . smartBorders . avoidStruts $ 
   onWorkspaces ["1:Browser"] full $
-  deco tile ||| deco (Mirror tile) ||| full ||| deco grid ||| deco Accordion
+  deco tile ||| deco (Mirror tile) ||| full ||| deco Accordion
   where
-    tile    = renamed [Replace "Tall"] $ ResizableTall 1 (3/100) (1/2) []
-    full    = renamed [PrependWords "Full"] $ noBorders Full
-    grid    = magnifiercz 1.25 Grid
-    deco    = noFrillsDeco shrinkText Theme 
+    tile = renamed [Replace "Tall"] $ ResizableTall 1 (3/100) (1/2) []
+    full = renamed [PrependWords "Full"] $ noBorders Full
+    deco = noFrillsDeco shrinkText Theme
       { activeColor         = "#000000"
       , inactiveColor       = "#000000"
       , urgentColor         = "#FF0000"
@@ -133,7 +132,7 @@ main = do
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
     { modMask             = mod1Mask
     , terminal            = myTerminal
-    , focusFollowsMouse   = True
+    , focusFollowsMouse   = False
     , keys                = myKeys
     , workspaces          = myWorkspaces
 
@@ -151,7 +150,6 @@ main = do
                               , ppUrgent  = xmobarColor "red" "" . wrap "[ " " ]"
                               , ppSep     = "   "
                               }
+
     , handleEventHook     = fullscreenEventHook
---    , startupHook         = do
---                              windows $ W.greedyView "2:Dev"
     }
