@@ -83,9 +83,11 @@ export EDITOR='vim'
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 source $HOME/.rvm/scripts/rvm
 export PATH="$HOME/.cabal/bin:$PATH"
-export GOPATH="$HOME/go"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 export PATH="/usr/local/cuda-7.5/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH"
+
+export GOPATH="$HOME/go"
+export PATH="$PATH:/usr/local/go/bin:${GOPATH//://bin:}/bin"
 
