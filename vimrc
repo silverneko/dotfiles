@@ -2,16 +2,100 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-"Tabbar
+" Tabbar
 let g:tagbar_autofocus = 1
-"Supertab
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-p>"
-set completeopt=menu,preview,longest
-let g:SuperTabLongestEnhanced = 1
-let g:SuperTabLongestHighlight = 1
-"vim-nerdtree-tabs
+" vim-nerdtree-tabs
 let g:nerdtree_tabs_open_on_gui_startup = 0
+
+" vim-go
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+"let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_fmt_autosave = 0
+
+" neocomplete
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" end of neocomplete
+
+" Supertab
+"let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabContextDefaultCompletionType = "<c-p>"
+"set completeopt=menu,preview,longest
+"let g:SuperTabLongestEnhanced = 1
+"let g:SuperTabLongestHighlight = 1
 
 set t_Co=256
 set nocompatible
@@ -22,10 +106,6 @@ set number
 set autochdir
 set mouse=a
 set cindent
-set expandtab
-set tabstop=8
-set shiftwidth=2
-set softtabstop=2
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\              ",eol:↲
@@ -36,6 +116,13 @@ set history=50       " keep 50 lines of command line history
 set showcmd          " display incomplete commands
 set incsearch        " do incremental searching
 set hlsearch
+
+" Tab things
+set tabstop=8                   "A tab is 8 spaces
+set expandtab                   "Always uses spaces instead of tabs
+set softtabstop=2               "Insert 4 spaces when tab is pressed
+set shiftwidth=2                "An indent is 4 spaces
+set shiftround                  "Round indent to nearest shiftwidth multiple
 
 let b:Compiler = 'nil'
 let g:tex_flavor = 'latex'
@@ -106,6 +193,9 @@ func SwitchCompiler()
 endfunc
 
 func ShowCompiler()
+  if exists("b:Compiler") == 0
+    let b:Compiler = 'nil'
+  endif
   if b:Compiler == 'nil'
     return ' '
   else
