@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
 #wallpaper
-# feh $HOME/.dotfiles/img/air.png --bg-fill &
-feh $HOME/.dotfiles/img/goodfood.jpg --bg-fill &
+#feh --bg-fill $HOME/.dotfiles/img/kotori.jpg &
+feh --bg-fill $HOME/.dotfiles/img/goodfood.jpg &
 
 #enable composite windows
 xcompmgr -D2 -fF &
