@@ -91,3 +91,5 @@ export LD_LIBRARY_PATH="/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/go/bin:${GOPATH//://bin:}/bin"
 
+alias t="xfce4-terminal"
+
