@@ -2,7 +2,7 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-" Tabbar
+" Tagbar
 let g:tagbar_autofocus = 1
 " vim-nerdtree-tabs
 let g:nerdtree_tabs_open_on_gui_startup = 0
@@ -90,16 +90,9 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " end of neocomplete
 
-" Supertab
-"let g:SuperTabDefaultCompletionType = "context"
-"let g:SuperTabContextDefaultCompletionType = "<c-p>"
-"set completeopt=menu,preview,longest
-"let g:SuperTabLongestEnhanced = 1
-"let g:SuperTabLongestHighlight = 1
-
 set t_Co=256
 set nocompatible
-set scrolloff=1
+set scrolloff=999
 set cursorline
 set ruler
 set number
@@ -124,20 +117,15 @@ set softtabstop=2               "Insert 4 spaces when tab is pressed
 set shiftwidth=2                "An indent is 4 spaces
 set shiftround                  "Round indent to nearest shiftwidth multiple
 
-let b:Compiler = 'nil'
+colorscheme nolife
 let g:tex_flavor = 'latex'
-autocmd BufNewFile,BufRead * let b:Compiler = 'nil' | colorscheme nolife
-autocmd BufNewFile,BufRead *.c,*.cpp let b:Compiler = 'clang'
-autocmd BufNewFile,BufRead *.hs let b:Compiler = 'GHCi'
-autocmd BufNewFile,BufRead *.tex let b:Compiler = 'viewpdf'
+
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
+autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufNewFile,BufRead makefile set noexpandtab
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-com Compile call COMPILE()
-map <silent> <F3> :call SwitchCompiler()<CR>
-map <silent> <F4> :call COMPILE()<CR>
 map <silent> <F5> :NERDTreeTabsToggle<CR>
 map <silent> <F6> :let @/ = ""<CR>:echo "Search Pattern Cleared"<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
@@ -155,80 +143,16 @@ set statusline+=%-20.f
 set statusline+=%=
 set statusline+=%0.(\ %r%w%)
 set statusline+=%5.5(\ %m\ %)
-set statusline+=%-12.y
-set statusline+=%-10.{ShowCompiler()}
+set statusline+=%-22.y
 set statusline+=%(0x%02B%)%(\ \ %)
 set statusline+=%10.(%l/%LL%)%(\ \ %)
 set statusline+=%-4.(%vC%)%(\ \ %)
 set statusline+=%P
 
 func SetIndent(wid)
-  exec "set tabstop=".a:wid
+  "exec "set tabstop=".a:wid
   exec "set shiftwidth=".a:wid
   exec "set softtabstop=".a:wid
-endfunc
-
-func SwitchCompiler()
-  if b:Compiler == 'clang'
-    echo "compiler collection : gcc"
-    let b:Compiler = 'gcc'
-  elseif b:Compiler == 'gcc'
-    echo "compiler collection : clang"
-    let b:Compiler = 'clang'
-  endif
-  if b:Compiler == 'GHCi'
-    let b:Compiler = 'ghc'
-    echo "compiler : Glasgow Haskell Compiler"
-  elseif b:Compiler == 'ghc'
-    let b:Compiler = 'GHCi'
-    echo "compiler : runhaskell"
-  endif
-  if b:Compiler == 'viewpdf'
-    let b:Compiler = 'xelatex'
-    echo "compiler : xelatex"
-  elseif b:Compiler == 'xelatex'
-    let b:Compiler = 'viewpdf'
-    echo "compiler : xelatex-evince"
-  endif
-endfunc
-
-func ShowCompiler()
-  if exists("b:Compiler") == 0
-    let b:Compiler = 'nil'
-  endif
-  if b:Compiler == 'nil'
-    return ' '
-  else
-    return '['.b:Compiler.']'
-  endif
-endfunc
-
-func COMPILE()
-  exec "w"
-  if &filetype == 'c'
-    if b:Compiler == 'gcc'
-      exec "!gcc % -Wall -o %< -std=c99 -fno-builtin -O1 -lm"
-    else
-      exec "!clang % -Wall -o %< -std=c99 -fno-builtin -O1 -lm"
-    endif
-  elseif &filetype == 'cpp'
-    if b:Compiler == 'gcc'
-      exec "!g++ % -Wall -o %< -std=c++11"
-    else
-      exec "!clang++ % -Wall -o %< -std=c++11"
-    endif
-  elseif &filetype == 'haskell'
-    if b:Compiler == 'GHCi'
-      exec "!ghci %"
-    else
-      exec "!ghc % -o %< -threaded -O"
-    endif
-  elseif &filetype == 'tex'
-    exec "!xelatex -synctex=1 -file-line-error -interaction=errorstopmode %"
-    if b:Compiler == 'viewpdf'
-      exec "silent !evince %<.pdf &"
-    endif
-  endif
 endfunc
 
 func DefaultCode()
