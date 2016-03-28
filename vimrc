@@ -98,7 +98,6 @@ set ruler
 set number
 set autochdir
 set mouse=a
-set cindent
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\              ",eol:↲
@@ -120,10 +119,29 @@ set shiftround                  "Round indent to nearest shiftwidth multiple
 colorscheme nolife
 let g:tex_flavor = 'latex'
 
+
+" Optional
+" C/C++ programming helpers
+augroup csrc
+  au!
+  autocmd FileType *      set nocindent smartindent
+  autocmd FileType c,cpp  set cindent
+augroup END
+" Set a few indentation parameters. See the VIM help for cinoptions-values for
+" details.  These aren't absolute rules; they're just an approximation of
+" common style in LLVM source.
+set cinoptions=:0,g0,(0,Ws,l1
+
+augroup filetype
+  au! BufRead,BufNewFile *Makefile*   set filetype=make
+  au! BufRead,BufNewFile *.ll         set filetype=llvm
+  au! BufRead,BufNewFile *.td         set filetype=tablegen
+  au! BufRead,BufNewFile *.rst        set filetype=rest
+  au! BufNewFile,BufRead *.md         set filetype=markdown
+augroup END
+autocmd FileType make set noexpandtab
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
-autocmd BufNewFile,BufRead makefile set noexpandtab
-autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 map <silent> <F5> :NERDTreeTabsToggle<CR>
