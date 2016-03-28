@@ -18,8 +18,6 @@ Remember to install:
 
 ## Vim
 ###Mapped function keys
-- \<F3\>      Switch compiler collection
-- \<F4\>      Compile / Run code
 - \<F5\>      Toggle Nerdtree
 - \<F6\>      Clear search pattern
 - \<F7\>      Yank all
@@ -27,7 +25,7 @@ Remember to install:
 - \<F9\>      Read default code
 - \<C-Right\> Tab next
 - \<C-Left\>  Tab previous
-- \<Tab\>     Autocomplete
+- \<Tab\>     Autocomplete (neocomplete)
 
 ### Dependencies
 - tagbar: Exuberant ctags
