@@ -26,7 +26,7 @@ xscreensaver -no-splash &
 nemo -n &
 
 # xfce4-volumed &
-# xfce4-power-manager &
+xfce4-power-manager &
 
 #dropbox
 dropbox start -i &
