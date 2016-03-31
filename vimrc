@@ -110,15 +110,16 @@ set incsearch        " do incremental searching
 set hlsearch
 
 " Tab things
-set tabstop=8                   "A tab is 8 spaces
-set expandtab                   "Always uses spaces instead of tabs
-set softtabstop=2               "Insert 4 spaces when tab is pressed
-set shiftwidth=2                "An indent is 4 spaces
-set shiftround                  "Round indent to nearest shiftwidth multiple
+set tabstop=8        "A tab is 8 spaces
+set expandtab        "Always uses spaces instead of tabs
+set softtabstop=2    "Insert 4 spaces when tab is pressed
+set shiftwidth=2     "An indent is 4 spaces
+set shiftround       "Round indent to nearest shiftwidth multiple
 
 colorscheme nolife
 let g:tex_flavor = 'latex'
-
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
 
 " Optional
 " C/C++ programming helpers
@@ -131,18 +132,21 @@ augroup END
 " details.  These aren't absolute rules; they're just an approximation of
 " common style in LLVM source.
 set cinoptions=:0,g0,(0,Ws,l1
+" Vim tend to a have issues with flagging braces as errors, see for example
+" https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
+let c_no_curly_error = 1
 
 augroup filetype
-  au! BufRead,BufNewFile *Makefile*   set filetype=make
-  au! BufRead,BufNewFile *.ll         set filetype=llvm
-  au! BufRead,BufNewFile *.td         set filetype=tablegen
-  au! BufRead,BufNewFile *.rst        set filetype=rest
+  au! BufNewFile,BufRead *Makefile*   set filetype=make
+  au! BufNewFile,BufRead *.ll         set filetype=llvm
+  au! BufNewFile,BufRead *.td         set filetype=tablegen
+  au! BufNewFile,BufRead *.rst        set filetype=rest
   au! BufNewFile,BufRead *.md         set filetype=markdown
 augroup END
 autocmd FileType make set noexpandtab
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 map <silent> <F5> :NERDTreeTabsToggle<CR>
 map <silent> <F6> :let @/ = ""<CR>:echo "Search Pattern Cleared"<CR>
