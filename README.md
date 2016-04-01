@@ -18,9 +18,10 @@ Remember to install:
 ## Vim
 ### Mapped function keys
 - \<F2\>      Toggle Nerdtree
-- \<F3\>      GoDoc
-- \<F4\>      GoLint
-- \<F6\>      Clear search pattern
+- \<F3\>      GoDoc / GhcModCheckAndLint
+- \<F4\>      GoLint / GhcModLint
+- \<F5\>      GoInfo / GhcModType
+- \<F6\>      Clear search pattern (and GhcModTypePattern)
 - \<F7\>      Yank all
 - \<F8\>      Toggle Tagbar
 - \<F9\>      Read default code
@@ -28,20 +29,22 @@ Remember to install:
 - \<C-Left\>  Tab previous
 - \<Tab\>     Autocomplete (neocomplete)
 
+### Dependencies
+- tagbar: Exuberant ctags
+- neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
+- ghcmod-vim, neco-ghc:
+  * ghc-mod 5.5+, `cabal install ghc-mod`
+  * vimproc, `cd ~/.vim/bundle/vimproc.vim && make`
+
 ### Pathogen
 Invoke `:Helptags` in vim to generate documentation.
-
-### Hexmode
-Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
-will automatically convert it into hex.
-Also, you can use `:Hexmode` to switch between hex editing and normal editing.
 
 ### vim-go
 Invoke `:GoInstallBinaries` to install binaries.
 Ref: https://github.com/fatih/vim-go
 
-### Dependencies
-- tagbar: Exuberant ctags
-- neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
-- vim-go: Go
+### Hexmode
+Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
+will automatically convert it into hex.
+Also, you can use `:Hexmode` to switch between hex editing and normal editing.
 

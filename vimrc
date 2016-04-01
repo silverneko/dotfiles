@@ -15,7 +15,7 @@ let g:go_highlight_interfaces = 1
 "let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 0
-let g:go_auto_type_info = 1
+"let g:go_auto_type_info = 1
 
 " START of neocomplete
 " Use neocomplete.
@@ -56,7 +56,7 @@ endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+inoremap <expr><Space> pumvisible() ? "\<C-y>\<Space>" : "\<Space>"
 " <BS>: close popup and delete backword char.
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
@@ -79,6 +79,20 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " END of neocomplete
+
+" neco-ghc
+" Disable haskell-vim omnifunc
+let g:haskellmode_completion_ghc = 0
+let g:necoghc_enable_detailed_browse = 1
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+" Haskell things
+let g:haskell_enable_quantification = 1
+let g:haskell_enable_recursivedo = 1
+let g:haskell_enable_arrowsyntax = 1
+let g:haskell_enable_pattern_synonyms = 1
+let g:haskell_enable_typeroles = 1
+let g:haskell_enable_static_pointers = 1
 
 " disable the annoying preview window
 set completeopt=menu,menuone
@@ -141,10 +155,14 @@ autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-map <silent> <F2> :NERDTreeTabsToggle<CR>
 autocmd FileType go map <F3> <Plug>(go-doc)
 autocmd FileType go map <F4> :GoLint<CR>
-map <silent> <F6> :let @/ = ""<CR>:echo "Search Pattern Cleared"<CR>
+autocmd FileType go map <F5> <Plug>(go-info)
+autocmd FileType haskell map <F3> :GhcModCheckAndLint<CR>
+autocmd FileType haskell map <F4> :GhcModLint<CR>
+autocmd FileType haskell map <F5> :GhcModType<CR>
+map <silent> <F2> :NERDTreeTabsToggle<CR>
+map <silent> <F6> :call ClearSearchPattern()<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>
 map <silent> <F9> :call DefaultCode()<CR>
@@ -170,6 +188,14 @@ func SetIndent(wid)
   "exec "set tabstop=".a:wid
   exec "set shiftwidth=".a:wid
   exec "set softtabstop=".a:wid
+endfunc
+
+func ClearSearchPattern()
+  if exists('b:did_ftplugin_ghcmod') && b:did_ftplugin_ghcmod
+    exec "GhcModTypeClear"
+  endif
+  let @/ = ""
+  echo "Search Pattern Cleared"
 endfunc
 
 func DefaultCode()
