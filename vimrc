@@ -148,7 +148,7 @@ augroup filetype
   au! BufNewFile,BufRead *.ll         set filetype=llvm
   au! BufNewFile,BufRead *.td         set filetype=tablegen
   au! BufNewFile,BufRead *.rst        set filetype=rest
-  au! BufNewFile,BufRead *.md         set filetype=markdown
+  "au! BufNewFile,BufRead *.md         set filetype=markdown
 augroup END
 autocmd FileType make set noexpandtab
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
