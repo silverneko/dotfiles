@@ -15,6 +15,7 @@ let g:go_highlight_interfaces = 1
 "let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 0
+let g:go_auto_type_info = 1
 
 " neocomplete
 " Disable AutoComplPop.
@@ -90,6 +91,9 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " end of neocomplete
 
+" disable the annoying preview window
+set completeopt=menu,menuone
+
 set t_Co=256
 set nocompatible
 set scrolloff=999
@@ -148,7 +152,9 @@ autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-map <silent> <F5> :NERDTreeTabsToggle<CR>
+map <silent> <F2> :NERDTreeTabsToggle<CR>
+autocmd FileType go map <F3> <Plug>(go-doc)
+autocmd FileType go map <F4> :GoLint<CR>
 map <silent> <F6> :let @/ = ""<CR>:echo "Search Pattern Cleared"<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>

@@ -1,11 +1,10 @@
 # Dotfiles
+## Overview
 Type `./install.sh` in the command line to use.
 
 May need to put `xmonad.desktop` into somewhere like `/usr/share/Xsession/` and set the permission to `root:root 644`.
 
 Remember to install:
-- zsh
-- vim
 - xmonad
 - xmobar (`cabal install xmobar --flags="all_extensions"`)
 - stalonetray
@@ -17,8 +16,10 @@ Remember to install:
 - feh
 
 ## Vim
-###Mapped function keys
-- \<F5\>      Toggle Nerdtree
+### Mapped function keys
+- \<F2\>      Toggle Nerdtree
+- \<F3\>      GoDoc
+- \<F4\>      GoLint
 - \<F6\>      Clear search pattern
 - \<F7\>      Yank all
 - \<F8\>      Toggle Tagbar
