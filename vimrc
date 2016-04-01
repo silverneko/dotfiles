@@ -133,7 +133,7 @@ let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
 augroup csrc
   au!
   autocmd FileType *      set nocindent smartindent
-  autocmd FileType c,cpp  set cindent
+  autocmd FileType c,cpp,cuda  set cindent
 augroup END
 " Set a few indentation parameters. See the VIM help for cinoptions-values for
 " details.  These aren't absolute rules; they're just an approximation of
