@@ -28,16 +28,20 @@ Remember to install:
 - \<C-Left\>  Tab previous
 - \<Tab\>     Autocomplete (neocomplete)
 
-### Dependencies
-- tagbar: Exuberant ctags
-- neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
-- vim-go: Go
-
 ### Pathogen
 Invoke `:Helptags` in vim to generate documentation.
+
+### Hexmode
+Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
+will automatically convert it into hex.
+Also, you can use `:Hexmode` to switch between hex editing and normal editing.
 
 ### vim-go
 Invoke `:GoInstallBinaries` to install binaries.
 Ref: https://github.com/fatih/vim-go
 
+### Dependencies
+- tagbar: Exuberant ctags
+- neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
+- vim-go: Go
 
