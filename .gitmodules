@@ -21,7 +21,13 @@
 	url = https://github.com/Shougo/neocomplete.vim.git
 [submodule "vim/bundle/vim-polyglot"]
 	path = vim/bundle/vim-polyglot
-	url = git@github.com:sheerun/vim-polyglot.git
+	url = https://github.com/sheerun/vim-polyglot.git
 [submodule "vim/bundle/hexmode"]
 	path = vim/bundle/hexmode
-	url = git@github.com:fidian/hexmode.git
+	url = https://github.com/fidian/hexmode.git
+[submodule "vim/bundle/ghcmod-vim"]
+	path = vim/bundle/ghcmod-vim
+	url = https://github.com/eagletmt/ghcmod-vim.git
+[submodule "vim/bundle/vimproc.vim"]
+	path = vim/bundle/vimproc.vim
+	url = https://github.com/Shougo/vimproc.vim.git
