@@ -103,7 +103,7 @@ set scrolloff=999
 set cursorline
 set ruler
 set number
-set autochdir
+" set autochdir
 set mouse=a
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
@@ -173,16 +173,17 @@ inoremap <c-w> <c-g>u<c-w>
 
 set ch=1  "cmdheigh
 set laststatus=2
-set statusline=%<
-set statusline+=%-20.f
-set statusline+=%=
-set statusline+=%0.(\ %r%w%)
-set statusline+=%5.5(\ %m\ %)
-set statusline+=%-22.y
-set statusline+=%(0x%02B%)%(\ \ %)
-set statusline+=%10.(%l/%LL%)%(\ \ %)
-set statusline+=%-4.(%vC%)%(\ \ %)
-set statusline+=%P
+" %-0{minwid}.{maxwid}{item}
+let &statusline = ""
+let &stl .= " %<%f"
+let &stl .= "%= "
+let &stl .= "%(%m %)%(%r %)%(%w %)"
+let &stl .= "%(%y %)"
+" let &stl .= "%([%{&fileformat}] %)"
+let &stl .= "0x%02B  "
+let &stl .= "%l/%LL "
+let &stl .= "%4.(%vC%)  "
+let &stl .= "%P"
 
 func SetIndent(wid)
   "exec "set tabstop=".a:wid
