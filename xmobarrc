@@ -51,5 +51,5 @@ Config
     ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %StdinReader% }{ %multicpu%  %memory%  %swap%  Vol: %volume%  %date% "
+  , template = " %StdinReader% }{| %multicpu% | %memory% | %swap% | Vol: %volume% | %date% "
   }
