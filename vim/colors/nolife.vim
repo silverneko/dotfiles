@@ -46,7 +46,7 @@ hi Todo        ctermfg=18     ctermbg=220
 hi MatchParen  ctermfg=4      ctermbg=221
 hi LineNr      ctermfg=9
 hi Search                     ctermbg=192
-
+hi ColorColumn                ctermbg=236
 
 hi Comment     ctermfg=68
 

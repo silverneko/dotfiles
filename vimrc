@@ -110,6 +110,8 @@ set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\              ",eol:↲
 set list
 
+colorscheme nolife
+"set colorcolumn=81
 set backspace=indent,eol,start
 set history=50       " keep 50 lines of command line history
 set showcmd          " display incomplete commands
@@ -123,7 +125,6 @@ set softtabstop=2    "Insert 4 spaces when tab is pressed
 set shiftwidth=2     "An indent is 4 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
-colorscheme nolife
 let g:tex_flavor = 'latex'
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
@@ -171,7 +172,7 @@ map <C-Left>  :tabprevious<CR>
 inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
 inoremap <c-w> <c-g>u<c-w>
 
-set ch=1  "cmdheigh
+set cmdheight=1
 set laststatus=2
 " %-0{minwid}.{maxwid}{item}
 let &statusline = ""
