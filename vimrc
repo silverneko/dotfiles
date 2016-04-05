@@ -15,12 +15,13 @@ let g:go_highlight_interfaces = 1
 "let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 0
+"let g:go_auto_type_info = 1
 
-" neocomplete
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
+" START of neocomplete
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
@@ -54,20 +55,10 @@ function! s:my_cr_function()
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+inoremap <expr><Space> pumvisible() ? "\<C-y>\<Space>" : "\<Space>"
+" <BS>: close popup and delete backword char.
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -80,15 +71,31 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
-" end of neocomplete
+" END of neocomplete
+
+" neco-ghc
+" Disable haskell-vim omnifunc
+let g:haskellmode_completion_ghc = 0
+let g:necoghc_enable_detailed_browse = 1
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+" Haskell things
+let g:haskell_enable_quantification = 1
+let g:haskell_enable_recursivedo = 1
+let g:haskell_enable_arrowsyntax = 1
+let g:haskell_enable_pattern_synonyms = 1
+let g:haskell_enable_typeroles = 1
+let g:haskell_enable_static_pointers = 1
+
+" disable the annoying preview window
+set completeopt=menu,menuone
 
 set t_Co=256
 set nocompatible
@@ -96,13 +103,15 @@ set scrolloff=999
 set cursorline
 set ruler
 set number
-set autochdir
+" set autochdir
 set mouse=a
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\              ",eol:↲
 set list
 
+colorscheme nolife
+"set colorcolumn=81
 set backspace=indent,eol,start
 set history=50       " keep 50 lines of command line history
 set showcmd          " display incomplete commands
@@ -116,7 +125,6 @@ set softtabstop=2    "Insert 4 spaces when tab is pressed
 set shiftwidth=2     "An indent is 4 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
-colorscheme nolife
 let g:tex_flavor = 'latex'
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
@@ -126,7 +134,7 @@ let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
 augroup csrc
   au!
   autocmd FileType *      set nocindent smartindent
-  autocmd FileType c,cpp  set cindent
+  autocmd FileType c,cpp,cuda  set cindent
 augroup END
 " Set a few indentation parameters. See the VIM help for cinoptions-values for
 " details.  These aren't absolute rules; they're just an approximation of
@@ -141,15 +149,21 @@ augroup filetype
   au! BufNewFile,BufRead *.ll         set filetype=llvm
   au! BufNewFile,BufRead *.td         set filetype=tablegen
   au! BufNewFile,BufRead *.rst        set filetype=rest
-  au! BufNewFile,BufRead *.md         set filetype=markdown
+  "au! BufNewFile,BufRead *.md         set filetype=markdown
 augroup END
 autocmd FileType make set noexpandtab
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-map <silent> <F5> :NERDTreeTabsToggle<CR>
-map <silent> <F6> :let @/ = ""<CR>:echo "Search Pattern Cleared"<CR>
+autocmd FileType go map <F3> <Plug>(go-doc)
+autocmd FileType go map <F4> :GoLint<CR>
+autocmd FileType go map <F5> <Plug>(go-info)
+autocmd FileType haskell map <F3> :GhcModCheckAndLint<CR>
+autocmd FileType haskell map <F4> :GhcModLint<CR>
+autocmd FileType haskell map <F5> :GhcModType<CR>
+map <silent> <F2> :NERDTreeTabsToggle<CR>
+map <silent> <F6> :call ClearSearchPattern()<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>
 map <silent> <F9> :call DefaultCode()<CR>
@@ -158,23 +172,32 @@ map <C-Left>  :tabprevious<CR>
 inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
 inoremap <c-w> <c-g>u<c-w>
 
-set ch=1  "cmdheigh
+set cmdheight=1
 set laststatus=2
-set statusline=%<
-set statusline+=%-20.f
-set statusline+=%=
-set statusline+=%0.(\ %r%w%)
-set statusline+=%5.5(\ %m\ %)
-set statusline+=%-22.y
-set statusline+=%(0x%02B%)%(\ \ %)
-set statusline+=%10.(%l/%LL%)%(\ \ %)
-set statusline+=%-4.(%vC%)%(\ \ %)
-set statusline+=%P
+" %-0{minwid}.{maxwid}{item}
+let &statusline = ""
+let &stl .= " %<%f"
+let &stl .= "%= "
+let &stl .= "%(%m %)%(%r %)%(%w %)"
+let &stl .= "%(%y %)"
+" let &stl .= "%([%{&fileformat}] %)"
+let &stl .= " 0x%02B  "
+let &stl .= "%l/%LL "
+let &stl .= "%4.(%vC%)  "
+let &stl .= "%P"
 
 func SetIndent(wid)
   "exec "set tabstop=".a:wid
   exec "set shiftwidth=".a:wid
   exec "set softtabstop=".a:wid
+endfunc
+
+func ClearSearchPattern()
+  if exists('b:did_ftplugin_ghcmod') && b:did_ftplugin_ghcmod
+    exec "GhcModTypeClear"
+  endif
+  let @/ = ""
+  echo "Search Pattern Cleared"
 endfunc
 
 func DefaultCode()

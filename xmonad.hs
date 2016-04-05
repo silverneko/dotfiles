@@ -1,7 +1,5 @@
 import XMonad
-import XMonad.Actions.CycleWS
 import XMonad.Util.Run
-import XMonad.Util.Themes
 import qualified XMonad.StackSet as W
 
 import XMonad.Hooks.DynamicLog
@@ -9,20 +7,17 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
-import XMonad.Layout.Magnifier
 import XMonad.Layout.Fullscreen
-import XMonad.Layout.Accordion
 import XMonad.Layout.NoFrillsDecoration
-import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Renamed
 
 import System.Exit
-import Data.Map (fromList, union)
+import qualified Data.Map as Map
 
-myKeys conf@(XConfig {modMask = modm}) = fromList $ 
+myKeys :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X ())
+myKeys conf@XConfig{modMask = modm} = Map.fromList $
   [ ((modm,               xK_b     ), sendMessage ToggleStruts) -- %! Toggle struts `aka panel`
   , ((modm,               xK_F10   ), spawn "amixer -D pulse set Master toggle")
   , ((modm,               xK_F11   ), spawn "amixer -D pulse set Master on && amixer -D pulse set Master 3%-")
@@ -58,8 +53,8 @@ myKeys conf@(XConfig {modMask = modm}) = fromList $
   -- resizing the master/slave ratio
   , ((modm,               xK_h     ), sendMessage Shrink) -- %! Shrink the master area
   , ((modm,               xK_l     ), sendMessage Expand) -- %! Expand the master area
-  , ((modm,               xK_i    ), sendMessage MirrorShrink)
-  , ((modm,               xK_u    ), sendMessage MirrorExpand)
+  , ((modm,               xK_i     ), sendMessage MirrorShrink)
+  , ((modm,               xK_u     ), sendMessage MirrorExpand)
 
   -- floating layer support
   , ((modm,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
@@ -69,7 +64,7 @@ myKeys conf@(XConfig {modMask = modm}) = fromList $
   , ((modm              , xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
 
   -- quit, or restart
-  , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
+  , ((modm .|. shiftMask, xK_q     ), io exitSuccess) -- %! Quit xmonad
   , ((modm              , xK_q     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
   ]
   ++
@@ -85,14 +80,14 @@ myKeys conf@(XConfig {modMask = modm}) = fromList $
       | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-myWorkspaces = 
-  ["1:Browser", "2:Dev"]
-  ++ map show [3 .. 9] ++ ["0", "-", "="]
+myWorkspaces :: [String]
+myWorkspaces =
+  ["1:Browser", "2:Dev", "3:Alpha", "4:Beta", "5:Gamma", "6:Delta", "7:Epsilon", "8:Zeta", "9:Eta", "0", "-", "="]
 
-myLayoutHook = renamed [CutWordsLeft 1] $ 
-  fullscreenFocus . smartBorders . avoidStruts $ 
-  onWorkspaces ["1:Browser"] full $
-  deco tile ||| deco (Mirror tile) ||| full ||| deco Accordion
+myLayoutHook = renamed [CutWordsLeft 1] $
+  fullscreenFocus . smartBorders . avoidStruts $
+  onWorkspaces (take 1 myWorkspaces) full $
+  deco tile ||| deco (Mirror tile) ||| full -- ||| deco Accordion
   where
     tile = renamed [Replace "Tall"] $ ResizableTall 1 (3/100) (1/2) []
     full = renamed [PrependWords "Full"] $ noBorders Full
@@ -127,12 +122,13 @@ myManageHook = composeAll
 
 myTerminal = "xfce4-terminal"
 
+main :: IO ()
 main = do
   xmobar <- spawnPipe "xmobar"
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
     { modMask             = mod1Mask
     , terminal            = myTerminal
-    , focusFollowsMouse   = False
+    , focusFollowsMouse   = True
     , keys                = myKeys
     , workspaces          = myWorkspaces
 
@@ -153,3 +149,4 @@ main = do
 
     , handleEventHook     = fullscreenEventHook
     }
+

@@ -1,11 +1,10 @@
 # Dotfiles
+## Overview
 Type `./install.sh` in the command line to use.
 
 May need to put `xmonad.desktop` into somewhere like `/usr/share/Xsession/` and set the permission to `root:root 644`.
 
 Remember to install:
-- zsh
-- vim
 - xmonad
 - xmobar (`cabal install xmobar --flags="all_extensions"`)
 - stalonetray
@@ -17,9 +16,12 @@ Remember to install:
 - feh
 
 ## Vim
-###Mapped function keys
-- \<F5\>      Toggle Nerdtree
-- \<F6\>      Clear search pattern
+### Mapped function keys
+- \<F2\>      Toggle Nerdtree
+- \<F3\>      GoDoc / GhcModCheckAndLint
+- \<F4\>      GoLint / GhcModLint
+- \<F5\>      GoInfo / GhcModType
+- \<F6\>      Clear search pattern (and GhcModTypePattern)
 - \<F7\>      Yank all
 - \<F8\>      Toggle Tagbar
 - \<F9\>      Read default code
@@ -30,7 +32,9 @@ Remember to install:
 ### Dependencies
 - tagbar: Exuberant ctags
 - neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
-- vim-go: Go
+- ghcmod-vim, neco-ghc:
+  * ghc-mod 5.5+, `cabal install ghc-mod`
+  * vimproc, `cd ~/.vim/bundle/vimproc.vim && make`
 
 ### Pathogen
 Invoke `:Helptags` in vim to generate documentation.
@@ -39,4 +43,8 @@ Invoke `:Helptags` in vim to generate documentation.
 Invoke `:GoInstallBinaries` to install binaries.
 Ref: https://github.com/fatih/vim-go
 
+### Hexmode
+Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
+will automatically convert it into hex.
+Also, you can use `:Hexmode` to switch between hex editing and normal editing.
 
