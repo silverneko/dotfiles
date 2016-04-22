@@ -50,6 +50,5 @@ glipper &
 
 export XDG_CURRENT_DESKTOP=xmonad
 
-export PATH="$HOME/.cabal/bin:$PATH"
-exec xmonad
+exec $HOME/.cabal/bin/xmonad
 
