@@ -16,8 +16,13 @@ import XMonad.Layout.Renamed
 import System.Exit
 import qualified Data.Map as Map
 
+myModMasks :: [KeyMask]
+myModMasks = [altMask, winMask]
+  where altMask = mod1Mask
+        winMask = mod4Mask
+
 myKeys :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig{modMask = modm} = Map.fromList $
+myKeys conf = Map.fromList $ concat $ flip map myModMasks (\modm ->
   [ ((modm,               xK_b     ), sendMessage ToggleStruts) -- %! Toggle struts `aka panel`
   , ((modm,               xK_F10   ), spawn "amixer -D pulse set Master toggle")
   , ((modm,               xK_F11   ), spawn "amixer -D pulse set Master on && amixer -D pulse set Master 3%-")
@@ -70,15 +75,18 @@ myKeys conf@XConfig{modMask = modm} = Map.fromList $
   ++
   -- mod-[1..9] %! Switch to workspace N
   -- mod-shift-[1..9] %! Move client to workspace N
-  [((m .|. modm, k), windows $ f i)
-      | (i, k) <- zip (XMonad.workspaces conf) $ [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+  do
+    let workspaceKeys = [xK_1 .. xK_9] ++ [xK_0, xK_minus, xK_equal]
+    (i, k) <- zip (XMonad.workspaces conf) workspaceKeys
+    (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+    pure ((modm .|. m, k), windows $ f i)
   ++
   -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
-  [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+  [((modm .|. m, key), screenWorkspace sc >>= flip whenJust (windows . f))
       | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+  )
 
 myWorkspaces :: [String]
 myWorkspaces =
@@ -125,9 +133,8 @@ myTerminal = "xfce4-terminal"
 main :: IO ()
 main = do
   xmobar <- spawnPipe "xmobar"
-  xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
-    { modMask             = mod1Mask
-    , terminal            = myTerminal
+  xmonad $ withUrgencyHook NoUrgencyHook $ def
+    { terminal            = myTerminal
     , focusFollowsMouse   = True
     , keys                = myKeys
     , workspaces          = myWorkspaces
@@ -138,7 +145,7 @@ main = do
     , normalBorderColor   = "#FFFFFF"
     , focusedBorderColor  = "#FFFFFF"
 
-    , logHook             = dynamicLogWithPP defaultPP
+    , logHook             = dynamicLogWithPP def
                               { ppOutput  = hPutStrLn xmobar
                               , ppCurrent = xmobarColor "yellow" "" . wrap "[ " " ]"
                               , ppTitle   = xmobarColor "green"  "" . shorten 80
