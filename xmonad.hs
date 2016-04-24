@@ -14,15 +14,15 @@ import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Renamed
 
 import System.Exit
-import qualified Data.Map as Map
+import qualified Data.Map as M
 
 myModMasks :: [KeyMask]
 myModMasks = [altMask, winMask]
   where altMask = mod1Mask
         winMask = mod4Mask
 
-myKeys :: XConfig Layout -> Map.Map (KeyMask, KeySym) (X ())
-myKeys conf = Map.fromList $ concat $ flip map myModMasks (\modm ->
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+myKeys conf = M.fromList $ concat $ flip map myModMasks (\modm ->
   [ ((modm,               xK_b     ), sendMessage ToggleStruts) -- %! Toggle struts `aka panel`
   , ((modm,               xK_F10   ), spawn "amixer -D pulse set Master toggle")
   , ((modm,               xK_F11   ), spawn "amixer -D pulse set Master on && amixer -D pulse set Master 3%-")
@@ -128,16 +128,29 @@ myManageHook = composeAll
   , appName   =? "stalonetray"  --> doIgnore
   ]
 
-myTerminal = "xfce4-terminal"
+-- | Mouse bindings: default actions bound to mouse events
+myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
+myMouseBindings conf = M.fromList $ concat $ flip map myModMasks (\modm ->
+  -- mod-button1 %! Set the window to floating mode and move by dragging
+  [ ((modm, button1), \w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)
+  -- mod-button2 %! Raise the window to the top of the stack
+  , ((modm, button2), windows . (W.shiftMaster .) . W.focusWindow)
+  -- mod-button3 %! Set the window to floating mode and resize by dragging
+  , ((modm, button3), \w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster)
+  -- you may also bind events to the mouse scroll wheel (button4 and button5)
+  ]
+  )
 
 main :: IO ()
 main = do
   xmobar <- spawnPipe "xmobar"
   xmonad $ withUrgencyHook NoUrgencyHook $ def
-    { terminal            = myTerminal
-    , focusFollowsMouse   = True
+    { modMask             = mod1Mask
+    , terminal            = myTerminal
     , keys                = myKeys
     , workspaces          = myWorkspaces
+    , mouseBindings       = myMouseBindings
+    , focusFollowsMouse   = True
 
     , manageHook          = manageDocks <+> myManageHook
     , layoutHook          = myLayoutHook
@@ -156,4 +169,6 @@ main = do
 
     , handleEventHook     = fullscreenEventHook
     }
+  where
+    myTerminal = "xfce4-terminal"
 
