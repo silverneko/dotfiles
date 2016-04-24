@@ -152,7 +152,7 @@ main = do
     , mouseBindings       = myMouseBindings
     , focusFollowsMouse   = True
 
-    , manageHook          = manageDocks <+> myManageHook
+    , manageHook          = fullscreenManageHook <+> manageDocks <+> myManageHook
     , layoutHook          = myLayoutHook
     , borderWidth         = 1
     , normalBorderColor   = "#FFFFFF"
