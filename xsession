@@ -22,9 +22,6 @@ start-pulseaudio-x11 &
 nm-applet &
 xscreensaver -no-splash &
 
-# fire up nemo desktop / FM
-nemo -n &
-
 # xfce4-volumed &
 # xfce4-power-manager &
 
@@ -49,7 +46,6 @@ glipper &
 # xinput set-prop 'ETPS/2 Elantech Touchpad' 'Device Enabled' 0 &
 
 export XDG_CURRENT_DESKTOP=xmonad
-
 export PATH="$HOME/.cabal/bin:$PATH"
 exec xmonad
 

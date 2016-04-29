@@ -103,7 +103,7 @@ set scrolloff=999
 set cursorline
 set ruler
 set number
-" set autochdir
+set autochdir
 set mouse=a
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
