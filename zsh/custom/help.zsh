@@ -4,6 +4,7 @@ alias :h=:help
 function zsh-reference-card
 {
   cat <<EOF
+zsh command line editing quick reference card
   ctrl + _  Undo the last change
   ctrl + ←  Move one word backward
   ctrl + →  Move one word forward
