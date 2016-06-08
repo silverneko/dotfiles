@@ -39,25 +39,29 @@ export LANG=en_US.UTF-8
 export EDITOR="vim"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
+# RVM
 if [[ -e "$HOME/.rvm/scripts/rvm" ]]; then
   export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
   source $HOME/.rvm/scripts/rvm
 fi
 
+# cabal
 export PATH="$HOME/.cabal/bin:$PATH"
 
-export PATH="/usr/local/cuda-7.5/bin:$PATH"
-export LD_LIBRARY_PATH="/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH"
+# stack
+export PATH="$PATH:$HOME/.local/bin"
 
+# golang
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/go/bin:${GOPATH//://bin:}/bin"
 
-export PATH="$PATH:$HOME/.local/bin"
+# CUDA
+export PATH="/usr/local/cuda/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-alias t="xfce4-terminal"
-# eval "$(thefuck --alias)"
+alias t="$COLORTERM"
