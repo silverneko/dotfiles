@@ -2,7 +2,7 @@
 
 #wallpaper
 #feh --bg-fill $HOME/.dotfiles/img/kotori.jpg &
-feh --bg-fill $HOME/.dotfiles/img/goodfood.jpg &
+feh --bg-fill $HOME/.dotfiles/img/pancake.jpg &
 
 #enable composite windows
 xcompmgr -D2 -fF &
