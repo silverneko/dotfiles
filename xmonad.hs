@@ -95,7 +95,7 @@ myWorkspaces =
 myLayoutHook = renamed [CutWordsLeft 1] $
   fullscreenFocus . smartBorders . avoidStruts $
   onWorkspaces (take 1 myWorkspaces) full $
-  deco tile ||| deco (Mirror tile) ||| full -- ||| deco Accordion
+  deco tile ||| full -- ||| deco (Mirror tile) ||| deco Accordion
   where
     tile = renamed [Replace "Tall"] $ ResizableTall 1 (3/100) (1/2) []
     full = renamed [PrependWords "Full"] $ noBorders Full
