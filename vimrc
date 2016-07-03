@@ -111,7 +111,7 @@ set listchars=trail:␣,tab:»\              ",eol:↲
 set list
 
 colorscheme nolife
-"set colorcolumn=81
+set colorcolumn=81
 set backspace=indent,eol,start
 set history=50       " keep 50 lines of command line history
 set showcmd          " display incomplete commands
