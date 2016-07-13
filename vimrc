@@ -167,8 +167,8 @@ map <silent> <F6> :call ClearSearchPattern()<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>
 map <silent> <F9> :call DefaultCode()<CR>
-map <C-Right> :tabnext<CR>
-map <C-Left>  :tabprevious<CR>
+map <Tab> :tabnext<CR>
+map <S-Tab>  :tabprevious<CR>
 inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
 inoremap <c-w> <c-g>u<c-w>
 
