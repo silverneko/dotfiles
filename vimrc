@@ -152,6 +152,7 @@ augroup filetype
   "au! BufNewFile,BufRead *.md         set filetype=markdown
 augroup END
 autocmd FileType make set noexpandtab
+autocmd FileType python call SetIndent(4)
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -187,7 +188,6 @@ let &stl .= "%4.(%vC%)  "
 let &stl .= "%P"
 
 func SetIndent(wid)
-  "exec "set tabstop=".a:wid
   exec "set shiftwidth=".a:wid
   exec "set softtabstop=".a:wid
 endfunc
