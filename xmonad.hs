@@ -16,6 +16,10 @@ import XMonad.Layout.Renamed
 import System.Exit
 import qualified Data.Map as M
 
+myTerminal = "gnome-terminal"
+myFileManager = "nautilus"
+myWebBrowser = "google-chrome"
+
 myModMasks :: [KeyMask]
 myModMasks = [altMask, winMask]
   where altMask = mod1Mask
@@ -32,9 +36,9 @@ myKeys conf = M.fromList $ concat $ flip map myModMasks (\modm ->
 
   -- launching and killing programs
   , ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
-  , ((modm .|. shiftMask, xK_f     ), spawn "nemo") -- %! Launch file manager
-  , ((modm .|. shiftMask, xK_g     ), spawn "google-chrome") -- %! Launch web browser
-  , ((modm,               xK_p     ), spawn "xfce4-appfinder") -- %! Launch appfinder
+  , ((modm .|. shiftMask, xK_f     ), spawn myFileManager) -- %! Launch file manager
+  , ((modm .|. shiftMask, xK_g     ), spawn myWebBrowser) -- %! Launch web browser
+  , ((modm,               xK_p     ), spawn "dmenu_run") -- %! Launch appfinder
   , ((modm .|. shiftMask, xK_p     ), spawn "synapse") -- %! Launch launcher
   , ((modm .|. shiftMask, xK_c     ), kill) -- %! Close the focused window
 
@@ -169,6 +173,3 @@ main = do
 
     , handleEventHook     = fullscreenEventHook
     }
-  where
-    myTerminal = "xfce4-terminal"
-
