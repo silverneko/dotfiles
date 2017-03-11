@@ -1,7 +1,7 @@
 # Dotfiles
 ## Overview
 ```
-git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
+git clone --depth 1 git@github.com:silverneko/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && ./install.sh
 ```
 
