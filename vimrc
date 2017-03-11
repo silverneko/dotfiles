@@ -2,6 +2,9 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" ChangesPlugin
+let g:changes_fast = 0
+
 " Tagbar
 let g:tagbar_autofocus = 1
 " vim-nerdtree-tabs
