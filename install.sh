@@ -1,28 +1,28 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-git submodule init
-git submodule update --remote
+git submodule update --init --recursive --depth 1
 
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASEDIR=`pwd`
 
-ln -svfn ${BASEDIR}/ ~/.dotfiles
+#ln -svn ${BASEDIR}/ ~/.dotfiles
 
 # vim
-ln -svf ${BASEDIR}/vimrc ~/.vimrc
-ln -svfn ${BASEDIR}/vim/ ~/.vim
+ln -sv ${BASEDIR}/vimrc ~/.vimrc
+ln -svn ${BASEDIR}/vim/ ~/.vim
 
 # xmonad
 mkdir ~/.xmonad
-ln -svf ${BASEDIR}/xmonad.hs ~/.xmonad/xmonad.hs
+ln -sv ${BASEDIR}/xmonad.hs ~/.xmonad/xmonad.hs
 
 # xmobar
-ln -svf ${BASEDIR}/xmobarrc ~/.xmobarrc
+ln -sv ${BASEDIR}/xmobarrc ~/.xmobarrc
 
 # stalonetray
-ln -svf ${BASEDIR}/stalonetrayrc ~/.stalonetrayrc
+ln -sv ${BASEDIR}/stalonetrayrc ~/.stalonetrayrc
 
 # xsession
-ln -svf ${BASEDIR}/xsession ~/.xsession
+ln -sv ${BASEDIR}/xsession ~/.xsession
 
 # zsh
-ln -svf ${BASEDIR}/zshrc ~/.zshrc
+ln -sv ${BASEDIR}/zshrc ~/.zshrc

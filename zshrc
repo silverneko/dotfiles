@@ -25,7 +25,7 @@ ZSH_CUSTOM=$HOME/.dotfiles/zsh/custom
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git cabal stack go command-not-found rake-fast bundler)
+plugins=(git cabal stack go command-not-found rake-fast bundler rsync)
 
 # User configuration
 
@@ -57,7 +57,13 @@ export PATH="$PATH:/usr/local/go/bin:${GOPATH//://bin:}/bin"
 
 # CUDA
 export PATH="/usr/local/cuda/bin:$PATH"
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH"
+
+# RISCV
+export RISCV="$HOME/Projects/riscv-tools/install"
+export PATH="$RISCV/bin:$PATH"
+
+export PATH="$HOME/bin:$PATH"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -65,3 +71,10 @@ export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 # For a full list of active aliases, run `alias`.
 
 alias t="$COLORTERM"
+alias untar="tar -xvf"
+alias unexport="unset"
+
+# Do keep there at the end of .zshrc
+unsetopt inc_append_history_time
+unsetopt share_history
+setopt   inc_append_history

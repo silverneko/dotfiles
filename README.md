@@ -1,6 +1,9 @@
 # Dotfiles
 ## Overview
-Type `./install.sh` in the command line to use.
+```
+git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles && ./install.sh
+```
 
 May need to put `xmonad.desktop` into somewhere like `/usr/share/Xsession/` and set the permission to `root:root 644`.
 
@@ -24,7 +27,6 @@ Remember to install:
 - \<F6\>      Clear search pattern (and GhcModTypePattern)
 - \<F7\>      Yank all
 - \<F8\>      Toggle Tagbar
-- \<F9\>      Read default code
 - \<C-Right\> Tab next
 - \<C-Left\>  Tab previous
 - \<Tab\>     Autocomplete (neocomplete)

@@ -107,7 +107,7 @@ set autochdir
 set mouse=a
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
-set listchars=trail:␣,tab:»\              ",eol:↲
+set listchars=trail:␣,tab:»\ ,nbsp:¬             ",eol:↲
 set list
 
 colorscheme nolife
@@ -167,7 +167,6 @@ map <silent> <F2> :NERDTreeTabsToggle<CR>
 map <silent> <F6> :call ClearSearchPattern()<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>
-map <silent> <F9> :call DefaultCode()<CR>
 map <Tab> :tabnext<CR>
 map <S-Tab>  :tabprevious<CR>
 inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
@@ -198,19 +197,5 @@ func ClearSearchPattern()
   endif
   let @/ = ""
   echo "Search Pattern Cleared"
-endfunc
-
-func DefaultCode()
-  if &filetype == 'c'
-    exec ":0r ~/.vim/default_code/default.c"
-  elseif &filetype == 'cpp'
-    exec ":0r ~/.vim/default_code/default.cpp"
-  elseif &filetype == 'haskell'
-    exec ":0r ~/.vim/default_code/default.hs"
-  elseif &filetype == 'make'
-    exec ":0r ~/.vim/default_code/default.makefile"
-  elseif &filetype == 'tex'
-    exec ":0r ~/.vim/default_code/default.tex"
-  endif
 endfunc
 
