@@ -116,7 +116,7 @@ set list
 colorscheme nolife
 set colorcolumn=81
 set backspace=indent,eol,start
-set history=50       " keep 50 lines of command line history
+set history=500      " keep 500 lines of command line history
 set showcmd          " display incomplete commands
 set incsearch        " do incremental searching
 set hlsearch
@@ -174,6 +174,7 @@ map <Tab> :tabnext<CR>
 map <S-Tab>  :tabprevious<CR>
 inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
 inoremap <c-w> <c-g>u<c-w>
+vnoremap <C-c> "+y
 
 set cmdheight=1
 set laststatus=2
