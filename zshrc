@@ -35,7 +35,7 @@ source $ZSH/oh-my-zsh.sh
 
 # END OF OH-MY-ZSH
 
-export LANG=en_US.UTF-8
+export LANG="en_US.UTF-8"
 export EDITOR="vim"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
@@ -59,11 +59,20 @@ export PATH="$PATH:/usr/local/go/bin:${GOPATH//://bin:}/bin"
 export PATH="/usr/local/cuda/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH"
 
-# RISCV
-export RISCV="$HOME/Projects/riscv-tools/install"
-export PATH="$RISCV/bin:$PATH"
-
 export PATH="$HOME/bin:$PATH"
+
+# When compiling python on opensuse, there may be some issues
+# Compile with these flags may or may not solve the issues
+#
+# CFLAGS="-I/usr/include/ncurses5/ncurses" CPPFLAGS="$CFLAGS" LDFLAGS="-L/usr/lib64/ncurses5" pyenv install --verbose 2.7.14
+#
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1 ; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -73,6 +82,14 @@ export PATH="$HOME/bin:$PATH"
 alias t="$COLORTERM"
 alias untar="tar -xvf"
 alias unexport="unset"
+alias gti="git"
+
+# Colorized cat
+alias ccat='pygmentize'
+
+alias :quit="exit"
+alias :q=:quit
+
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time

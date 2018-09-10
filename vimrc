@@ -9,7 +9,6 @@ Plug 'majutsushi/tagbar'
 
 Plug 'sheerun/vim-polyglot'
 
-Plug 'Shougo/vimproc.vim'
 Plug 'Shougo/neocomplete.vim'
 
 Plug 'fidian/hexmode'
@@ -21,15 +20,13 @@ Plug 'mhinz/vim-signify'
 call plug#end()
 
 
-syntax enable
-filetype plugin indent on
-
 " Tagbar
 let g:tagbar_autofocus = 1
 
 " vim-nerdtree-tabs
 let g:nerdtree_tabs_open_on_gui_startup = 0
 
+" neocomplete
 " START of neocomplete
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
@@ -38,8 +35,7 @@ let g:acp_enableAtStartup = 0
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#sources#syntax#min_keyword_length = 2
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -62,15 +58,24 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
+
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? "\<C-y>\<Space>" : "\<Space>"
-" <BS>: close popup and delete backword char.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ neocomplete#start_manual_complete()
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Enable omni completion.
@@ -90,14 +95,22 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
 " END of neocomplete
 
-" disable the annoying preview window
+
+syntax enable
+filetype plugin indent on
+colorscheme nolife
+
+" Disable the preview (scratch) window
 set completeopt=menu,menuone
+set splitbelow
 
 set t_Co=256
 set nocompatible
+set nomodeline
+set noerrorbells
+
 set scrolloff=999
 set cursorline
 set ruler
@@ -109,7 +122,6 @@ set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\ ,nbsp:¬
 set list
 
-colorscheme nolife
 set colorcolumn=81
 set backspace=indent,eol,start
 set history=500      " keep 500 lines of command line history
