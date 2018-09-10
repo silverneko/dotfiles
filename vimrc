@@ -167,7 +167,7 @@ autocmd FileType haskell map <F3> :GhcModCheckAndLint<CR>
 autocmd FileType haskell map <F4> :GhcModLint<CR>
 autocmd FileType haskell map <F5> :GhcModType<CR>
 map <silent> <F2> :NERDTreeTabsToggle<CR>
-map <silent> <F6> :call ClearSearchPattern()<CR>
+map <F6> :nohlsearch<CR>
 map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
 map <silent> <F8> :TagbarToggle<CR>
 map <Tab> :tabnext<CR>
@@ -194,12 +194,3 @@ func SetIndent(wid)
   exec "set shiftwidth=".a:wid
   exec "set softtabstop=".a:wid
 endfunc
-
-func ClearSearchPattern()
-  if exists('b:did_ftplugin_ghcmod') && b:did_ftplugin_ghcmod
-    exec "GhcModTypeClear"
-  endif
-  let @/ = ""
-  echo "Search Pattern Cleared"
-endfunc
-
