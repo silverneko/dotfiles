@@ -187,7 +187,7 @@ nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
-" CTRL-V in visual mode to fast copy to system clipboard.
+" CTRL-C in visual mode to fast copy to system clipboard.
 vnoremap <C-C> "+y
 
 " Change directory to current file directory.

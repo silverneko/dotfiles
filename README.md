@@ -52,6 +52,7 @@ Update vim-plug itself:
 - \<Ctrl-Left\>         Tab previous
 - \<Alt-Right\>         Move tab position right
 - \<Alt-Left\>          Move tab position left
+- \<Ctrl-C\>            [Visual mode] Copy selected text into system clipboard.
 
 
 ### Dependencies
