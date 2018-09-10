@@ -16,10 +16,12 @@ Plug 'fidian/hexmode'
 
 Plug 'google/vim-searchindex'
 
+Plug 'mhinz/vim-signify'
+
 call plug#end()
 
 
-syntax on
+syntax enable
 filetype plugin indent on
 
 " Tagbar

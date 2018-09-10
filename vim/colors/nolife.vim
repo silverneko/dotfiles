@@ -87,3 +87,8 @@ hi link Debug Comment
 
 hi Visual      ctermfg=255    ctermbg=130
 hi link VisualNOS Visual
+
+hi SignColumn                     ctermbg=None
+hi DiffAdd      ctermfg=green     ctermbg=None    cterm=bold
+hi DiffDelete   ctermfg=red       ctermbg=None    cterm=bold
+hi DiffChange   ctermfg=yellow    ctermbg=None    cterm=bold
