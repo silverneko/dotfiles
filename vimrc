@@ -1,24 +1,32 @@
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
+
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+
+Plug 'tpope/vim-endwise'
+
+Plug 'majutsushi/tagbar'
+
+Plug 'sheerun/vim-polyglot'
+
+Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/neocomplete.vim'
+
+Plug 'fidian/hexmode'
+
+Plug 'google/vim-searchindex'
+
+call plug#end()
+
+
 syntax on
 filetype plugin indent on
 
-" ChangesPlugin
-let g:changes_fast = 0
-
 " Tagbar
 let g:tagbar_autofocus = 1
+
 " vim-nerdtree-tabs
 let g:nerdtree_tabs_open_on_gui_startup = 0
-
-" vim-go
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-"let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_fmt_autosave = 0
-"let g:go_auto_type_info = 1
 
 " START of neocomplete
 " Use neocomplete.
@@ -83,20 +91,6 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " END of neocomplete
 
-" neco-ghc
-" Disable haskell-vim omnifunc
-let g:haskellmode_completion_ghc = 0
-let g:necoghc_enable_detailed_browse = 1
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
-" Haskell things
-let g:haskell_enable_quantification = 1
-let g:haskell_enable_recursivedo = 1
-let g:haskell_enable_arrowsyntax = 1
-let g:haskell_enable_pattern_synonyms = 1
-let g:haskell_enable_typeroles = 1
-let g:haskell_enable_static_pointers = 1
-
 " disable the annoying preview window
 set completeopt=menu,menuone
 
@@ -106,11 +100,11 @@ set scrolloff=999
 set cursorline
 set ruler
 set number
-set autochdir
 set mouse=a
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
-set listchars=trail:␣,tab:»\ ,nbsp:¬             ",eol:↲
+
+set listchars=trail:␣,tab:»\ ,nbsp:¬
 set list
 
 colorscheme nolife
@@ -154,27 +148,37 @@ augroup filetype
   au! BufNewFile,BufRead *.rst        set filetype=rest
   "au! BufNewFile,BufRead *.md         set filetype=markdown
 augroup END
+
 autocmd FileType make set noexpandtab
 autocmd FileType python call SetIndent(4)
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-autocmd FileType go map <F3> <Plug>(go-doc)
-autocmd FileType go map <F4> :GoLint<CR>
-autocmd FileType go map <F5> <Plug>(go-info)
-autocmd FileType haskell map <F3> :GhcModCheckAndLint<CR>
-autocmd FileType haskell map <F4> :GhcModLint<CR>
-autocmd FileType haskell map <F5> :GhcModType<CR>
-map <silent> <F2> :NERDTreeTabsToggle<CR>
-map <F6> :nohlsearch<CR>
-map <silent> <F7> :1,%y+<CR>:echo "Yanked All"<CR>
-map <silent> <F8> :TagbarToggle<CR>
-map <Tab> :tabnext<CR>
-map <S-Tab>  :tabprevious<CR>
-inoremap <C-U> <C-G>u<C-U>  "can undo ctrl-u
-inoremap <c-w> <c-g>u<c-w>
-vnoremap <C-c> "+y
+" Shortcuts
+nnoremap <F2> :NERDTreeTabsToggle<CR>
+nnoremap <F6> :nohlsearch<CR>
+nnoremap <F7> :%y +<CR>
+nnoremap <F8> :TagbarToggle<CR>
+
+" Tab navigations
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
+
+" http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
+
+" CTRL-V in visual mode to fast copy to system clipboard.
+vnoremap <C-C> "+y
+
+" Change directory to current file directory.
+command CD cd %:p:h
+command LCD lcd %:p:h
 
 set cmdheight=1
 set laststatus=2
