@@ -180,8 +180,8 @@ nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <C-Left> :tabprevious<CR>
-nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
+nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 
 " http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
 inoremap <C-U> <C-G>u<C-U>

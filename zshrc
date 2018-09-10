@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.dotfiles/oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="bnz"
@@ -29,7 +29,7 @@ plugins=(git cabal stack go command-not-found rake-fast bundler rsync)
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+# export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 
 source $ZSH/oh-my-zsh.sh
 
