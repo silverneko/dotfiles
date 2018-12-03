@@ -21,6 +21,9 @@ DISABLE_AUTO_UPDATE="true"
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=$HOME/.dotfiles/zsh/custom
 
+# zsh-autosuggestions color
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=64"
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -30,10 +33,11 @@ plugins=(
   git
   pip
   pylint
-  repo
+#  repo
   rsync
   z
-  zsh_reload
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 # User configuration
@@ -99,6 +103,10 @@ alias ccat='pygmentize'
 alias :quit="exit"
 alias :q=:quit
 
+# So that sudo can work on aliases
+alias sudo='sudo '
+
+umask 022
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
