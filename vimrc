@@ -115,7 +115,7 @@ set scrolloff=999
 set cursorline
 set ruler
 set number
-set mouse=a
+set mouse=nv
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
 
