@@ -29,6 +29,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=64"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  colorful-man
+  colorize
   command-not-found
   git
   pip
@@ -96,9 +98,6 @@ alias t="$COLORTERM"
 alias untar="tar -xvf"
 alias unexport="unset"
 alias gti="git"
-
-# Colorized cat
-alias ccat='pygmentize'
 
 alias :quit="exit"
 alias :q=:quit
