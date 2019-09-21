@@ -17,6 +17,8 @@ Plug 'google/vim-searchindex'
 
 Plug 'mhinz/vim-signify'
 
+Plug 'junegunn/fzf'
+
 call plug#end()
 
 
@@ -136,6 +138,22 @@ set softtabstop=2    "Insert 4 spaces when tab is pressed
 set shiftwidth=2     "An indent is 4 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
+set wildmenu
+set display+=lastline
+set cmdheight=1
+set laststatus=2
+" %-0{minwid}.{maxwid}{item}
+let &statusline = ""
+let &stl .= " %<%f"
+let &stl .= "%= "
+let &stl .= "%(%m %)%(%r %)%(%w %)"
+let &stl .= "%(%y %)"
+" let &stl .= "%([%{&fileformat}] %)"
+let &stl .= " 0x%02B  "
+let &stl .= "%l/%LL "
+let &stl .= "%4.(%vC%)  "
+let &stl .= "%P"
+
 let g:tex_flavor = 'latex'
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
@@ -193,20 +211,6 @@ vnoremap <C-C> "+y
 " Change directory to current file directory.
 command CD cd %:p:h
 command LCD lcd %:p:h
-
-set cmdheight=1
-set laststatus=2
-" %-0{minwid}.{maxwid}{item}
-let &statusline = ""
-let &stl .= " %<%f"
-let &stl .= "%= "
-let &stl .= "%(%m %)%(%r %)%(%w %)"
-let &stl .= "%(%y %)"
-" let &stl .= "%([%{&fileformat}] %)"
-let &stl .= " 0x%02B  "
-let &stl .= "%l/%LL "
-let &stl .= "%4.(%vC%)  "
-let &stl .= "%P"
 
 func SetIndent(wid)
   exec "set shiftwidth=".a:wid
