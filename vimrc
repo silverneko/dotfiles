@@ -19,6 +19,8 @@ Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/fzf'
 
+Plug 'vim-scripts/SyntaxComplete'
+
 call plug#end()
 
 
