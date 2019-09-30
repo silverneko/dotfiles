@@ -1,17 +1,10 @@
 # Set prompt colors
-RED=160
-GREEN=148
-BLUE=153
-YELLOW=226
-ORANGE=214
-CYAN=81
-WHITE=white
-BLACK=235
+local orange=214
 
-PROMPT='%F{%(!:$RED:$GREEN)}%n%F{$CYAN}@%M: %F{$BLUE}%~%f $(git_prompt_info)%E
-%B%F{%(?:$GREEN:$RED)}λ%(!.#.>)%f%b '
+PROMPT='%B%F{%(!:red:green)}%n%F{cyan}@%m:%b %F{blue}%~%f $(git_prompt_info)%E
+%B%F{%(?:green:red)}λ%(!.#.>)%f%b '
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%F{$ORANGE}git:"
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{$orange}git:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%f"
-ZSH_THEME_GIT_PROMPT_DIRTY=" %F{$YELLOW}[✗]"
-ZSH_THEME_GIT_PROMPT_CLEAN=" %F{$GREEN}[✓]"
+ZSH_THEME_GIT_PROMPT_DIRTY=" %F{yello}[✗]"
+ZSH_THEME_GIT_PROMPT_CLEAN=" %F{green}[✓]"
