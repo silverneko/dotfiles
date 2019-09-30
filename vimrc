@@ -1,28 +1,42 @@
+" :PlugInstall
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
 
-Plug 'tpope/vim-endwise'
+Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'majutsushi/tagbar'
 
-Plug 'sheerun/vim-polyglot'
-
-Plug 'Shougo/neocomplete.vim'
-
 Plug 'fidian/hexmode'
 
+Plug 'tpope/vim-endwise'
+
+Plug 'sheerun/vim-polyglot'
+
+Plug 'vim-scripts/SyntaxComplete'
+
+Plug 'lifepillar/vim-mucomplete'
+
 Plug 'google/vim-searchindex'
+
+Plug 'kshenoy/vim-signature'
 
 Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/fzf'
 
-Plug 'vim-scripts/SyntaxComplete'
+Plug 'morhetz/gruvbox'
+
+Plug 'itchyny/lightline.vim'
+
+Plug 'itchyny/vim-gitbranch'
 
 call plug#end()
 
+syntax enable
+filetype plugin indent on
+
+set nocompatible
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -30,91 +44,72 @@ let g:tagbar_autofocus = 1
 " vim-nerdtree-tabs
 let g:nerdtree_tabs_open_on_gui_startup = 0
 
-" neocomplete
-" START of neocomplete
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 2
+" mucomplate
+let g:mucomplete#enable_auto_at_startup = 1
+set completeopt=menuone,noselect
+set shortmess+=c
+call mucomplete#msg#set_notifications(1)
 
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+inoremap <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  " return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
-" <TAB>: completion.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ neocomplete#start_manual_complete()
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
-
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-" END of neocomplete
-
-
-syntax enable
-filetype plugin indent on
-colorscheme nolife
-
-" Disable the preview (scratch) window
-set completeopt=menu,menuone
-set splitbelow
-
+" gruvbox
 set t_Co=256
-set nocompatible
+set termguicolors
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+set background=dark
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_invert_tabline=1
+let g:gruvbox_italic=1
+" colorscheme nolife
+colorscheme gruvbox
+
+" lightline
+let g:lightline = {
+      \ 'colorscheme': 'seoul256',
+      \ 'active': {
+      \   'left': [
+      \     ['mode', 'paste'],
+      \     ['relativepath'],
+      \   ],
+      \   'right': [
+      \     ['percentwin'],
+      \     ['line', 'column'],
+      \     ['modified', 'readonly', 'gitbranch', 'filetype', 'fileencoding', 'charhexvalue'] ,
+      \   ],
+      \ },
+      \ 'enable': { 'tabline': 0 },
+      \ 'component': {
+      \   'charhexvalue': '0x%02B',
+      \   'modified': '%m',
+      \   'line': '%3l/%LL',
+      \   'column': '%2vC',
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name',
+      \ },
+      \ }
+
+set noshowmode
+set display+=lastline
+set cmdheight=1
+set laststatus=2
+set wildmenu
+
+set ttimeout
+augroup NoInsertKeycodes
+  autocmd!
+  autocmd InsertEnter * set ttimeoutlen=0
+  autocmd InsertLeave * set ttimeoutlen=-1 "<--- default value; also try 100 or something
+augroup END
+
+
 set nomodeline
 set noerrorbells
-
+set splitbelow
 set scrolloff=999
 set cursorline
 set ruler
@@ -140,26 +135,6 @@ set softtabstop=2    "Insert 4 spaces when tab is pressed
 set shiftwidth=2     "An indent is 4 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
-set wildmenu
-set display+=lastline
-set cmdheight=1
-set laststatus=2
-" %-0{minwid}.{maxwid}{item}
-let &statusline = ""
-let &stl .= " %<%f"
-let &stl .= "%= "
-let &stl .= "%(%m %)%(%r %)%(%w %)"
-let &stl .= "%(%y %)"
-" let &stl .= "%([%{&fileformat}] %)"
-let &stl .= " 0x%02B  "
-let &stl .= "%l/%LL "
-let &stl .= "%4.(%vC%)  "
-let &stl .= "%P"
-
-let g:tex_flavor = 'latex'
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-let g:markdown_fenced_languages += ['ruby', 'go', 'c', 'cpp', 'haskell']
-
 " Optional
 " C/C++ programming helpers
 augroup csrc
@@ -175,19 +150,20 @@ set cinoptions=:0,g0,(0,Ws,l1
 " https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
 let c_no_curly_error = 1
 
-augroup filetype
-  au! BufNewFile,BufRead *Makefile*   set filetype=make
-  au! BufNewFile,BufRead *.ll         set filetype=llvm
-  au! BufNewFile,BufRead *.td         set filetype=tablegen
-  au! BufNewFile,BufRead *.rst        set filetype=rest
-  "au! BufNewFile,BufRead *.md         set filetype=markdown
-augroup END
-
 autocmd FileType make set noexpandtab
 autocmd FileType python call SetIndent(4)
 autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
 autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
 autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" Fix tmux
+if &term =~ '^\(screen\|tmux\)'
+  " tmux will send xterm-style keys when its xterm-keys option is on
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
 
 " Shortcuts
 nnoremap <F2> :NERDTreeTabsToggle<CR>
