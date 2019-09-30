@@ -1,2 +1,3 @@
 *.swp
 .dotfiles
+vim/autoload/plug.vim.old
