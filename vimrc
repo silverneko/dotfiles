@@ -78,7 +78,7 @@ let g:lightline = {
       \   'right': [
       \     ['percentwin'],
       \     ['line', 'column'],
-      \     ['modified', 'readonly', 'gitbranch', 'filetype', 'fileencoding', 'charhexvalue'] ,
+      \     ['modified', 'readonly', 'gitbranch', 'filetype', 'LightlineFileencoding', 'charhexvalue'] ,
       \   ],
       \ },
       \ 'enable': { 'tabline': 0 },
@@ -90,8 +90,14 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'gitbranch': 'gitbranch#name',
+      \   'LightlineFileencoding': 'LightlineFileencoding',
       \ },
       \ }
+
+function! LightlineFileencoding()
+  let enc = &fenc !=# "" ? &fenc : &enc
+  return enc == "utf-8" ? "" : enc
+endfunction
 
 set noshowmode
 set display+=lastline
