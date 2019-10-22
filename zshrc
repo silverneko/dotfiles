@@ -152,10 +152,7 @@ function fcd {
 
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
-#alias tmux=tmx2
-if command -v tmx2 1>/dev/null 2>&1 ; then
-  alias tmux=tmx2
-fi
+[ -f "$HOME/.dotfiles/google.zsh" ] && source "$HOME/.dotfiles/google.zsh"
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
