@@ -33,6 +33,11 @@ Plug 'itchyny/vim-gitbranch'
 
 call plug#end()
 
+let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
+if filereadable(g:google_vimrc)
+  exec 'source' g:google_vimrc
+endif
+
 syntax enable
 filetype plugin indent on
 

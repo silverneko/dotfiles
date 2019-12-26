@@ -152,7 +152,7 @@ function fcd {
 
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
-[ -f "$HOME/.dotfiles/google.zsh" ] && source "$HOME/.dotfiles/google.zsh"
+[ -f "$HOME/.dotfiles/zshrc.google" ] && source "$HOME/.dotfiles/zshrc.google"
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
