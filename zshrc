@@ -39,7 +39,7 @@ plugins=(
   rsync
   z
   zsh-autosuggestions
-  zsh-syntax-highlighting
+  fast-syntax-highlighting
 )
 
 # User configuration
@@ -92,6 +92,8 @@ alias :q=:quit
 alias sudo='sudo '
 
 umask 022
+
+fast-theme "${HOME}/.dotfiles/fsh_overlay.ini" >/dev/null
 
 function lf-cd {
   local tmp="$(mktemp)"

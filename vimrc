@@ -68,7 +68,7 @@ let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_tabline=1
-let g:gruvbox_italic=1
+let g:gruvbox_italic=0
 " colorscheme nolife
 colorscheme gruvbox
 
