@@ -142,14 +142,14 @@ set hlsearch
 " Tab things
 set tabstop=8        "A tab is 8 spaces
 set expandtab        "Always uses spaces instead of tabs
-set softtabstop=2    "Insert 4 spaces when tab is pressed
-set shiftwidth=2     "An indent is 4 spaces
+set softtabstop=2    "Insert 2 spaces when tab is pressed
+set shiftwidth=2     "An indent is 2 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
 " Optional
 " C/C++ programming helpers
 augroup csrc
-  au!
+  autocmd!
   autocmd FileType *      set nocindent smartindent
   autocmd FileType c,cpp,cuda  set cindent
 augroup END
@@ -161,11 +161,15 @@ set cinoptions=:0,g0,(0,Ws,l1
 " https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
 let c_no_curly_error = 1
 
-autocmd FileType make set noexpandtab
-autocmd FileType python call SetIndent(4)
-autocmd BufNewFile,BufRead *.rb,*.erb,*.tex call SetIndent(2)
-autocmd BufNewFile,BufRead *.go,*.tmpl set expandtab
-autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup CustomFileTypeCommands
+  autocmd!
+  autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
+  autocmd BufNewFile,BufRead *.bp setfiletype bzl
+  autocmd BufNewFile,BufRead *.bp set softtabstop=4 shiftwidth=4
+  autocmd FileType go set noexpandtab tabstop=2
+  autocmd FileType make set noexpandtab
+  autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
 
 " Fix tmux
 if &term =~ '^\(screen\|tmux\)'
@@ -200,8 +204,3 @@ vnoremap <C-C> "+y
 " Change directory to current file directory.
 command CD cd %:p:h
 command LCD lcd %:p:h
-
-func SetIndent(wid)
-  exec "set shiftwidth=".a:wid
-  exec "set softtabstop=".a:wid
-endfunc

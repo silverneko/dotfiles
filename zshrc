@@ -156,6 +156,14 @@ function fcd {
 
 [ -f "$HOME/.dotfiles/zshrc.google" ] && source "$HOME/.dotfiles/zshrc.google"
 
+function extract-zip {
+  if [[ "$1" =~ ".zip$" ]]; then
+    unzip -o "$1" -d "${1%.zip}"
+  else
+    echo "File name does not look like a zip archive:" "$1"
+  fi
+}
+
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
 unsetopt share_history
