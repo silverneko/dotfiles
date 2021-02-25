@@ -83,7 +83,7 @@ fi
 alias untar="tar -xvf"
 alias unexport="unset"
 alias gti="git"
-alias less="less -r"
+alias less="less -R"
 
 alias :quit="exit"
 alias :q=:quit
@@ -163,6 +163,8 @@ function extract-zip {
     echo "File name does not look like a zip archive:" "$1"
   fi
 }
+
+alias sort="LC_ALL=C sort"
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time

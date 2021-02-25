@@ -31,6 +31,10 @@ Plug 'itchyny/lightline.vim'
 
 Plug 'itchyny/vim-gitbranch'
 
+Plug 'tpope/vim-repeat'
+
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
 let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
@@ -132,7 +136,7 @@ set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\ ,nbsp:¬
 set list
 
-set colorcolumn=81
+set colorcolumn=80
 set backspace=indent,eol,start
 set history=500      " keep 500 lines of command line history
 set showcmd          " display incomplete commands
@@ -166,8 +170,8 @@ augroup CustomFileTypeCommands
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
   autocmd BufNewFile,BufRead *.bp setfiletype bzl
   autocmd BufNewFile,BufRead *.bp set softtabstop=4 shiftwidth=4
-  autocmd FileType go set noexpandtab tabstop=2
-  autocmd FileType make set noexpandtab
+  autocmd FileType go set noexpandtab tabstop=2 colorcolumn=100
+  autocmd FileType make set noexpandtab preserveindent
   autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 augroup END
 
