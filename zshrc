@@ -152,9 +152,15 @@ function fcd {
   [ -n "$dir" ] && cd "$dir"
 }
 
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
-
-[ -f "$HOME/.dotfiles/zshrc.google" ] && source "$HOME/.dotfiles/zshrc.google"
+SOURCE_PATHS=(
+  "${HOME}/.dotfiles/doge_cat.sh"
+  "${HOME}/.dotfiles/zshrc.google"
+  "${HOME}/.fzf.zsh"
+  "${HOME}/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+)
+for source_path in "${SOURCE_PATHS[@]}"; do
+  [ -f "${source_path}" ] && source "${source_path}"
+done
 
 function extract-zip {
   if [[ "$1" =~ ".zip$" ]]; then
@@ -165,8 +171,6 @@ function extract-zip {
 }
 
 alias sort="LC_ALL=C sort"
-
-source "${HOME}/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
