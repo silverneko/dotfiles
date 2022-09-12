@@ -166,6 +166,8 @@ function extract-zip {
 
 alias sort="LC_ALL=C sort"
 
+source "${HOME}/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+
 # Do keep there at the end of .zshrc
 unsetopt inc_append_history_time
 unsetopt share_history
