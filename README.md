@@ -64,7 +64,3 @@ Update vim-plug itself:
 Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
 will automatically convert it into hex.
 Or use `:Hexmode` to switch between hex editing and normal editing.
-
-
-## Xmonad
-May need to put `xmonad.desktop` into somewhere like `/usr/share/Xsession/` and set the permission to `root:root 644`.

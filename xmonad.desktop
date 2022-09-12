@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=xmonad
-Comment=This session is customized by Xsession script
-Exec=/etc/X11/Xsession
-Type=Application
