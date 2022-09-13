@@ -23,11 +23,11 @@ doge_cat() {
   )
   local eof=false
   local line
-  while ! ${eof} && IFS= read -r line; do
+  cat "$@" | while ! ${eof} && IFS= read -r line; do
     for doge_line in "${DOGE[@]}"; do
-      echo -ne "\e[7m${doge_line}\e[0m "
+      echo -n -e "\e[7m${doge_line}\e[0m "
       if ! ${eof}; then
-        echo "${line}"
+        echo -E "${line}"
         if ! IFS= read -r line; then
           eof=true
         fi
