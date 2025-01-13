@@ -8,4 +8,9 @@ config.initial_cols = 120
 config.initial_rows = 30
 config.font_size = 11
 
+config.front_end = "WebGpu"
+config.enable_wayland = false
+--local gpus = wezterm.gui.enumerate_gpus()
+--config.webgpu_preferred_adapter = gpus[1]
+
 return config
