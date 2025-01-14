@@ -1,3 +1,5 @@
+let g:polyglot_disabled = ['autoindent']
+
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
@@ -67,8 +69,6 @@ endfunction
 " gruvbox
 set t_Co=256
 set termguicolors
-let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_tabline=1
@@ -168,20 +168,45 @@ let c_no_curly_error = 1
 augroup CustomFileTypeCommands
   autocmd!
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
-  autocmd BufNewFile,BufRead *.bp setfiletype bzl
+  autocmd BufNewFile,BufRead *.bp set filetype=javascript
   autocmd BufNewFile,BufRead *.bp set softtabstop=4 shiftwidth=4
   autocmd FileType go set noexpandtab tabstop=2 colorcolumn=100
   autocmd FileType make set noexpandtab preserveindent
   autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 augroup END
 
-" Fix tmux
-if &term =~ '^\(screen\|tmux\)'
-  " tmux will send xterm-style keys when its xterm-keys option is on
-  execute "set <xUp>=\e[1;*A"
-  execute "set <xDown>=\e[1;*B"
-  execute "set <xRight>=\e[1;*C"
-  execute "set <xLeft>=\e[1;*D"
+" :help tmux-integration
+if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
+  " Insert / replace / normal = vertical bar / underline / block, :help termcap-cursor-shape
+  let &t_SI = "\e[6 q"
+  let &t_SR = "\e[4 q"
+  let &t_EI = "\e[2 q"
+
+  " Better mouse support, see  :help 'ttymouse'
+  set ttymouse=sgr
+
+  " Enable true colors, see  :help xterm-true-color
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+  " Enable bracketed paste mode, see  :help xterm-bracketed-paste
+  let &t_BE = "\<Esc>[?2004h"
+  let &t_BD = "\<Esc>[?2004l"
+  let &t_PS = "\<Esc>[200~"
+  let &t_PE = "\<Esc>[201~"
+
+  " Enable focus event tracking, see  :help xterm-focus-event
+  "let &t_fe = "\<Esc>[?1004h"
+  "let &t_fd = "\<Esc>[?1004l"
+  "execute "set <FocusGained>=\<Esc>[I"
+  "execute "set <FocusLost>=\<Esc>[O"
+
+  " Enable modified arrow keys, see  :help arrow_modifiers
+  execute "silent! set <xUp>=\<Esc>[@;*A"
+  execute "silent! set <xDown>=\<Esc>[@;*B"
+  execute "silent! set <xRight>=\<Esc>[@;*C"
+  execute "silent! set <xLeft>=\<Esc>[@;*D"
 endif
 
 " Shortcuts

@@ -33,8 +33,6 @@ plugins=(
   colorize
   command-not-found
   gitfast
-  pip
-  pylint
   repo
   rsync
   z
@@ -46,7 +44,10 @@ plugins=(
 
 ZSH_COLORIZE_STYLE=monokai
 
+DISABLE_MAGIC_FUNCTIONS=true
+
 # export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+export PATH="$PATH:/usr/local/games:/usr/games"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -62,31 +63,14 @@ export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-# When compiling python on opensuse, there may be some issues
-# Compile with these flags may or may not solve the issues
-#
-# CFLAGS="-I/usr/include/ncurses5/ncurses" CPPFLAGS="$CFLAGS" LDFLAGS="-L/usr/lib64/ncurses5" pyenv install --verbose 2.7.14
-#
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-if command -v pyenv 1>/dev/null 2>&1 ; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
 alias untar="tar -xvf"
-alias unexport="unset"
 alias gti="git"
 alias less="less -R"
-
-alias :quit="exit"
-alias :q=:quit
 
 # So that sudo can work on aliases
 alias sudo='sudo '
@@ -176,6 +160,8 @@ alias sort="LC_ALL=C sort"
 unsetopt inc_append_history_time
 unsetopt share_history
 setopt   inc_append_history
+
+setopt nomatch
 
 # Remove duplicate entries in $path ($PATH is mirror of $path)
 typeset -U path
