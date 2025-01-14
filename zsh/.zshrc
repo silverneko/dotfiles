@@ -5,6 +5,14 @@
 # User configuration sourced by interactive shells
 #
 
+zstyle ':zim:duration-info' threshold 0
+
+export EDITOR=vim
+
+if [[ ! "$PATH" == */home/yo/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/home/yo/.fzf/bin"
+fi
+
 # -----------------
 # Zsh configuration
 # -----------------
@@ -55,7 +63,7 @@ WORDCHARS=${WORDCHARS//[\/]}
 #
 
 # Append `../` to your input for each `.` you type after an initial `..`
-#zstyle ':zim:input' double-dot-expand yes
+zstyle ':zim:input' double-dot-expand yes
 
 #
 # termtitle
@@ -123,11 +131,25 @@ source ${ZIM_HOME}/init.zsh
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
-for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
-for key ('k') bindkey -M vicmd ${key} history-substring-search-up
-for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+#for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+#for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} up-line-or-beginning-search
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-search
+#for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+#for key ('j') bindkey -M vicmd ${key} history-substring-search-down
 unset key
 # }}} End configuration added by Zim install
 setopt no_pushd_to_home pushd_minus
 unsetopt extendedglob
+setopt nopromptcr
+
+fast-theme -q safari
+fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
+
+typeset -gA FAST_BLIST_PATTERNS
+FAST_BLIST_PATTERNS[/mnt/c]=1
+FAST_BLIST_PATTERNS[/mnt/c/*]=1

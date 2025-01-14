@@ -37,6 +37,9 @@ Plug 'tpope/vim-repeat'
 
 Plug 'tpope/vim-surround'
 
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+
 call plug#end()
 
 let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
@@ -126,7 +129,10 @@ set nomodeline
 set noerrorbells
 set splitbelow
 set scrolloff=999
-set cursorline
+
+autocmd InsertEnter * set cursorline
+autocmd InsertLeave * set nocursorline
+
 set ruler
 set number
 set mouse=nv
