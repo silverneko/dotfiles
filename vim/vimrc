@@ -130,6 +130,7 @@ set noerrorbells
 set splitbelow
 set scrolloff=999
 
+autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 

@@ -5,14 +5,32 @@
 # User configuration sourced by interactive shells
 #
 
+fpath+=("${HOME}/.zprompts")
+
 zstyle ':zim:duration-info' threshold 0
 
-export EDITOR=vim
+export LANG="en_US.UTF-8"
+export EDITOR="vim"
 
-if [[ ! "$PATH" == */home/yo/.fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/home/yo/.fzf/bin"
-fi
+path=(
+  "${HOME}/bin"
+  "${HOME}/.local/bin"
+  "${HOME}/platform-tools"
+  $path
+)
 
+path+=(
+  "/usr/local/games"
+  "/usr/games"
+  "${HOME}/.fzf/bin"
+)
+
+# golang
+export GOPATH="${HOME}/go"
+path+=(
+  "/usr/local/go/bin"
+  "${GOPATH}/bin"
+)
 # -----------------
 # Zsh configuration
 # -----------------
@@ -143,9 +161,13 @@ for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-s
 #for key ('j') bindkey -M vicmd ${key} history-substring-search-down
 unset key
 # }}} End configuration added by Zim install
-setopt no_pushd_to_home pushd_minus
-unsetopt extendedglob
-setopt nopromptcr
+
+# Print error for bad glob patterns.
+setopt nomatch no_extended_glob
+
+# Job controls that are similar to bash.
+setopt clobber hup check_jobs
+setopt no_pushd_silent no_pushd_to_home pushd_minus
 
 fast-theme -q safari
 fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
@@ -153,3 +175,20 @@ fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
 typeset -gA FAST_BLIST_PATTERNS
 FAST_BLIST_PATTERNS[/mnt/c]=1
 FAST_BLIST_PATTERNS[/mnt/c/*]=1
+
+alias d="dirs -v"
+alias l="ll -A"
+alias la="ll -A"
+alias lsa="ll -a"
+
+alias rg="rg --hidden"
+alias fd="${(k)commands[fd]:-${(k)commands[fdfind]}}"
+alias bat="${(k)commands[bat]:-${(k)commands[batcat]}}"
+alias cat="bat"
+
+export BAT_THEME="zenburn"
+export HISTSIZE=110000
+export SAVEHIST=100000
+setopt extended_history inc_append_history_time no_inc_append_history no_share_history
+
+typeset -U path

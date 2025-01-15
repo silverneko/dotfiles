@@ -7,6 +7,10 @@
 git clone --depth 1 git@github.com:silverneko/dotfiles.git ~/.dotfiles
 ```
 
+* lsd
+* fd / fdfind
+* bat / batcat
+* fzf
 
 ### Install oh-my-zsh
 ```
