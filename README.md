@@ -1,36 +1,41 @@
 # Dotfiles
 
-## Overview
-
-### Clone dotfiles
-```
+```sh
 git clone --depth 1 git@github.com:silverneko/dotfiles.git ~/.dotfiles
-```
-
-* lsd
-* fd / fdfind
-* bat / batcat
-* fzf
-
-### Install oh-my-zsh
-```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 # or
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
 ```
 
-
-### Create symbolic links for .zshrc, .vimrc
-```
-if [ -f ~/.zshrc ]; then
-  mv ~/.zshrc ~/.zshrc.orig
-fi
-ln -s ~/.dotfiles/zshrc ~/.zshrc
-
+```sh
+echo '. "${HOME}/.dotfiles/zshenv"' >> ~/.zshenv
+[ -d ~/.vim ] && (set -x; mv ~/.vim ~/.vim.old)
 ln -s ~/.dotfiles/vim ~/.vim
-ln -s ~/.dotfiles/vimrc ~/.vimrc
+ln -s ~/.dotfiles/tmux.conf ~/.tmux.conf
+ln -s ~/.dotfiles/wezterm.lua ~/.wezterm.lua
+ln -s ~/.dotfiles/ghostty.config ~/.config/ghostty/config
 ```
 
+## Shell and utilities
+
+### Fzf
+
+Installing:
+```sh
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+```
+
+Upgrading
+```sh
+cd ~/.fzf
+git pull
+./install
+```
+
+### Utilities
+
+```sh
+sudo apt install lsd fd-find bat
+```
 
 ### vim-plug
 Update plugins:

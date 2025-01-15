@@ -1,25 +1,36 @@
-#zstyle ':zim:zmodule' use 'degit'
-
-# Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells
 #
 
-fpath+=("${HOME}/.zprompts")
+# -----------------
+# Zsh configuration
+# -----------------
 
-zstyle ':zim:duration-info' threshold 0
+# Input/output
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -e
+
+# expand-or-complete  Expands variables and then complete word.
+# complete-word       Just complete word. Leave the variables alone.
+bindkey '^I' complete-word
+
+# Remove path separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/]}
 
 export LANG="en_US.UTF-8"
 export EDITOR="vim"
+
+# Filter out WSL paths. They would cause jank of fast-syntax-highlight.
+filtered_path=()
+for p ($path) [[ "$p" != /mnt/c/* ]] && filtered_path+=("$p")
+path=($filtered_path)
+unset filtered_path p
 
 path=(
   "${HOME}/bin"
   "${HOME}/.local/bin"
   "${HOME}/platform-tools"
   $path
-)
-
-path+=(
   "/usr/local/games"
   "/usr/games"
   "${HOME}/.fzf/bin"
@@ -31,32 +42,6 @@ path+=(
   "/usr/local/go/bin"
   "${GOPATH}/bin"
 )
-# -----------------
-# Zsh configuration
-# -----------------
-
-#
-# History
-#
-
-# Remove older command from the history if a duplicate is to be added.
-setopt HIST_IGNORE_ALL_DUPS
-
-#
-# Input/output
-#
-
-# Set editor default keymap to emacs (`-e`) or vi (`-v`)
-bindkey -e
-
-# Prompt for spelling correction of commands.
-#setopt CORRECT
-
-# Customize spelling correction prompt.
-#SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
-
-# Remove path separator from WORDCHARS.
-WORDCHARS=${WORDCHARS//[\/]}
 
 # -----------------
 # Zim configuration
@@ -65,36 +50,18 @@ WORDCHARS=${WORDCHARS//[\/]}
 # Use degit instead of git as the default tool to install and update modules.
 #zstyle ':zim:zmodule' use 'degit'
 
+# fpath must be added *before* Zim init.
+fpath+=("${HOME}/.zprompts")
+
 # --------------------
 # Module configuration
 # --------------------
 
-#
-# git
-#
-
-# Set a custom prefix for the generated aliases. The default prefix is 'G'.
-#zstyle ':zim:git' aliases-prefix 'g'
-
-#
-# input
-#
+# Always show command duration.
+zstyle ':zim:duration-info' threshold 0
 
 # Append `../` to your input for each `.` you type after an initial `..`
 zstyle ':zim:input' double-dot-expand yes
-
-#
-# termtitle
-#
-
-# Set a custom terminal title format using prompt expansion escape sequences.
-# See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Simple-Prompt-Escapes
-# If none is provided, the default '%n@%m: %~' is used.
-#zstyle ':zim:termtitle' format '%1~'
-
-#
-# zsh-autosuggestions
-#
 
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
@@ -103,19 +70,6 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 #ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
-
-#
-# zsh-syntax-highlighting
-#
-
-# Set what highlighters will be used.
-# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-# Customize the main highlighter styles.
-# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md#how-to-tweak-it
-#typeset -A ZSH_HIGHLIGHT_STYLES
-#ZSH_HIGHLIGHT_STYLES[comment]='fg=242'
 
 # ------------------
 # Initialize modules
@@ -143,38 +97,41 @@ source ${ZIM_HOME}/init.zsh
 # Post-init module configuration
 # ------------------------------
 
-#
-# zsh-history-substring-search
-#
+# "magic-enter" should clear unaccepted suggestions. Must be added *after* Zim init.
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty)
+
+fast-theme -q safari
+fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-#for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
-#for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} up-line-or-beginning-search
 for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-search
-#for key ('k') bindkey -M vicmd ${key} history-substring-search-up
-#for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} up-line-or-beginning-search
+for key ('j') bindkey -M vicmd ${key} down-line-or-beginning-search
 unset key
-# }}} End configuration added by Zim install
+
+# History
+export HISTSIZE=110000
+export SAVEHIST=100000
+
+# Remove older command from the history if a duplicate is to be added.
+setopt hist_ignore_all_dups extended_history
+setopt inc_append_history_time no_inc_append_history no_share_history
 
 # Print error for bad glob patterns.
 setopt nomatch no_extended_glob
 
-# Job controls that are similar to bash.
+# Job control logic that are similar to bash.
 setopt clobber hup check_jobs
 setopt no_pushd_silent no_pushd_to_home pushd_minus
 
-fast-theme -q safari
-fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
-
-typeset -gA FAST_BLIST_PATTERNS
-FAST_BLIST_PATTERNS[/mnt/c]=1
-FAST_BLIST_PATTERNS[/mnt/c/*]=1
+# Ctrl-E to *E*dit the command line.
+bindkey '^E' edit-command-line
 
 alias d="dirs -v"
 alias l="ll -A"
@@ -182,13 +139,25 @@ alias la="ll -A"
 alias lsa="ll -a"
 
 alias rg="rg --hidden"
-alias fd="${(k)commands[fd]:-${(k)commands[fdfind]}}"
-alias bat="${(k)commands[bat]:-${(k)commands[batcat]}}"
-alias cat="bat"
+alias sort="LC_ALL=C sort"
+
+FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
+[ "$FD_CMD" != fd ] && alias fd="$FD_CMD"
 
 export BAT_THEME="zenburn"
-export HISTSIZE=110000
-export SAVEHIST=100000
-setopt extended_history inc_append_history_time no_inc_append_history no_share_history
+BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
+[ "$BAT_CMD" ] && {
+  [ "$BAT_CMD" != bat ] && alias bat="$BAT_CMD"
+  alias cat="bat"
+  alias batdiff="git diff --name-only --relative --diff-filter=d | xargs \"${BAT_CMD}\" --diff"
+  alias bd=batdiff
+}
 
+for source_file (
+  "${HOME}/.dotfiles/doge_cat.sh"
+  "${HOME}/.dotfiles/zshrc.google"
+) [ -f "$source_file" ] && . "$source_file"
+unset FD_CMD BAT_CMD source_file
+
+# No duplicate entries in $path & $PATH
 typeset -U path
