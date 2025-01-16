@@ -2,8 +2,3 @@
 .dotfiles
 vim/autoload/plug.vim.old
 *.google
-
-.zcompdump*
-.zhistory*
-.zsh_history*
-.zim/

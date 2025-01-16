@@ -19,6 +19,8 @@ WORDCHARS=${WORDCHARS//[\/]}
 
 export LANG="en_US.UTF-8"
 export EDITOR="vim"
+export PAGER="less"
+export GOPATH="${HOME}/go"
 
 # Filter out WSL paths. They would cause jank of fast-syntax-highlight.
 filtered_path=()
@@ -33,22 +35,14 @@ path=(
   $path
   "/usr/local/games"
   "/usr/games"
-  "${HOME}/.fzf/bin"
-)
-
-# golang
-export GOPATH="${HOME}/go"
-path+=(
   "/usr/local/go/bin"
   "${GOPATH}/bin"
+  "${HOME}/.fzf/bin"
 )
 
 # -----------------
 # Zim configuration
 # -----------------
-
-# Use degit instead of git as the default tool to install and update modules.
-#zstyle ':zim:zmodule' use 'degit'
 
 # fpath must be added *before* Zim init.
 fpath+=("${HOME}/.zprompts")
@@ -60,8 +54,17 @@ fpath+=("${HOME}/.zprompts")
 # Always show command duration.
 zstyle ':zim:duration-info' threshold 0
 
-# Append `../` to your input for each `.` you type after an initial `..`
+# Expand `...` => `../..`
 zstyle ':zim:input' double-dot-expand yes
+
+# Lowercase patterns are case-insensitive while patterns with any uppercase characters are treated case-sensitively.
+ZSHZ_CASE=smart
+# Save symlinks as is.
+ZSHZ_NO_RESOLVE_SYMLINKS=1
+# Display $HOME as ~.
+ZSHZ_TILDE=1
+# Make it so that a search pattern ending in `/` can match the final element in a path.
+ZSHZ_TRAILING_SLASH=1
 
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
@@ -69,7 +72,7 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
 # ------------------
 # Initialize modules
@@ -133,13 +136,32 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 # Ctrl-E to *E*dit the command line.
 bindkey '^E' edit-command-line
 
+#
+# Utility aliases and settings
+#
+
+export LESS='--ignore-case --jump-target=4 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS'
+export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+export LESS_TERMCAP_mb=$'\E[1;31m'  # Begins blinking.
+export LESS_TERMCAP_md=$'\E[1;31m'  # Begins bold.
+export LESS_TERMCAP_me=$'\E[0m'     # Ends mode.
+export LESS_TERMCAP_ue=$'\E[0m'     # Ends underline.
+export LESS_TERMCAP_us=$'\E[1;32m'  # Begins underline.
+
 alias d="dirs -v"
+alias sort="LC_ALL=C sort"
+alias grep='grep --color=auto'
+alias rg="rg --hidden -g '!.git/'"
+
+alias ls='ls --group-directories-first --color=auto'
+if [ "${(k)commands[lsd]}" ]; then
+  alias ls="lsd --group-directories-first --git"
+  alias tree="lsd --tree --group-directories-first"
+fi
+alias ll="ls -lh"
 alias l="ll -A"
 alias la="ll -A"
 alias lsa="ll -a"
-
-alias rg="rg --hidden"
-alias sort="LC_ALL=C sort"
 
 alias zshrc="${EDITOR} ${ZDOTDIR}/.zshrc"
 alias zimrc="${EDITOR} ${ZDOTDIR}/.zimrc"
@@ -148,14 +170,14 @@ alias vimrc="${EDITOR} ${HOME}/.vim/vimrc"
 FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
 [ "$FD_CMD" != fd ] && alias fd="$FD_CMD"
 
-export BAT_THEME="zenburn"
 BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
-[ "$BAT_CMD" ] && {
+if [ "$BAT_CMD" ]; then
+  export BAT_THEME="zenburn"
   [ "$BAT_CMD" != bat ] && alias bat="$BAT_CMD"
   alias cat="bat"
   alias batdiff="git diff --name-only --relative --diff-filter=d | xargs \"${BAT_CMD}\" --diff"
-  alias bd=batdiff
-}
+  alias bd="batdiff"
+fi
 
 for source_file (
   "${DOTFILES}/doge_cat.sh"
