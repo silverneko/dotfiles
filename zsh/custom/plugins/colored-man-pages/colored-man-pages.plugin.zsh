@@ -10,10 +10,10 @@ typeset -AHg less_termcap
 
 # bold & blinking mode
 less_termcap[mb]="${fg_bold[red]}"
-less_termcap[md]="${fg_bold[blue]}"
+less_termcap[md]="${fg_bold[cyan]}"
 less_termcap[me]="${reset_color}"
 # standout mode
-less_termcap[so]="${fg_bold[yellow]}"
+less_termcap[so]="${fg[black]}${bg[yellow]}"
 less_termcap[se]="${reset_color}"
 # underlining
 less_termcap[us]="${fg_bold[green]}"

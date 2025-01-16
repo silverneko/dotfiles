@@ -7,28 +7,24 @@ git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
 ```
 
 ```sh
-echo '. "${HOME}/.dotfiles/zshenv"' >> ~/.zshenv
-[ -d ~/.vim ] && (set -x; mv ~/.vim ~/.vim.old)
-ln -s ~/.dotfiles/vim ~/.vim
-ln -s ~/.dotfiles/tmux.conf ~/.tmux.conf
-ln -s ~/.dotfiles/wezterm.lua ~/.wezterm.lua
-ln -s ~/.dotfiles/ghostty.config ~/.config/ghostty/config
+link-dot() { [ -e "$2" ] && (set -x; mv "$2" "$2".old); mkdir -p $(dirname "$2"); (set -x; ln -s ~/.dotfiles/"$1" "$2") }
+link-dot zsh/.zshenv ~/.zshenv
+link-dot vim ~/.vim
+link-dot tmux.conf ~/.tmux.conf
+link-dot wezterm.lua ~/.wezterm.lua
+link-dot ghostty.config ~/.config/ghostty/config
+unset -f link-dot
 ```
+
 
 ## Shell and utilities
 
 ### Fzf
 
-Installing:
+Installing and upgrading:
 ```sh
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-```
-
-Upgrading
-```sh
-cd ~/.fzf
-git pull
-./install
+[ -e ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+cd ~/.fzf && git pull && ./install
 ```
 
 ### Utilities
@@ -42,6 +38,7 @@ Update plugins:
 ```
 :PlugUpdate
 ```
+
 Update vim-plug itself:
 ```
 :PlugUpgrade

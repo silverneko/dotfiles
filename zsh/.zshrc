@@ -101,7 +101,7 @@ source ${ZIM_HOME}/init.zsh
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty)
 
 fast-theme -q safari
-fast-theme -q "${HOME}/.dotfiles/fsh_overlay.ini"
+fast-theme -q "${DOTFILES}/fsh_overlay.ini"
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
@@ -141,6 +141,10 @@ alias lsa="ll -a"
 alias rg="rg --hidden"
 alias sort="LC_ALL=C sort"
 
+alias zshrc="${EDITOR} ${ZDOTDIR}/.zshrc"
+alias zimrc="${EDITOR} ${ZDOTDIR}/.zimrc"
+alias vimrc="${EDITOR} ${HOME}/.vim/vimrc"
+
 FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
 [ "$FD_CMD" != fd ] && alias fd="$FD_CMD"
 
@@ -154,8 +158,8 @@ BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
 }
 
 for source_file (
-  "${HOME}/.dotfiles/doge_cat.sh"
-  "${HOME}/.dotfiles/zshrc.google"
+  "${DOTFILES}/doge_cat.sh"
+  "${DOTFILES}/zshrc.google"
 ) [ -f "$source_file" ] && . "$source_file"
 unset FD_CMD BAT_CMD source_file
 
