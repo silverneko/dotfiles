@@ -3,10 +3,6 @@ let g:polyglot_disabled = ['autoindent']
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
-
-Plug 'jistr/vim-nerdtree-tabs'
-
 Plug 'majutsushi/tagbar'
 
 Plug 'fidian/hexmode'
@@ -14,8 +10,6 @@ Plug 'fidian/hexmode'
 Plug 'tpope/vim-endwise'
 
 Plug 'sheerun/vim-polyglot'
-
-Plug 'vim-scripts/SyntaxComplete'
 
 Plug 'lifepillar/vim-mucomplete'
 
@@ -25,32 +19,45 @@ Plug 'kshenoy/vim-signature'
 
 Plug 'mhinz/vim-signify'
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
 Plug 'morhetz/gruvbox'
 
 Plug 'itchyny/lightline.vim'
 
-Plug 'itchyny/vim-gitbranch'
-
 Plug 'tpope/vim-repeat'
 
 Plug 'tpope/vim-surround'
 
+Plug 'justinmk/vim-sneak'
+
 Plug 'google/vim-maktaba'
+Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
 
 call plug#end()
+
+call glaive#Install()
 
 let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
 if filereadable(g:google_vimrc)
   exec 'source' g:google_vimrc
 endif
 
+Glaive codefmt google_java_executable="google-java-format --aosp"
+
 syntax enable
 filetype plugin indent on
 
 set nocompatible
+
+" :help persistent-undo
+let undo_dir='/tmp/vim_undo'
+if !isdirectory(undo_dir)
+  call mkdir(undo_dir, 'p')
+endif
+let &undodir=undo_dir
+set undofile
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -81,7 +88,7 @@ colorscheme gruvbox
 
 " lightline
 let g:lightline = {
-      \ 'colorscheme': 'seoul256',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [
       \     ['mode', 'paste'],
@@ -93,7 +100,10 @@ let g:lightline = {
       \     ['modified', 'readonly', 'gitbranch', 'filetype', 'LightlineFileencoding', 'charhexvalue'] ,
       \   ],
       \ },
-      \ 'enable': { 'tabline': 0 },
+      \ 'tabline': {
+      \   'left': [[ 'tabs' ]],
+      \   'right': [],
+      \ },
       \ 'component': {
       \   'charhexvalue': '0x%02B',
       \   'modified': '%m',
@@ -149,6 +159,7 @@ set history=500      " keep 500 lines of command line history
 set showcmd          " display incomplete commands
 set incsearch        " do incremental searching
 set hlsearch
+set ignorecase smartcase
 
 " Tab things
 set tabstop=8        "A tab is 8 spaces
@@ -179,8 +190,10 @@ augroup CustomFileTypeCommands
   autocmd BufNewFile,BufRead *.bp set softtabstop=4 shiftwidth=4
   autocmd FileType go set noexpandtab tabstop=2 colorcolumn=100
   autocmd FileType make set noexpandtab preserveindent
-  autocmd BufRead * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 augroup END
+
+" :help restore-cursor
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
 
 " :help tmux-integration
 if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'

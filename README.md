@@ -16,6 +16,12 @@ link-dot ghostty.config ~/.config/ghostty/config
 unset -f link-dot
 ```
 
+Shell completion file of `rg` has a wrong name on debian, rename it back:
+```sh
+mkdir ~/.zprompts
+ln -s /usr/share/zsh/vendor-completions/rg.zsh ~/.zprompts/_rg
+```
+
 
 ## Shell and utilities
 
@@ -48,7 +54,6 @@ Update vim-plug itself:
 ## Vim
 
 ### Mapped function keys
-- \<F2\>                Toggle Nerdtree
 - \<F6\>                Stop search highlight
 - \<F7\>                Yank all
 - \<F8\>                Toggle Tagbar

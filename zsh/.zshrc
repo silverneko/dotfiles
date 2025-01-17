@@ -12,6 +12,7 @@ bindkey -e
 
 # expand-or-complete  Expands variables and then complete word.
 # complete-word       Just complete word. Leave the variables alone.
+# Need to be binded *before* fzf integration.
 bindkey '^I' complete-word
 
 # Remove path separator from WORDCHARS.
@@ -44,12 +45,8 @@ path=(
 # Zim configuration
 # -----------------
 
-# fpath must be added *before* Zim init.
+# fpath must be added *before* compinit (Zim init does compinit).
 fpath+=("${HOME}/.zprompts")
-
-# --------------------
-# Module configuration
-# --------------------
 
 # Always show command duration.
 zstyle ':zim:duration-info' threshold 0
@@ -57,7 +54,14 @@ zstyle ':zim:duration-info' threshold 0
 # Expand `...` => `../..`
 zstyle ':zim:input' double-dot-expand yes
 
-# Lowercase patterns are case-insensitive while patterns with any uppercase characters are treated case-sensitively.
+# Completion is case *in*sensitive; Globbing is case sensitive.
+zstyle ':zim:glob' case-sensitivity sensitive
+
+# --------------------
+# Module configuration
+# --------------------
+
+# smartcase
 ZSHZ_CASE=smart
 # Save symlinks as is.
 ZSHZ_NO_RESOLVE_SYMLINKS=1
@@ -65,14 +69,16 @@ ZSHZ_NO_RESOLVE_SYMLINKS=1
 ZSHZ_TILDE=1
 # Make it so that a search pattern ending in `/` can match the final element in a path.
 ZSHZ_TRAILING_SLASH=1
+# Jump first uncommon segment. https://github.com/agkozak/zsh-z/blob/master/README.md#zshz_uncommon
+ZSHZ_UNCOMMON=1
 
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # ------------------
 # Initialize modules
@@ -122,6 +128,9 @@ unset key
 export HISTSIZE=110000
 export SAVEHIST=100000
 
+# NO BEEP! STFU!!!
+setopt no_beep
+
 # Remove older command from the history if a duplicate is to be added.
 setopt hist_ignore_all_dups extended_history
 setopt inc_append_history_time no_inc_append_history no_share_history
@@ -133,42 +142,44 @@ setopt nomatch no_extended_glob
 setopt clobber hup check_jobs
 setopt no_pushd_silent no_pushd_to_home pushd_minus
 
-# Ctrl-E to *E*dit the command line.
-bindkey '^E' edit-command-line
-
 #
 # Utility aliases and settings
 #
 
-export LESS='--ignore-case --jump-target=4 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS'
-export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+# Ctrl-E to *E*dit the command line.
+bindkey '^E' edit-command-line
+
+export ZSHRC="${ZDOTDIR}/.zshrc"
+export ZIMRC="${ZDOTDIR}/.zimrc"
+export VIMRC="${HOME}/.vim/vimrc"
+
 export LESS_TERMCAP_mb=$'\E[1;31m'  # Begins blinking.
 export LESS_TERMCAP_md=$'\E[1;31m'  # Begins bold.
 export LESS_TERMCAP_me=$'\E[0m'     # Ends mode.
 export LESS_TERMCAP_ue=$'\E[0m'     # Ends underline.
 export LESS_TERMCAP_us=$'\E[1;32m'  # Begins underline.
+export LESS='--ignore-case --jump-target=4 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS'
+export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 alias d="dirs -v"
 alias sort="LC_ALL=C sort"
 alias grep='grep --color=auto'
-alias rg="rg --hidden -g '!.git/'"
 
 alias ls='ls --group-directories-first --color=auto'
 if [ "${(k)commands[lsd]}" ]; then
   alias ls="lsd --group-directories-first --git"
-  alias tree="lsd --tree --group-directories-first"
+  alias lt="lsd --tree --group-directories-first"
 fi
 alias ll="ls -lh"
 alias l="ll -A"
 alias la="ll -A"
 alias lsa="ll -a"
 
-alias zshrc="${EDITOR} ${ZDOTDIR}/.zshrc"
-alias zimrc="${EDITOR} ${ZDOTDIR}/.zimrc"
-alias vimrc="${EDITOR} ${HOME}/.vim/vimrc"
-
+# By default `fd` and `rg` are both smartcase (vim :h smartcase) and searches hidden files.
+# However .gitignore rules are still respected. To ignore .gitignore, pass `--no-ignore`.
+alias rg="rg --smart-case --hidden -g '!.git/'"
 FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
-[ "$FD_CMD" != fd ] && alias fd="$FD_CMD"
+[ "$FD_CMD" != fd ] && alias fd="${FD_CMD} --hidden"
 
 BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
 if [ "$BAT_CMD" ]; then
