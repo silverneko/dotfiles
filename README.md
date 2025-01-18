@@ -54,9 +54,7 @@ Update vim-plug itself:
 ## Vim
 
 ### Mapped function keys
-- \<F6\>                Stop search highlight
-- \<F7\>                Yank all
-- \<F8\>                Toggle Tagbar
+- \<F8\>                Yank all
 - \<Tab\>               Tab next
 - \<S-Tab\>             Tab previous
 - \<Ctrl-Right\>        Tab next
@@ -67,8 +65,7 @@ Update vim-plug itself:
 
 
 ### Dependencies
-- tagbar: Exuberant ctags
-- neocomplete: Vim 7.3.885+ compiled with `if_lua`. If `:echo has("lua")` returns `1` then we're good.
+- vim 9+
 
 
 ### Hexmode

@@ -1,35 +1,32 @@
-let g:polyglot_disabled = ['autoindent']
-
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
-Plug 'majutsushi/tagbar'
+"Plug 'sainnhe/gruvbox-material'
+Plug 'sainnhe/everforest'
 
-Plug 'fidian/hexmode'
+Plug 'itchyny/lightline.vim'
 
-Plug 'tpope/vim-endwise'
-
-Plug 'sheerun/vim-polyglot'
+Plug 'bfrg/vim-c-cpp-modern'
 
 Plug 'lifepillar/vim-mucomplete'
-
-Plug 'google/vim-searchindex'
 
 Plug 'kshenoy/vim-signature'
 
 Plug 'mhinz/vim-signify'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-
-Plug 'morhetz/gruvbox'
-
-Plug 'itchyny/lightline.vim'
-
-Plug 'tpope/vim-repeat'
-
-Plug 'tpope/vim-surround'
+Plug 'andymass/vim-matchup'
 
 Plug 'justinmk/vim-sneak'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+Plug 'fidian/hexmode'
+
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-repeat'
 
 Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
@@ -59,17 +56,15 @@ endif
 let &undodir=undo_dir
 set undofile
 
-" Tagbar
-let g:tagbar_autofocus = 1
-
-" vim-nerdtree-tabs
-let g:nerdtree_tabs_open_on_gui_startup = 0
-
 " mucomplate
 let g:mucomplete#enable_auto_at_startup = 1
 set completeopt=menuone,noselect
 set shortmess+=c
 call mucomplete#msg#set_notifications(1)
+let g:mucomplete#chains = {
+      \ 'default' : ['path', 'omni', 'keyn', 'keyp', 'dict', 'uspl'],
+      \ 'vim'     : ['path', 'cmd', 'keyn']
+      \ }
 
 inoremap <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
@@ -80,28 +75,49 @@ endfunction
 set t_Co=256
 set termguicolors
 set background=dark
-let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_invert_tabline=1
-let g:gruvbox_italic=0
-" colorscheme nolife
-colorscheme gruvbox
+" let g:gruvbox_material_background = 'hard'
+" let g:gruvbox_material_better_performance = 1
+" let g:gruvbox_material_visual = 'blue background'
+" colorscheme gruvbox-material
+let g:everforest_background = 'hard'
+let g:everforest_colors_override = {}
+let g:everforest_better_performance = 1
+
+function! s:everforest_custom() abort
+  let l:palette = everforest#get_palette(g:everforest_background, g:everforest_colors_override)
+  call everforest#highlight('Todo', l:palette.fg, l:palette.none, 'bold,italic')
+endfunction
+
+augroup EverforestCustom
+  autocmd!
+  autocmd ColorScheme everforest call s:everforest_custom()
+augroup END
+
+colorscheme everforest
 
 " lightline
+set noshowmode
+set display+=lastline
+set cmdheight=1
+set laststatus=2
+set wildmenu
+
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'everforest',
       \ 'active': {
       \   'left': [
       \     ['mode', 'paste'],
-      \     ['relativepath'],
+      \     ['relativepath', 'readonly'],
+      \     ['modified'],
       \   ],
       \   'right': [
       \     ['percentwin'],
       \     ['line', 'column'],
-      \     ['modified', 'readonly', 'gitbranch', 'filetype', 'LightlineFileencoding', 'charhexvalue'] ,
+      \     ['gitbranch', 'filetype', 'LightlineFileencoding', 'charhexvalue'] ,
       \   ],
       \ },
       \ 'tabline': {
-      \   'left': [[ 'tabs' ]],
+      \   'left': [['tabs']],
       \   'right': [],
       \ },
       \ 'component': {
@@ -121,24 +137,41 @@ function! LightlineFileencoding()
   return enc == "utf-8" ? "" : enc
 endfunction
 
-set noshowmode
-set display+=lastline
-set cmdheight=1
-set laststatus=2
-set wildmenu
-
 set ttimeout
 augroup NoInsertKeycodes
   autocmd!
   autocmd InsertEnter * set ttimeoutlen=0
-  autocmd InsertLeave * set ttimeoutlen=-1 "<--- default value; also try 100 or something
+  autocmd InsertLeave * set ttimeoutlen=100 "<--- default value; also try 100 or something
 augroup END
 
+" :help signify.txt
+" Always show gutter so it don't "bounce" when making new changes
+set signcolumn=yes
+" Eagerly update git status
+set updatetime=300
+
+" j: Delete comment character when joining commented lines.
+" o: Insert comment leader when 'o' / 'O' in Normal mode.
+autocmd BufNewFile,BufRead * setlocal formatoptions-=o formatoptions+=j
+
+" Show search count like "[1/5]"
+set shortmess-=S
 
 set nomodeline
 set noerrorbells
 set splitbelow
-set scrolloff=999
+set scrolloff=5
+set sidescroll=1
+set sidescrolloff=5
+set history=1000
+set sessionoptions-=options
+set viewoptions-=options
+" Persist g:UPPERCASE variables, used by some plugins, in .viminfo.
+set viminfo^=!
+" vim -p <FILES...> / vim <FILES...> && :tab all
+set tabpagemax=50
+" Disable a legacy behavior that can break plugin maps. (???)
+set nolangremap
 
 autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
 autocmd InsertEnter * set cursorline
@@ -168,13 +201,14 @@ set softtabstop=2    "Insert 2 spaces when tab is pressed
 set shiftwidth=2     "An indent is 2 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
+set autoindent
 " Optional
 " C/C++ programming helpers
-augroup csrc
-  autocmd!
-  autocmd FileType *      set nocindent smartindent
-  autocmd FileType c,cpp,cuda  set cindent
-augroup END
+" augroup csrc
+"   autocmd!
+"   autocmd FileType *      set nocindent smartindent
+"   autocmd FileType c,cpp,cuda  set cindent
+" augroup END
 " Set a few indentation parameters. See the VIM help for cinoptions-values for
 " details.  These aren't absolute rules; they're just an approximation of
 " common style in LLVM source.
@@ -229,11 +263,22 @@ if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
   execute "silent! set <xLeft>=\<Esc>[@;*D"
 endif
 
+" Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call
+" :diffupdate.
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+
+" vim-signature
+" m[0-9] -> Place markers
+" ???, ]=, ]- -> Navigate markers
+
+" Single character *sneak*. `;` => next sneak, `,` => previous sneak.
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+
 " Shortcuts
-nnoremap <F2> :NERDTreeTabsToggle<CR>
-nnoremap <F6> :nohlsearch<CR>
-nnoremap <F7> :%y +<CR>
-nnoremap <F8> :TagbarToggle<CR>
+nnoremap <F8> :%y +<CR>
 
 " Tab navigations
 nnoremap <Tab> :tabnext<CR>

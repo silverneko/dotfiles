@@ -40,6 +40,9 @@ zmodule zsh-users/zsh-completions --fpath src
 # completion must be sourced after all modules that add completion definitions.
 zmodule completion
 
+# Must be loaded *after* compinit and *before* syntax highlighting.
+zmodule Aloxaf/fzf-tab
+
 #
 # Modules that must be initialized last
 #

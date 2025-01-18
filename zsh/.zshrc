@@ -13,7 +13,7 @@ bindkey -e
 # expand-or-complete  Expands variables and then complete word.
 # complete-word       Just complete word. Leave the variables alone.
 # Need to be binded *before* fzf integration.
-bindkey '^I' complete-word
+for map (emacs viins) bindkey -M $map '^I' complete-word
 
 # Remove path separator from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}
@@ -79,6 +79,11 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':fzf-tab:*' show-group brief
+zstyle ':fzf-tab:*' prefix ''
 
 # ------------------
 # Initialize modules
@@ -146,8 +151,17 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 # Utility aliases and settings
 #
 
-# Ctrl-E to *E*dit the command line.
-bindkey '^E' edit-command-line
+for map (emacs viins) {
+  # Ctrl-E to *E*dit the command line.
+  bindkey -M $map '^E' edit-command-line
+
+  # fzf-tab took over the original ^I key bindings. I'd rather fzf-tab binds to its own key
+  # and leave ^I alone. Alas they don't provide the option to customize the key bindings.
+  # Restore Ctrl-I (tab) back to fzf-complete, which wraps the original "complete" widget.
+  # Bind Ctrl-F (Fuzzy *F*ind completion) to fzf-tab-complete.
+  bindkey -M $map '^F' ${$(bindkey -M $map '^I')[2]}
+  bindkey -M $map '^I' fzf-completion
+}
 
 export ZSHRC="${ZDOTDIR}/.zshrc"
 export ZIMRC="${ZDOTDIR}/.zimrc"
@@ -160,6 +174,8 @@ export LESS_TERMCAP_ue=$'\E[0m'     # Ends underline.
 export LESS_TERMCAP_us=$'\E[1;32m'  # Begins underline.
 export LESS='--ignore-case --jump-target=4 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS'
 export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+# :help manpager.vim
+export MANPAGER="vim +MANPAGER --not-a-term -"
 
 alias d="dirs -v"
 alias sort="LC_ALL=C sort"
