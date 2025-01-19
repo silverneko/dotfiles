@@ -141,7 +141,7 @@ function! MyFileencoding()
 endfunction
 
 function! MyTabTitle(n)
-  return '[' . a:n . '] ' . (lightline#tab#modified(a:n) == '+' ? '*' : '') . lightline#tab#filename(a:n)
+  return '[' . a:n . '] ' . lightline#tab#filename(a:n) . (lightline#tab#modified(a:n) == '+' ? '*' : '')
 endfunction
 
 function! MyLightlineTabs() abort
@@ -161,23 +161,12 @@ augroup NoInsertKeycodes
   autocmd InsertLeave * set ttimeoutlen=100 "<--- default value; also try 100 or something
 augroup END
 
-" :help signify.txt
-let g:signify_number_highlight = 1
-function! s:show_current_hunk() abort
-  let h = sy#util#get_hunk_stats()
-  if !empty(h)
-    echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
-  endif
-endfunction
-autocmd User SignifyHunk call s:show_current_hunk()
-" Always show gutter so it don't "bounce" when making new changes
-set signcolumn=yes
-" Eagerly update git status
-set updatetime=300
-
 " j: Delete comment character when joining commented lines.
 " o: Insert comment leader when 'o' / 'O' in Normal mode.
-autocmd BufNewFile,BufRead * setlocal formatoptions-=o formatoptions+=j
+augroup SetFormatOptions
+  autocmd!
+  autocmd BufNewFile,BufRead * setlocal formatoptions-=o formatoptions+=j
+augroup END
 
 " Show search count like "[1/5]"
 set shortmess-=S
@@ -199,12 +188,9 @@ set tabpagemax=50
 set nolangremap
 
 set cursorline
-autocmd User Startified setlocal cursorline
-autocmd BufNewFile,BufRead,FocusGained * set cursorline
-autocmd FocusLost * set nocursorline
-
 set ruler
 set number
+set numberwidth=5
 set mouse=nv
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
@@ -253,7 +239,41 @@ augroup CustomFileTypeCommands
 augroup END
 
 " :help restore-cursor
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+augroup RestoreCursor
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+augroup END
+
+" Hide cursorline on FocusLost; Show cursorline on FocusGained
+augroup SetFocusedCursorline
+  autocmd!
+  autocmd User Startified setlocal cursorline
+  autocmd BufNewFile,BufRead,FocusGained * set cursorline
+  autocmd FocusLost * set nocursorline
+augroup END
+
+" :help signify.txt
+let g:signify_number_highlight = 1
+" Always show gutter so it doesn't flicker when making new changes
+set signcolumn=yes
+" Eagerly update git status
+set updatetime=300
+
+function! s:show_current_hunk() abort
+  let h = sy#util#get_hunk_stats()
+  if !empty(h)
+    " Prevents status line flickering :h :echo-redraw
+    redraw | echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
+  endif
+endfunction
+
+augroup ShowHunkIndexAfterJump
+  autocmd!
+  autocmd User SignifyHunk call s:show_current_hunk()
+augroup END
+
+nnoremap <silent> ]c <plug>(signify-next-hunk):SignifyHunkDiff<CR>
+nnoremap <silent> [c <plug>(signify-prev-hunk):SignifyHunkDiff<CR>
 
 " :help tmux-integration
 if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
