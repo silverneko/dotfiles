@@ -115,9 +115,12 @@ source ${ZIM_HOME}/init.zsh
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty)
 
 # Customize my prompt
+zstyle ':zim:git-info' verbose yes
+zstyle ':zim:git-info:untracked' format '?'
 local -A info_keys
 zstyle -a ':zim:git-info:keys' format 'info_keys'
-info_keys[prompt]=' git:%%B%F{magenta}%b%c%s${(e)git_info[status]:+" %F{red}[${(e)git_info[status]}]"}%f%%b'
+info_keys[status]='%S%I%i%u%A%B'
+info_keys[prompt]=' %%B%F{magenta}%b%c%s${(e)git_info[status]:+" %F{red}[${(e)git_info[status]}]"}%f%%b'
 zstyle ':zim:git-info:keys' format ${(kv)info_keys}
 PS1='
 %(2L.%B%F{yellow}(%L)%f%b .)%(!.%B%F{red}%n%f%b @ .${SSH_TTY:+"%B%F{yellow}%n%f%b @ "})${SSH_TTY:+"%B%F{green}%m%f%b "}%B%F{cyan}%~%f%b${(e)git_info[prompt]}${VIRTUAL_ENV:+" via %B%F{yellow}${VIRTUAL_ENV:t}%f%b"}${duration_info}
