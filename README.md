@@ -54,14 +54,14 @@ Update vim-plug itself:
 ## Vim
 
 ### Mapped function keys
-- \<F8\>                Yank all
-- \<Tab\>               Tab next
-- \<S-Tab\>             Tab previous
-- \<Ctrl-Right\>        Tab next
-- \<Ctrl-Left\>         Tab previous
-- \<Alt-Right\>         Move tab position right
-- \<Alt-Left\>          Move tab position left
-- \<Ctrl-C\>            [Visual mode] Copy selected text into system clipboard.
+- `<F8>`                Yank all
+- `]t`                  Go to next tab
+- `[t`                  Go to previous tab
+- `]T`                  Go to last tab
+- `[T`                  Go to first tab
+- `<Ctrl-Alt-Right>`    Move tab to the right
+- `<Ctrl-Alt-Left>`     Move tab to the left
+- `<Ctrl-C>`            [Visual mode] Copy selected text into system clipboard.
 
 
 ### Dependencies

@@ -8,6 +8,8 @@ Plug 'itchyny/lightline.vim'
 
 Plug 'bfrg/vim-c-cpp-modern'
 
+Plug 'mhinz/vim-startify'
+
 Plug 'lifepillar/vim-mucomplete'
 
 Plug 'kshenoy/vim-signature'
@@ -113,13 +115,11 @@ let g:lightline = {
       \   'right': [
       \     ['percentwin'],
       \     ['line', 'column'],
-      \     ['gitbranch', 'filetype', 'LightlineFileencoding', 'charhexvalue'] ,
+      \     ['gitbranch', 'filetype', 'my_fileencoding', 'charhexvalue'] ,
       \   ],
       \ },
-      \ 'tabline': {
-      \   'left': [['tabs']],
-      \   'right': [],
-      \ },
+      \ 'tabline': {'left': [['tabs']], 'right': []},
+      \ 'tab': {'active': ['tabtitle'], 'inactive': ['tabtitle']},
       \ 'component': {
       \   'charhexvalue': '0x%02B',
       \   'modified': '%m',
@@ -128,13 +128,30 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'gitbranch': 'gitbranch#name',
-      \   'LightlineFileencoding': 'LightlineFileencoding',
+      \   'my_fileencoding': 'MyFileencoding',
       \ },
+      \ 'component_expand': {'tabs': 'MyLightlineTabs'},
+      \ 'tab_component_function': {'tabtitle': 'MyTabTitle'},
+      \ 'tabline_subseparator': {'left': '', 'right': ''},
       \ }
 
-function! LightlineFileencoding()
-  let enc = &fenc !=# "" ? &fenc : &enc
-  return enc == "utf-8" ? "" : enc
+function! MyFileencoding()
+  let l:enc = &fenc !=# "" ? &fenc : &enc
+  return l:enc ==? "utf-8" ? "" : l:enc
+endfunction
+
+function! MyTabTitle(n)
+  return '[' . a:n . '] ' . (lightline#tab#modified(a:n) == '+' ? '*' : '') . lightline#tab#filename(a:n)
+endfunction
+
+function! MyLightlineTabs() abort
+  let [x, y, z] = [[], [], []]
+  let nr = tabpagenr()
+  let cnt = tabpagenr('$')
+  for i in range(1, cnt)
+    call add(i < nr ? x : i == nr ? y : z, (i > nr + 3 ? '%<' : '') . '%' . i . 'T%{lightline#onetab(' . i . ',' . (i == nr) . ')}' . (i == cnt ? '%T' : ''))
+  endfor
+  return [x, y, z]
 endfunction
 
 set ttimeout
@@ -145,6 +162,14 @@ augroup NoInsertKeycodes
 augroup END
 
 " :help signify.txt
+let g:signify_number_highlight = 1
+function! s:show_current_hunk() abort
+  let h = sy#util#get_hunk_stats()
+  if !empty(h)
+    echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
+  endif
+endfunction
+autocmd User SignifyHunk call s:show_current_hunk()
 " Always show gutter so it don't "bounce" when making new changes
 set signcolumn=yes
 " Eagerly update git status
@@ -282,12 +307,12 @@ map T <Plug>Sneak_T
 nnoremap <F8> :%y +<CR>
 
 " Tab navigations
-nnoremap <Tab> :tabnext<CR>
-nnoremap <S-Tab> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
-nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+nnoremap <silent> ]t :tabnext<CR>
+nnoremap <silent> [t :tabprevious<CR>
+nnoremap <silent> ]T :tablast<CR>
+nnoremap <silent> [T :tabfirst<CR>
+nnoremap <silent> <C-A-Right> :<C-U>execute 'tabmove +' . v:count1<CR>
+nnoremap <silent> <C-A-Left> :<C-U>execute 'tabmove -' . v:count1<CR>
 
 " http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
 inoremap <C-U> <C-G>u<C-U>
