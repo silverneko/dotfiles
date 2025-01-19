@@ -114,6 +114,16 @@ source ${ZIM_HOME}/init.zsh
 # "magic-enter" should clear unaccepted suggestions. Must be added *after* Zim init.
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty)
 
+# Customize my prompt
+local -A info_keys
+zstyle -a ':zim:git-info:keys' format 'info_keys'
+info_keys[prompt]=' git:%%B%F{magenta}%b%c%s${(e)git_info[status]:+" %F{red}[${(e)git_info[status]}]"}%f%%b'
+zstyle ':zim:git-info:keys' format ${(kv)info_keys}
+PS1='
+%(2L.%B%F{yellow}(%L)%f%b .)%(!.%B%F{red}%n%f%b @ .${SSH_TTY:+"%B%F{yellow}%n%f%b @ "})${SSH_TTY:+"%B%F{green}%m%f%b "}%B%F{cyan}%~%f%b${(e)git_info[prompt]}${VIRTUAL_ENV:+" via %B%F{yellow}${VIRTUAL_ENV:t}%f%b"}${duration_info}
+%B%(1j.%F{blue}*%f .)%(?.%F{green}.%F{red}%? )$(_prompt_asciiship_vimode)%f%b '
+unset info_keys
+
 fast-theme -q safari
 fast-theme -q "${DOTFILES}/fsh_overlay.ini"
 

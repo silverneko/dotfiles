@@ -173,9 +173,10 @@ set tabpagemax=50
 " Disable a legacy behavior that can break plugin maps. (???)
 set nolangremap
 
-autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
-autocmd InsertEnter * set cursorline
-autocmd InsertLeave * set nocursorline
+set cursorline
+autocmd User Startified setlocal cursorline
+autocmd BufNewFile,BufRead,FocusGained * set cursorline
+autocmd FocusLost * set nocursorline
 
 set ruler
 set number
@@ -220,8 +221,8 @@ let c_no_curly_error = 1
 augroup CustomFileTypeCommands
   autocmd!
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
-  autocmd BufNewFile,BufRead *.bp set filetype=javascript
-  autocmd BufNewFile,BufRead *.bp set softtabstop=4 shiftwidth=4
+  autocmd BufNewFile,BufRead *.bp set filetype=javascript softtabstop=4 shiftwidth=4
+  autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
   autocmd FileType go set noexpandtab tabstop=2 colorcolumn=100
   autocmd FileType make set noexpandtab preserveindent
 augroup END
@@ -251,10 +252,10 @@ if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
   let &t_PE = "\<Esc>[201~"
 
   " Enable focus event tracking, see  :help xterm-focus-event
-  "let &t_fe = "\<Esc>[?1004h"
-  "let &t_fd = "\<Esc>[?1004l"
-  "execute "set <FocusGained>=\<Esc>[I"
-  "execute "set <FocusLost>=\<Esc>[O"
+  let &t_fe = "\<Esc>[?1004h"
+  let &t_fd = "\<Esc>[?1004l"
+  execute "set <FocusGained>=\<Esc>[I"
+  execute "set <FocusLost>=\<Esc>[O"
 
   " Enable modified arrow keys, see  :help arrow_modifiers
   execute "silent! set <xUp>=\<Esc>[@;*A"
