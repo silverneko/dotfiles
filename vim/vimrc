@@ -10,6 +10,8 @@ Plug 'bfrg/vim-c-cpp-modern'
 
 Plug 'mhinz/vim-startify'
 
+Plug 'girishji/vimsuggest'
+
 Plug 'lifepillar/vim-mucomplete'
 
 Plug 'kshenoy/vim-signature'
@@ -344,3 +346,17 @@ vnoremap <C-C> "+y
 " Change directory to current file directory.
 command CD cd %:p:h
 command LCD lcd %:p:h
+
+" :help startify.txt
+let g:startify_custom_header = ''
+let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
+
+" :help vimsuggest.txt
+let s:vim_suggest = {
+      \ 'cmd': {'reverse': v:true},
+      \ 'search': {'reverse': v:true},
+      \ }
+augroup SetVimSuggestOptions
+  autocmd!
+  autocmd VimEnter * call g:VimSuggestSetOptions(s:vim_suggest)
+augroup END

@@ -46,7 +46,8 @@ path=(
 # -----------------
 
 # fpath must be added *before* compinit (Zim init does compinit).
-fpath+=("${HOME}/.zprompts")
+# Shell completion file of `rg` is installed with a wrong name on debian.
+fpath+=("${ZDOTDIR}/functions")
 
 # Always show command duration.
 zstyle ':zim:duration-info' threshold 0
@@ -209,6 +210,8 @@ alias lsa="ll -a"
 alias rg="rg --smart-case --hidden -g '!.git/'"
 FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
 [ "$FD_CMD" != fd ] && alias fd="${FD_CMD} --hidden"
+# fdfind, if exist, should use the completion function of fd
+compdef _fd fdfind
 
 BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
 if [ "$BAT_CMD" ]; then

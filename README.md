@@ -16,12 +16,6 @@ link-dot ghostty.config ~/.config/ghostty/config
 unset -f link-dot
 ```
 
-Shell completion file of `rg` has a wrong name on debian, rename it back:
-```sh
-mkdir ~/.zprompts
-ln -s /usr/share/zsh/vendor-completions/rg.zsh ~/.zprompts/_rg
-```
-
 
 ## Shell and utilities
 
