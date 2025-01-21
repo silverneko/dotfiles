@@ -1,36 +1,50 @@
+" vim-matchup replaces matchit.vim
+" let g:ale_completion_enabled = 1
+" let g:ale_hover_cursor = 1
+" let g:loaded_matchit = 1
+" let g:ale_set_balloons = 1
+" let g:ale_floating_preview = 1
+
+" set omnifunc=ale#completion#OmniFunc
+
+let g:vimcomplete_cr_enable = 0
+
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
 "Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
-
 Plug 'itchyny/lightline.vim'
-
-Plug 'bfrg/vim-c-cpp-modern'
-
 Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-signify'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'kshenoy/vim-signature'
+Plug 'andymass/vim-matchup'
+Plug 'justinmk/vim-sneak'
+
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
 
 Plug 'girishji/vimsuggest'
 
-Plug 'lifepillar/vim-mucomplete'
+Plug 'girishji/vimcomplete'
+Plug 'yegappan/lsp'
 
-Plug 'kshenoy/vim-signature'
+"Plug 'dense-analysis/ale'
 
-Plug 'mhinz/vim-signify'
+"Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'mattn/vim-lsp-settings'
 
-Plug 'andymass/vim-matchup'
-
-Plug 'justinmk/vim-sneak'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-
-Plug 'fidian/hexmode'
-
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-repeat'
+Plug 'bfrg/vim-c-cpp-modern'
+"Plug 'fidian/hexmode'
 
 Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
@@ -39,6 +53,35 @@ Plug 'google/vim-codefmt'
 call plug#end()
 
 call glaive#Install()
+
+" function! s:on_lsp_buffer_enabled() abort
+"     setlocal omnifunc=lsp#complete
+"     setlocal signcolumn=yes
+"     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+"     nmap <buffer> gd <plug>(lsp-definition)
+"     nmap <buffer> gs <plug>(lsp-document-symbol-search)
+"     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+"     nmap <buffer> gr <plug>(lsp-references)
+"     nmap <buffer> gi <plug>(lsp-implementation)
+"     nmap <buffer> gt <plug>(lsp-type-definition)
+"     nmap <buffer> <leader>rn <plug>(lsp-rename)
+"     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+"     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+"     nmap <buffer> K <plug>(lsp-hover)
+"     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+"     nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+"     let g:lsp_format_sync_timeout = 1000
+"     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+"     " refer to doc to add more commands
+" endfunction
+
+" augroup lsp_install
+"     au!
+"     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+"     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+" augroup END
 
 let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
 if filereadable(g:google_vimrc)
@@ -60,20 +103,35 @@ endif
 let &undodir=undo_dir
 set undofile
 
-" mucomplate
-let g:mucomplete#enable_auto_at_startup = 1
-set completeopt=menuone,noselect
-set shortmess+=c
-call mucomplete#msg#set_notifications(1)
-let g:mucomplete#chains = {
-      \ 'default' : ['path', 'omni', 'keyn', 'keyp', 'dict', 'uspl'],
-      \ 'vim'     : ['path', 'cmd', 'keyn']
-      \ }
+" set completeopt=menuone,noselect
+" set shortmess+=c
 
-inoremap <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" let vcoptions = {}
+" autocmd VimEnter * call g:VimCompleteOptionsSet(vcoptions)
+
+" inoremap <CR> <C-r>=<SID>my_cr_function()<CR>
+" function! s:my_cr_function()
+"   return pumvisible() ? "\<C-y>" : "\<CR>"
+" endfunction
+" inoremap <expr> <cr>    pumvisible() ? "\<c-y>" : "\<cr>"
+" inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+" let lspOpts = #{autoHighlightDiags: v:true,
+"       \ noNewlineInCompletionEver: v:true,
+"       \ showInlayHints: v:true}
+" autocmd User LspSetup call LspOptionsSet(lspOpts)
+
+" let lspServers = [#{
+" 	\    name: 'rustlang',
+" 	\    filetype: ['rust'],
+"         \    path: exepath('rust-analyzer'),
+" 	\    args: [],
+" 	\    syncInit: v:true
+" 	\  }]
+" autocmd User LspSetup call LspAddServer(lspServers)
 
 " gruvbox
 set t_Co=256
@@ -104,7 +162,6 @@ set noshowmode
 set display+=lastline
 set cmdheight=1
 set laststatus=2
-set wildmenu
 
 let g:lightline = {
       \ 'colorscheme': 'everforest',
@@ -200,7 +257,6 @@ set guicursor+=a:blinkon0
 set listchars=trail:␣,tab:»\ ,nbsp:¬
 set list
 
-set colorcolumn=80
 set backspace=indent,eol,start
 set history=500      " keep 500 lines of command line history
 set showcmd          " display incomplete commands
@@ -216,13 +272,6 @@ set shiftwidth=2     "An indent is 2 spaces
 set shiftround       "Round indent to nearest shiftwidth multiple
 
 set autoindent
-" Optional
-" C/C++ programming helpers
-" augroup csrc
-"   autocmd!
-"   autocmd FileType *      set nocindent smartindent
-"   autocmd FileType c,cpp,cuda  set cindent
-" augroup END
 " Set a few indentation parameters. See the VIM help for cinoptions-values for
 " details.  These aren't absolute rules; they're just an approximation of
 " common style in LLVM source.
@@ -231,8 +280,9 @@ set cinoptions=:0,g0,(0,Ws,l1
 " https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
 let c_no_curly_error = 1
 
-augroup CustomFileTypeCommands
-  autocmd!
+augroup CustomFileTypeCommands | autocmd!
+  " Draw margin
+  autocmd BufNewFile,BufRead,FileType * let &colorcolumn = &textwidth ?? 80
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
   autocmd BufNewFile,BufRead *.bp set filetype=javascript softtabstop=4 shiftwidth=4
   autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
@@ -311,8 +361,7 @@ if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
   execute "silent! set <xLeft>=\<Esc>[@;*D"
 endif
 
-" Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call
-" :diffupdate.
+" Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call :diffupdate.
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 " vim-signature
@@ -353,7 +402,7 @@ let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
 
 " :help vimsuggest.txt
 let s:vim_suggest = {
-      \ 'cmd': {'reverse': v:true},
+      \ 'cmd': {'reverse': v:true, 'popupattrs': {'maxheight': 12}, 'addons': v:false},
       \ 'search': {'reverse': v:true},
       \ }
 augroup SetVimSuggestOptions
