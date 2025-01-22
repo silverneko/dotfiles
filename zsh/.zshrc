@@ -166,14 +166,15 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 #
 
 for map (emacs viins) {
-  # Ctrl-E to *E*dit the command line.
-  bindkey -M $map '^E' edit-command-line
-
+  # [vim-like] Ctrl-F to edit the command line.
+  bindkey -M $map '^F' edit-command-line
+  # [vim-like] Ctrl-E to undo (or dismiss completion menu).
+  bindkey -M $map '^E' undo
   # fzf-tab took over the original ^I key bindings. I'd rather fzf-tab binds to its own key
   # and leave ^I alone. Alas they don't provide the option to customize the key bindings.
-  # Restore Ctrl-I (tab) back to fzf-complete, which wraps the original "complete" widget.
-  # Bind Ctrl-F (Fuzzy *F*ind completion) to fzf-tab-complete.
-  bindkey -M $map '^F' ${$(bindkey -M $map '^I')[2]}
+  # Ctrl-Z (Fu*zz*y Find completion) to fzf-tab-complete.
+  bindkey -M $map '^Z' ${$(bindkey -M $map '^I')[2]}
+  # Ctrl-I (tab) to fzf-complete, which wraps the original "complete" widget.
   bindkey -M $map '^I' fzf-completion
 }
 
@@ -197,8 +198,10 @@ alias grep='grep --color=auto'
 
 alias ls='ls --group-directories-first --color=auto'
 if [ "${(k)commands[lsd]}" ]; then
-  alias ls="lsd --group-directories-first --git"
-  alias lt="lsd --tree --group-directories-first"
+  # HACK: "Convince" zsh that `--git` is a valid option.
+  function lsd { command lsd --git --group-directories-first "$@" }
+  alias ls="lsd"
+  alias lt="command lsd --tree --group-directories-first"
 fi
 alias ll="ls -lh"
 alias l="ll -A"
@@ -222,11 +225,23 @@ if [ "$BAT_CMD" ]; then
   alias bd="batdiff"
 fi
 
+function lf {
+  local tmp="$(mktemp)"
+  command lf -last-dir-path="$tmp" "${@:-$(pwd)}"
+  if [ -f "$tmp" ]; then
+    local dir="$(cat "$tmp")"
+    rm -f -- "$tmp"
+    if [ -d "$dir" ] && [ "$(pwd)" != "$dir" ]; then
+      pushd -- "$dir"
+    fi
+  fi
+}
+
 for source_file (
   "${DOTFILES}/doge_cat.sh"
   "${DOTFILES}/zshrc.google"
 ) [ -f "$source_file" ] && . "$source_file"
 unset FD_CMD BAT_CMD source_file
 
-# No duplicate entries in $path & $PATH
+# No duplicate entries in $path & $PATH.
 typeset -U path

@@ -13,6 +13,7 @@ link-dot vim ~/.vim
 link-dot tmux.conf ~/.tmux.conf
 link-dot wezterm.lua ~/.wezterm.lua
 link-dot ghostty.config ~/.config/ghostty/config
+link-dot lfrc ~/.config/lf/lfrc
 unset -f link-dot
 ```
 
@@ -53,8 +54,8 @@ Update vim-plug itself:
 - `[t`                  Go to previous tab
 - `]T`                  Go to last tab
 - `[T`                  Go to first tab
-- `<Ctrl-Alt-Right>`    Move tab to the right
-- `<Ctrl-Alt-Left>`     Move tab to the left
+- `<Alt-Right>`         Move tab to the right
+- `<Alt-Left>`          Move tab to the left
 - `<Ctrl-C>`            [Visual mode] Copy selected text into system clipboard.
 
 

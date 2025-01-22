@@ -38,11 +38,6 @@ Plug 'yegappan/lsp'
 
 "Plug 'dense-analysis/ale'
 
-"Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'mattn/vim-lsp-settings'
-
 Plug 'bfrg/vim-c-cpp-modern'
 "Plug 'fidian/hexmode'
 
@@ -53,35 +48,6 @@ Plug 'google/vim-codefmt'
 call plug#end()
 
 call glaive#Install()
-
-" function! s:on_lsp_buffer_enabled() abort
-"     setlocal omnifunc=lsp#complete
-"     setlocal signcolumn=yes
-"     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-"     nmap <buffer> gd <plug>(lsp-definition)
-"     nmap <buffer> gs <plug>(lsp-document-symbol-search)
-"     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-"     nmap <buffer> gr <plug>(lsp-references)
-"     nmap <buffer> gi <plug>(lsp-implementation)
-"     nmap <buffer> gt <plug>(lsp-type-definition)
-"     nmap <buffer> <leader>rn <plug>(lsp-rename)
-"     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-"     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-"     nmap <buffer> K <plug>(lsp-hover)
-"     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
-"     nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
-
-"     let g:lsp_format_sync_timeout = 1000
-"     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-"     " refer to doc to add more commands
-" endfunction
-
-" augroup lsp_install
-"     au!
-"     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-"     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" augroup END
 
 let g:google_vimrc=expand('~/.dotfiles/vimrc.google')
 if filereadable(g:google_vimrc)
@@ -280,14 +246,24 @@ set cinoptions=:0,g0,(0,Ws,l1
 " https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
 let c_no_curly_error = 1
 
+function! s:SetColorcolumn()
+  if &filetype == "go"
+    set colorcolumn=100
+  elseif &filetype == "man"
+    set colorcolumn=
+  else
+    set colorcolumn=80
+  endif
+endfunction
+
 augroup CustomFileTypeCommands | autocmd!
-  " Draw margin
-  autocmd BufNewFile,BufRead,FileType * let &colorcolumn = &textwidth ?? 80
+  autocmd BufNewFile,BufRead,FileType * call s:SetColorcolumn()
+  autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
   autocmd BufNewFile,BufRead *.bp set filetype=javascript softtabstop=4 shiftwidth=4
-  autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
-  autocmd FileType go set noexpandtab tabstop=2 colorcolumn=100
+  autocmd FileType go set noexpandtab tabstop=2
   autocmd FileType make set noexpandtab preserveindent
+  autocmd FileType man setlocal signcolumn=no | nnoremap <buffer> <silent> q :q<CR>
 augroup END
 
 " :help restore-cursor
@@ -382,8 +358,8 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [t :tabprevious<CR>
 nnoremap <silent> ]T :tablast<CR>
 nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> <C-A-Right> :<C-U>execute 'tabmove +' . v:count1<CR>
-nnoremap <silent> <C-A-Left> :<C-U>execute 'tabmove -' . v:count1<CR>
+nnoremap <silent> <A-Right> :<C-U>execute 'tabmove +' . v:count1<CR>
+nnoremap <silent> <A-Left> :<C-U>execute 'tabmove -' . v:count1<CR>
 
 " http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
 inoremap <C-U> <C-G>u<C-U>
@@ -401,6 +377,9 @@ let g:startify_custom_header = ''
 let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
 
 " :help vimsuggest.txt
+set wildmenu
+set wildmode=longest:full,full
+set wildoptions=pum,fuzzy
 let s:vim_suggest = {
       \ 'cmd': {'reverse': v:true, 'popupattrs': {'maxheight': 12}, 'addons': v:false},
       \ 'search': {'reverse': v:true},
