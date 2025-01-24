@@ -1,3 +1,12 @@
+set noshowmode
+set showcmd
+set cmdheight=1
+set laststatus=2
+" Show search count like "[1/5]"
+set shortmess-=S
+" Don't show completion messages like "match 1 of 2"
+set shortmess+=c
+
 " :help lightline.txt
 let g:lightline = {
       \ 'colorscheme': 'everforest',

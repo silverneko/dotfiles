@@ -53,65 +53,33 @@ syntax enable
 filetype plugin indent on
 
 set nocompatible
+set nomodeline noerrorbells
+set ruler signcolumn=yes number numberwidth=5
+set incsearch hlsearch
+set ignorecase smartcase
 
-" :help persistent-undo
-let undo_dir='/tmp/vim_undo'
-if !isdirectory(undo_dir)
-  call mkdir(undo_dir, 'p')
-endif
-let &undodir=undo_dir
-set undofile
-
-set ttimeout
-augroup NoInsertKeycodes
-  autocmd!
-  autocmd InsertEnter * set ttimeoutlen=0
-  autocmd InsertLeave * set ttimeoutlen=100 "<--- default value; also try 100 or something
-augroup END
-
-" j: Delete comment character when joining commented lines.
-" o: Insert comment leader when 'o' / 'O' in Normal mode.
-augroup SetFormatOptions
-  autocmd!
-  autocmd BufNewFile,BufRead * setlocal formatoptions-=o formatoptions+=j
-augroup END
-
-" Show search count like "[1/5]"
-set shortmess-=S
-
-set nomodeline
-set noerrorbells
 set splitbelow
 set scrolloff=5
 set sidescroll=1
 set sidescrolloff=5
-set history=1000
+set display+=lastline
+
+set history=2000
 set sessionoptions-=options
 set viewoptions-=options
 " Persist g:UPPERCASE variables, used by some plugins, in .viminfo.
 set viminfo^=!
 " vim -p <FILES...> / vim <FILES...> && :tab all
-set tabpagemax=50
+set tabpagemax=20
 " Disable a legacy behavior that can break plugin maps. (???)
 set nolangremap
 
-set cursorline
-set ruler
-set number
-set numberwidth=5
 set mouse=nv
 set guifont=DejaVu\ Sans\ Mono\ 14
 set guicursor+=a:blinkon0
 
-set listchars=trail:␣,tab:»\ ,nbsp:¬
-set list
-
 set backspace=indent,eol,start
-set history=500      " keep 500 lines of command line history
-set showcmd          " display incomplete commands
-set incsearch        " do incremental searching
-set hlsearch
-set ignorecase smartcase
+set list listchars=trail:␣,tab:»\ ,nbsp:¬
 
 " Tab things
 set tabstop=8        "A tab is 8 spaces
@@ -129,68 +97,89 @@ set cinoptions=:0,g0,(0,Ws,l1
 " https://github.com/vim-jp/vim-cpp/issues/16. A workaround is to set:
 let c_no_curly_error = 1
 
-function! s:SetColorcolumn()
-  if &filetype == "go"
-    set colorcolumn=100
-  elseif &filetype == "man"
-    set colorcolumn=
-  else
-    set colorcolumn=80
-  endif
-endfunction
-
 augroup CustomFileTypeCommands | autocmd!
-  autocmd BufNewFile,BufRead,FileType * call s:SetColorcolumn()
   autocmd BufNewFile,BufRead ghostty.config setfiletype ghostty
   autocmd BufNewFile,BufRead *.aidl,*.hidl setfiletype java
   autocmd BufNewFile,BufRead *.bp set filetype=javascript softtabstop=4 shiftwidth=4
   autocmd FileType go set noexpandtab tabstop=2
   autocmd FileType make set noexpandtab preserveindent
-  autocmd FileType man setlocal signcolumn=no | nnoremap <buffer> <silent> q :q<CR>
+  autocmd FileType man setlocal signcolumn=no | nnoremap <buffer><silent> q :q<CR>
+augroup END
+
+" :help persistent-undo
+let undo_dir='/tmp/vim_undo'
+if !isdirectory(undo_dir)
+  call mkdir(undo_dir, 'p')
+endif
+let &undodir=undo_dir
+set undofile
+
+" Reduce <Esc> timeout. Reduce insert mode enter / leave lag.
+set ttimeout
+augroup NoInsertKeycodes | autocmd!
+  autocmd InsertEnter * set ttimeoutlen=0
+  autocmd InsertLeave * set ttimeoutlen=100 "<--- default value; also try 100 or something
+augroup END
+
+" j: Delete comment character when joining commented lines.
+" o: Insert comment leader when 'o' / 'O' in Normal mode.
+augroup SetFormatOptions | autocmd!
+  autocmd BufNewFile,BufRead * setlocal formatoptions-=o formatoptions+=j
 augroup END
 
 " :help restore-cursor
-augroup RestoreCursor
-  autocmd!
+augroup RestoreCursor | autocmd!
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+  " Center the cursor
+  autocmd BufWinEnter * normal zz
 augroup END
 
 " Hide cursorline on FocusLost; Show cursorline on FocusGained
-augroup SetFocusedCursorline
-  autocmd!
-  autocmd User Startified setlocal cursorline
+augroup FocusedCursorline | autocmd!
   autocmd BufNewFile,BufRead,FocusGained * set cursorline
   autocmd FocusLost * set nocursorline
 augroup END
 
+augroup HighlightedYank | autocmd!
+  autocmd TextYankPost * call highlightedyank#HighlightedYank('Visual', 300, v:false)
+augroup END
+
+augroup DrawColorcolumn | autocmd!
+  autocmd OptionSet textwidth call s:SetColorcolumn()
+  autocmd BufNewFile,BufRead,BufEnter,FileType * call s:SetColorcolumn()
+augroup END
+function! s:SetColorcolumn()
+  let cc_lookup = #{go: '100', man: ''}
+  if has_key(cc_lookup, &filetype)
+    exec 'setlocal colorcolumn=' .. cc_lookup[&filetype]
+  elseif &textwidth != 0
+    " +/-[n] means relative to textwidth
+    setlocal colorcolumn=+0
+  else
+    setlocal colorcolumn=80
+  endif
+endfunction
+
 " :help signify.txt
 let g:signify_number_highlight = 1
-" Always show gutter so it doesn't flicker when making new changes
-set signcolumn=yes
 " Eagerly update git status
 set updatetime=300
-
-function! s:show_current_hunk() abort
+augroup ShowHunkAfterJump | autocmd! | autocmd User SignifyHunk call s:ShowCurrentHunk() | augroup END
+function! s:ShowCurrentHunk() abort
   let h = sy#util#get_hunk_stats()
   if !empty(h)
     " Prevents status line flickering :h :echo-redraw
     redraw | echo printf('[Hunk %d/%d]', h.current_hunk, h.total_hunks)
+    SignifyHunkDiff
   endif
 endfunction
 
-augroup ShowHunkIndexAfterJump
-  autocmd!
-  autocmd User SignifyHunk call s:show_current_hunk()
-augroup END
-
-nnoremap <silent> ]c <plug>(signify-next-hunk):SignifyHunkDiff<CR>
-nnoremap <silent> [c <plug>(signify-prev-hunk):SignifyHunkDiff<CR>
-
-
-
-
 " Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call :diffupdate.
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+augroup InsertModeNoh | autocmd!
+  " Convoluted because :noh doesn't work in autocmd, see :h autocmd-searchpat
+  autocmd InsertEnter * call feedkeys("\<Cmd>nohlsearch\<CR>", 'n')
+augroup END
 
 " vim-signature
 " m[0-9] -> Place markers
@@ -210,8 +199,8 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [t :tabprevious<CR>
 nnoremap <silent> ]T :tablast<CR>
 nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> <A-Right> :<C-U>execute 'tabmove +' . v:count1<CR>
-nnoremap <silent> <A-Left> :<C-U>execute 'tabmove -' . v:count1<CR>
+nnoremap <silent> <A-Right> :<C-U>execute 'tabmove +' .. v:count1<CR>
+nnoremap <silent> <A-Left> :<C-U>execute 'tabmove -' .. v:count1<CR>
 
 " http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
 inoremap <C-U> <C-G>u<C-U>
@@ -227,9 +216,7 @@ command LCD lcd %:p:h
 " :help startify.txt
 let g:startify_custom_header = ''
 let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
-augroup StartifiedCursorline | autocmd!
-  autocmd User Startified setlocal cursorline
-augroup END
+augroup StartifiedCursorline | autocmd! | autocmd User Startified setlocal cursorline | augroup END
 
 " :help vimsuggest.txt
 set wildmenu
@@ -244,48 +231,6 @@ augroup END
 
 " Java format style
 Glaive codefmt google_java_executable="google-java-format --aosp"
-
-" :help lsp.txt yegappan/lsp
-augroup LspConfig | autocmd!
-  autocmd User LspSetup call LspOptionsSet(#{
-        \ autoHighlightDiags: v:true,
-        \ showDiagInBalloon: v:true,
-        \ semanticHighlight: v:true,
-        \ showInlayHints: v:true,
-        "\ hoverInPreview: v:true,
-        \ })
-  autocmd User LspSetup call LspAddServer(s:lsp_servers)
-augroup END
-let s:lsp_servers = [#{
-      \    name: 'rustlang',
-      \    filetype: ['rust'],
-      \    path: exepath('rust-analyzer'),
-      \    args: [],
-      \    syncInit: v:true
-      \  }]
-
-" :help vimcomplete.txt
-augroup SetVimCompleteOptions | autocmd!
-  autocmd VimEnter * call g:VimCompleteOptionsSet(#{
-        \ completor: #{infoPopup: v:false},
-        \ path: #{enable: v:true, priority: 5, showPathSeparatorAtEnd: v:true},
-        \ vimscript: #{enable: v:true, priority: 5},
-        \ })
-augroup END
-" Vimcomplete would map these for us.
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-let g:vimcomplete_tab_enable = v:true
-" <CR> shenanigans. Every plugin wants to map <CR>, yet they can't play nice together.
-" See: https://github.com/tpope/vim-endwise/issues/22
-"   https://github.com/girishji/vimcomplete/blob/main/README.md#enter-key-handling
-let g:endwise_no_mappings = v:true
-let g:endwise_no_maps = v:true
-let g:vimcomplete_cr_enable = v:false
-inoremap <expr> <CR>
-      \ "\<Plug>(vimcomplete-skip)"
-      \ .. (pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>")
-      \ .. "\<Plug>DiscretionaryEnd"
 
 " Colorscheme
 set t_Co=256
