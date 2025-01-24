@@ -1,29 +1,29 @@
+" NOTE: {visual}K to lookup selected text in :help, see :h v_K
+
 " vim-matchup replaces matchit.vim
+let g:loaded_matchit = 1
+let g:matchup_matchparen_offscreen = #{method: 'popup', fullwidth: 1}
+
 " let g:ale_completion_enabled = 1
 " let g:ale_hover_cursor = 1
-" let g:loaded_matchit = 1
 " let g:ale_set_balloons = 1
 " let g:ale_floating_preview = 1
-
-" set omnifunc=ale#completion#OmniFunc
-
-let g:vimcomplete_cr_enable = 0
 
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
-"Plug 'sainnhe/gruvbox-material'
 Plug 'sainnhe/everforest'
 Plug 'itchyny/lightline.vim'
-Plug 'mhinz/vim-startify'
-Plug 'mhinz/vim-signify'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
+Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-signify'
 Plug 'kshenoy/vim-signature'
 Plug 'andymass/vim-matchup'
 Plug 'justinmk/vim-sneak'
+Plug 'bfrg/vim-c-cpp-modern'
+"Plug 'fidian/hexmode'
 
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-commentary'
@@ -32,14 +32,9 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 
 Plug 'girishji/vimsuggest'
-
-Plug 'girishji/vimcomplete'
+Plug 'silverneko/vimcomplete'
 Plug 'yegappan/lsp'
-
 "Plug 'dense-analysis/ale'
-
-Plug 'bfrg/vim-c-cpp-modern'
-"Plug 'fidian/hexmode'
 
 Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
@@ -54,8 +49,6 @@ if filereadable(g:google_vimrc)
   exec 'source' g:google_vimrc
 endif
 
-Glaive codefmt google_java_executable="google-java-format --aosp"
-
 syntax enable
 filetype plugin indent on
 
@@ -68,116 +61,6 @@ if !isdirectory(undo_dir)
 endif
 let &undodir=undo_dir
 set undofile
-
-" set completeopt=menuone,noselect
-" set shortmess+=c
-
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" let vcoptions = {}
-" autocmd VimEnter * call g:VimCompleteOptionsSet(vcoptions)
-
-" inoremap <CR> <C-r>=<SID>my_cr_function()<CR>
-" function! s:my_cr_function()
-"   return pumvisible() ? "\<C-y>" : "\<CR>"
-" endfunction
-" inoremap <expr> <cr>    pumvisible() ? "\<c-y>" : "\<cr>"
-" inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
-" let lspOpts = #{autoHighlightDiags: v:true,
-"       \ noNewlineInCompletionEver: v:true,
-"       \ showInlayHints: v:true}
-" autocmd User LspSetup call LspOptionsSet(lspOpts)
-
-" let lspServers = [#{
-" 	\    name: 'rustlang',
-" 	\    filetype: ['rust'],
-"         \    path: exepath('rust-analyzer'),
-" 	\    args: [],
-" 	\    syncInit: v:true
-" 	\  }]
-" autocmd User LspSetup call LspAddServer(lspServers)
-
-" gruvbox
-set t_Co=256
-set termguicolors
-set background=dark
-" let g:gruvbox_material_background = 'hard'
-" let g:gruvbox_material_better_performance = 1
-" let g:gruvbox_material_visual = 'blue background'
-" colorscheme gruvbox-material
-let g:everforest_background = 'hard'
-let g:everforest_colors_override = {}
-let g:everforest_better_performance = 1
-
-function! s:everforest_custom() abort
-  let l:palette = everforest#get_palette(g:everforest_background, g:everforest_colors_override)
-  call everforest#highlight('Todo', l:palette.fg, l:palette.none, 'bold,italic')
-endfunction
-
-augroup EverforestCustom
-  autocmd!
-  autocmd ColorScheme everforest call s:everforest_custom()
-augroup END
-
-colorscheme everforest
-
-" lightline
-set noshowmode
-set display+=lastline
-set cmdheight=1
-set laststatus=2
-
-let g:lightline = {
-      \ 'colorscheme': 'everforest',
-      \ 'active': {
-      \   'left': [
-      \     ['mode', 'paste'],
-      \     ['relativepath', 'readonly'],
-      \     ['modified'],
-      \   ],
-      \   'right': [
-      \     ['percentwin'],
-      \     ['line', 'column'],
-      \     ['gitbranch', 'filetype', 'my_fileencoding', 'charhexvalue'] ,
-      \   ],
-      \ },
-      \ 'tabline': {'left': [['tabs']], 'right': []},
-      \ 'tab': {'active': ['tabtitle'], 'inactive': ['tabtitle']},
-      \ 'component': {
-      \   'charhexvalue': '0x%02B',
-      \   'modified': '%m',
-      \   'line': '%3l/%LL',
-      \   'column': '%2vC',
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name',
-      \   'my_fileencoding': 'MyFileencoding',
-      \ },
-      \ 'component_expand': {'tabs': 'MyLightlineTabs'},
-      \ 'tab_component_function': {'tabtitle': 'MyTabTitle'},
-      \ 'tabline_subseparator': {'left': '', 'right': ''},
-      \ }
-
-function! MyFileencoding()
-  let l:enc = &fenc !=# "" ? &fenc : &enc
-  return l:enc ==? "utf-8" ? "" : l:enc
-endfunction
-
-function! MyTabTitle(n)
-  return '[' . a:n . '] ' . lightline#tab#filename(a:n) . (lightline#tab#modified(a:n) == '+' ? '*' : '')
-endfunction
-
-function! MyLightlineTabs() abort
-  let [x, y, z] = [[], [], []]
-  let nr = tabpagenr()
-  let cnt = tabpagenr('$')
-  for i in range(1, cnt)
-    call add(i < nr ? x : i == nr ? y : z, (i > nr + 3 ? '%<' : '') . '%' . i . 'T%{lightline#onetab(' . i . ',' . (i == nr) . ')}' . (i == cnt ? '%T' : ''))
-  endfor
-  return [x, y, z]
-endfunction
 
 set ttimeout
 augroup NoInsertKeycodes
@@ -303,39 +186,8 @@ augroup END
 nnoremap <silent> ]c <plug>(signify-next-hunk):SignifyHunkDiff<CR>
 nnoremap <silent> [c <plug>(signify-prev-hunk):SignifyHunkDiff<CR>
 
-" :help tmux-integration
-if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
-  " Insert / replace / normal = vertical bar / underline / block, :help termcap-cursor-shape
-  let &t_SI = "\e[6 q"
-  let &t_SR = "\e[4 q"
-  let &t_EI = "\e[2 q"
 
-  " Better mouse support, see  :help 'ttymouse'
-  set ttymouse=sgr
 
-  " Enable true colors, see  :help xterm-true-color
-  set termguicolors
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-  " Enable bracketed paste mode, see  :help xterm-bracketed-paste
-  let &t_BE = "\<Esc>[?2004h"
-  let &t_BD = "\<Esc>[?2004l"
-  let &t_PS = "\<Esc>[200~"
-  let &t_PE = "\<Esc>[201~"
-
-  " Enable focus event tracking, see  :help xterm-focus-event
-  let &t_fe = "\<Esc>[?1004h"
-  let &t_fd = "\<Esc>[?1004l"
-  execute "set <FocusGained>=\<Esc>[I"
-  execute "set <FocusLost>=\<Esc>[O"
-
-  " Enable modified arrow keys, see  :help arrow_modifiers
-  execute "silent! set <xUp>=\<Esc>[@;*A"
-  execute "silent! set <xDown>=\<Esc>[@;*B"
-  execute "silent! set <xRight>=\<Esc>[@;*C"
-  execute "silent! set <xLeft>=\<Esc>[@;*D"
-endif
 
 " Use CTRL-L to clear the highlighting of 'hlsearch' (off by default) and call :diffupdate.
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
@@ -375,16 +227,114 @@ command LCD lcd %:p:h
 " :help startify.txt
 let g:startify_custom_header = ''
 let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
+augroup StartifiedCursorline | autocmd!
+  autocmd User Startified setlocal cursorline
+augroup END
 
 " :help vimsuggest.txt
 set wildmenu
 set wildmode=longest:full,full
 set wildoptions=pum,fuzzy
-let s:vim_suggest = {
-      \ 'cmd': {'reverse': v:true, 'popupattrs': {'maxheight': 12}, 'addons': v:false},
-      \ 'search': {'reverse': v:true},
-      \ }
-augroup SetVimSuggestOptions
-  autocmd!
-  autocmd VimEnter * call g:VimSuggestSetOptions(s:vim_suggest)
+augroup SetVimSuggestOptions | autocmd!
+  autocmd VimEnter * call g:VimSuggestSetOptions(#{
+        \ cmd: #{reverse: v:true, addon: v:false, popupattrs: #{maxheight: 12}},
+        \ search: #{reverse: v:true},
+        \ })
 augroup END
+
+" Java format style
+Glaive codefmt google_java_executable="google-java-format --aosp"
+
+" :help lsp.txt yegappan/lsp
+augroup LspConfig | autocmd!
+  autocmd User LspSetup call LspOptionsSet(#{
+        \ autoHighlightDiags: v:true,
+        \ showDiagInBalloon: v:true,
+        \ semanticHighlight: v:true,
+        \ showInlayHints: v:true,
+        "\ hoverInPreview: v:true,
+        \ })
+  autocmd User LspSetup call LspAddServer(s:lsp_servers)
+augroup END
+let s:lsp_servers = [#{
+      \    name: 'rustlang',
+      \    filetype: ['rust'],
+      \    path: exepath('rust-analyzer'),
+      \    args: [],
+      \    syncInit: v:true
+      \  }]
+
+" :help vimcomplete.txt
+augroup SetVimCompleteOptions | autocmd!
+  autocmd VimEnter * call g:VimCompleteOptionsSet(#{
+        \ completor: #{infoPopup: v:false},
+        \ path: #{enable: v:true, priority: 5, showPathSeparatorAtEnd: v:true},
+        \ vimscript: #{enable: v:true, priority: 5},
+        \ })
+augroup END
+" Vimcomplete would map these for us.
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+let g:vimcomplete_tab_enable = v:true
+" <CR> shenanigans. Every plugin wants to map <CR>, yet they can't play nice together.
+" See: https://github.com/tpope/vim-endwise/issues/22
+"   https://github.com/girishji/vimcomplete/blob/main/README.md#enter-key-handling
+let g:endwise_no_mappings = v:true
+let g:endwise_no_maps = v:true
+let g:vimcomplete_cr_enable = v:false
+inoremap <expr> <CR>
+      \ "\<Plug>(vimcomplete-skip)"
+      \ .. (pumvisible() ? "\<C-Y>" : "\<C-G>u\<CR>")
+      \ .. "\<Plug>DiscretionaryEnd"
+
+" Colorscheme
+set t_Co=256
+set termguicolors
+set background=dark
+
+let g:everforest_background = 'hard'
+let g:everforest_colors_override = {}
+let g:everforest_better_performance = 1
+function! s:everforest_custom() abort
+  let l:palette = everforest#get_palette(g:everforest_background, g:everforest_colors_override)
+  call everforest#highlight('Todo', l:palette.fg, l:palette.none, 'bold,italic')
+  call everforest#highlight('PmenuMatch', l:palette.red, l:palette.none, 'bold')
+endfunction
+augroup EverforestCustom | autocmd!
+  autocmd ColorScheme everforest call s:everforest_custom()
+augroup END
+colorscheme everforest
+
+" :help tmux-integration
+if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
+  " Insert / replace / normal = vertical bar / underline / block, :help termcap-cursor-shape
+  let &t_SI = "\e[6 q"
+  let &t_SR = "\e[4 q"
+  let &t_EI = "\e[2 q"
+
+  " Better mouse support, see  :help 'ttymouse'
+  set ttymouse=sgr
+
+  " Enable true colors, see  :help xterm-true-color
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+  " Enable bracketed paste mode, see  :help xterm-bracketed-paste
+  let &t_BE = "\<Esc>[?2004h"
+  let &t_BD = "\<Esc>[?2004l"
+  let &t_PS = "\<Esc>[200~"
+  let &t_PE = "\<Esc>[201~"
+
+  " Enable focus event tracking, see  :help xterm-focus-event
+  let &t_fe = "\<Esc>[?1004h"
+  let &t_fd = "\<Esc>[?1004l"
+  execute "set <FocusGained>=\<Esc>[I"
+  execute "set <FocusLost>=\<Esc>[O"
+
+  " Enable modified arrow keys, see  :help arrow_modifiers
+  execute "silent! set <xUp>=\<Esc>[@;*A"
+  execute "silent! set <xDown>=\<Esc>[@;*B"
+  execute "silent! set <xRight>=\<Esc>[@;*C"
+  execute "silent! set <xLeft>=\<Esc>[@;*D"
+endif
