@@ -1,9 +1,5 @@
 " NOTE: {visual}K to lookup selected text in :help, see :h v_K
 
-" vim-matchup replaces matchit.vim
-let g:loaded_matchit = 1
-let g:matchup_matchparen_offscreen = #{method: 'popup', fullwidth: 1}
-
 " let g:ale_completion_enabled = 1
 " let g:ale_hover_cursor = 1
 " let g:ale_set_balloons = 1
@@ -104,6 +100,8 @@ augroup CustomFileTypeCommands | autocmd!
   autocmd FileType go set noexpandtab tabstop=2
   autocmd FileType make set noexpandtab preserveindent
   autocmd FileType man setlocal signcolumn=no | nnoremap <buffer><silent> q :q<CR>
+  autocmd FileType rust setlocal textwidth=100  " Why would the default be 99?
+  autocmd FileType lspgfm setlocal nonumber signcolumn=no
 augroup END
 
 " :help persistent-undo
@@ -149,7 +147,7 @@ augroup DrawColorcolumn | autocmd!
   autocmd BufNewFile,BufRead,BufEnter,FileType * call s:SetColorcolumn()
 augroup END
 function! s:SetColorcolumn()
-  let cc_lookup = #{go: '100', man: ''}
+  let cc_lookup = #{go: '100', man: '', lspgfm: ''}
   if has_key(cc_lookup, &filetype)
     exec 'setlocal colorcolumn=' .. cc_lookup[&filetype]
   elseif &textwidth != 0
@@ -159,6 +157,13 @@ function! s:SetColorcolumn()
     setlocal colorcolumn=80
   endif
 endfunction
+
+" Disable netrw. Use FZF for file finding needs.
+let g:loaded_netrwPlugin = 1
+
+" vim-matchup replaces matchit.vim
+let g:loaded_matchit = 1
+let g:matchup_matchparen_offscreen = #{method: 'popup', fullwidth: 1}
 
 " :help signify.txt
 let g:signify_number_highlight = 1
