@@ -22,21 +22,23 @@ unset -f link-dot
 
 ### Fzf
 
-Installing and upgrading:
+Install and upgrade `fzf` with `vim-plug`.
+
 ```sh
-[ -e ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-cd ~/.fzf && git pull && ./install
+# [ -e ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# cd ~/.fzf && git pull && ./install
 ```
 
 ### Utilities
 
 ```sh
-sudo apt install lsd fd-find bat
+sudo apt install fd-find ripgrep bat lsd
 ```
 
 ### vim-plug
 Update plugins:
 ```
+:PlugInstall  " Install new plugins only
 :PlugUpdate
 ```
 

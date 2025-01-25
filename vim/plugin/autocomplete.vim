@@ -1,10 +1,12 @@
 " :help vimcomplete.txt
 augroup SetVimCompleteOptions | autocmd!
   autocmd VimEnter * call g:VimCompleteOptionsSet(#{
-        \ buffer: #{dup: v:false},
-        \ completor: #{infoPopup: v:false},
-        \ path: #{enable: v:true, priority: 5, showPathSeparatorAtEnd: v:true},
-        \ vimscript: #{enable: v:true, priority: 5},
+        \ completor: #{infoPopup: v:false, alwaysOn: v:true, throttleTimeout: 300},
+        \ lsp:        #{enable: v:true, priority: 15},
+        \ buffer:     #{enable: v:true, priority: 10, dup: v:false},
+        \ path:       #{enable: v:true, priority: 5,
+        \   groupDirectoriesFirst: v:true, showPathSeparatorAtEnd: v:true},
+        \ vimscript:  #{enable: v:true, priority: 5},
         \ })
 augroup END
 

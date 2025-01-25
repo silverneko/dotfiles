@@ -11,24 +11,26 @@ call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/everforest'
 Plug 'itchyny/lightline.vim'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', #{ dir: '~/.fzf', do: { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
 Plug 'kshenoy/vim-signature'
 Plug 'andymass/vim-matchup'
 Plug 'justinmk/vim-sneak'
+Plug 'justinmk/vim-dirvish'
 Plug 'bfrg/vim-c-cpp-modern'
 "Plug 'fidian/hexmode'
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 
 Plug 'girishji/vimsuggest'
-Plug 'silverneko/vimcomplete'
+Plug 'girishji/vimcomplete'
 Plug 'yegappan/lsp'
 "Plug 'dense-analysis/ale'
 
@@ -45,6 +47,8 @@ if filereadable(g:google_vimrc)
   exec 'source' g:google_vimrc
 endif
 
+packadd! comment
+
 syntax enable
 filetype plugin indent on
 
@@ -53,6 +57,8 @@ set nomodeline noerrorbells
 set ruler signcolumn=yes number numberwidth=5
 set incsearch hlsearch
 set ignorecase smartcase
+set encoding=utf-8
+set hidden
 
 set splitbelow
 set scrolloff=5
@@ -147,9 +153,12 @@ augroup DrawColorcolumn | autocmd!
   autocmd BufNewFile,BufRead,BufEnter,FileType * call s:SetColorcolumn()
 augroup END
 function! s:SetColorcolumn()
-  let cc_lookup = #{go: '100', man: '', lspgfm: ''}
-  if has_key(cc_lookup, &filetype)
-    exec 'setlocal colorcolumn=' .. cc_lookup[&filetype]
+  let cc_val = #{go: '100'}->get(&filetype, '')
+  let cc_nil = ['man', 'lspgfm', 'startify', 'help']
+  if !cc_val->empty()
+    exec 'setlocal colorcolumn=' .. cc_val
+  elseif cc_nil->index(&filetype) != -1
+    setlocal colorcolumn=
   elseif &textwidth != 0
     " +/-[n] means relative to textwidth
     setlocal colorcolumn=+0
@@ -158,7 +167,7 @@ function! s:SetColorcolumn()
   endif
 endfunction
 
-" Disable netrw. Use FZF for file finding needs.
+" Disable netrw. Use FZF & dirvish to find files.
 let g:loaded_netrwPlugin = 1
 
 " vim-matchup replaces matchit.vim
@@ -191,13 +200,20 @@ augroup END
 " ???, ]=, ]- -> Navigate markers
 
 " Single character *sneak*. `;` => next sneak, `,` => previous sneak.
+let g:sneak#use_ic_scs = 1  " Respect smartcase & ignorecase
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
 " Shortcuts
-nnoremap <F8> :%y +<CR>
+" Comment to the rest of line
+nnoremap <silent> <expr> gC comment#Toggle() .. '$'
+" CTRL-P to find pathname
+nnoremap <C-P> <ScriptCmd>call ctrlp#CtrlP()<CR>
+" CTRL-B to find buffer
+nnoremap <C-B> <ScriptCmd>Buffers<CR>
+cnoreabbrev <expr> MRU ((getcmdtype() is# ':' && getcmdline() is# 'MRU') ? 'History' : 'MRU')
 
 " Tab navigations
 nnoremap <silent> ]t :tabnext<CR>
@@ -220,7 +236,14 @@ command LCD lcd %:p:h
 
 " :help startify.txt
 let g:startify_custom_header = ''
-let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/']
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_skiplist = ['COMMIT_EDITMSG', '.repo/', '.cargo/', '.rustup/']
+let g:startify_lists = [
+      \ #{type: 'files', header: ['   MRU'], indices: '1234567890'->split('\zs')},
+      \ #{type: 'dir',   header: ['   MRU '. getcwd()->fnamemodify(':~')],
+      \   indices: '1234567890'->split('\zs')->map('"d" .. v:val')},
+      \ ]
 augroup StartifiedCursorline | autocmd! | autocmd User Startified setlocal cursorline | augroup END
 
 " :help vimsuggest.txt
@@ -229,7 +252,7 @@ set wildmode=longest:full,full
 set wildoptions=pum,fuzzy
 augroup SetVimSuggestOptions | autocmd!
   autocmd VimEnter * call g:VimSuggestSetOptions(#{
-        \ cmd: #{reverse: v:true, addon: v:false, popupattrs: #{maxheight: 12}},
+        \ cmd: #{reverse: v:true, addons: v:false, popupattrs: #{maxheight: 12}},
         \ search: #{reverse: v:true},
         \ })
 augroup END
