@@ -153,8 +153,8 @@ augroup DrawColorcolumn | autocmd!
   autocmd BufNewFile,BufRead,BufEnter,FileType * call s:SetColorcolumn()
 augroup END
 function! s:SetColorcolumn()
+  let cc_nil = ['man', 'lspgfm', 'startify', 'help', 'dirvish']
   let cc_val = #{go: '100'}->get(&filetype, '')
-  let cc_nil = ['man', 'lspgfm', 'startify', 'help']
   if !cc_val->empty()
     exec 'setlocal colorcolumn=' .. cc_val
   elseif cc_nil->index(&filetype) != -1
@@ -272,6 +272,7 @@ function! s:everforest_custom() abort
   let l:palette = everforest#get_palette(g:everforest_background, g:everforest_colors_override)
   call everforest#highlight('Todo', l:palette.fg, l:palette.none, 'bold,italic')
   call everforest#highlight('PmenuMatch', l:palette.red, l:palette.none, 'bold')
+  call everforest#highlight('EndOfBuffer', l:palette.bg4, l:palette.bg_dim)
 endfunction
 augroup EverforestCustom | autocmd!
   autocmd ColorScheme everforest call s:everforest_custom()

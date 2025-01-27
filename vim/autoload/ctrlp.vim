@@ -19,14 +19,21 @@ def GitRoot(): string
   return v:shell_error != 0 ? '' : root
 enddef
 
+def StartsWith(s: string, prefix: string): bool
+  return s->match('^' .. prefix) != -1
+enddef
+
 # TODO: Support repo root
 export def CtrlP()
-  var path = GitRoot() ?? expand('%:p:h')
-  # var args = fzf#vim#with_preview({
-  #   dir: path,
-  #   options: ['-m', '--prompt', ShortPath(path)],
-  # })
-  # fzf#run(fzf#wrap('ctrlp', args, false))
-  var prompt_override = {options: ['--prompt', ShortPath(path)]}
-  fzf#vim#files(path, fzf#vim#with_preview(prompt_override))
+  var path = GitRoot()
+  if empty(path)
+    # Basedir of current file
+    path = expand('%:p:h')
+    # If base is subdir of cwd AND cwd is not root, then use cwd instead.
+    var cwd = getcwd()
+    if cwd->len() > 1 && path->StartsWith(cwd)
+      path = cwd
+    endif
+  endif
+  fzf#vim#files(path, fzf#vim#with_preview({options: ['--prompt', ShortPath(path)]}))
 enddef

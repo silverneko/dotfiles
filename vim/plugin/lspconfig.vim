@@ -9,8 +9,8 @@ augroup END
 
 var lsp_options = {
   autoHighlightDiags: true,
-  # showDiagInBalloon: true,
-  showDiagWithVirtualText: true,
+  showDiagInBalloon: true,
+  # showDiagWithVirtualText: true,
   semanticHighlight: true,
   showInlayHints: true,
   hoverInPreview: true,

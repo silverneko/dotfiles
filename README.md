@@ -36,6 +36,7 @@ sudo apt install fd-find ripgrep bat lsd
 ```
 
 ### vim-plug
+
 Update plugins:
 ```
 :PlugInstall  " Install new plugins only
@@ -50,8 +51,15 @@ Update vim-plug itself:
 
 ## Vim
 
-### Mapped function keys
-- `<F8>`                Yank all
+### Mapped keys
+
+* `CTRL-E`              Cancel autocomplete
+* `CTRL-F`              Edit commandline
+* `CTRL-P`              Pick file
+* `CTRL-B`              Pick buffer
+* `:MRU`                Pick `:oldfiles`
+* `-`                   [Dirvish] List parent dir of current file
+
 - `]t`                  Go to next tab
 - `[t`                  Go to previous tab
 - `]T`                  Go to last tab
