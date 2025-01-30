@@ -14,6 +14,7 @@ var lsp_options = {
   semanticHighlight: true,
   showInlayHints: true,
   hoverInPreview: true,
+  ignoreMissingServer: true,  # Shut up about missing executables
 }
 
 var lsp_servers = [{
@@ -41,4 +42,6 @@ def LspAttached()
   nnoremap <buffer> ]d :LspDiagNextWrap<CR>
   nnoremap <buffer> [d :LspDiagPrevWrap<CR>
   nnoremap <buffer> ]D :LspDiagShow<CR>
+
+  nnoremap <buffer> <C-H> <ScriptCmd>LspInlayHints toggle<CR>
 enddef

@@ -13,31 +13,43 @@ let g:lightline = {
       \ 'active': {
       \   'left': [
       \     ['mode', 'paste'],
-      \     ['relativepath', 'readonly'],
-      \     ['modified'],
+      \     ['my_filename'],
+      \     ['alternate_name'],
       \   ],
       \   'right': [
       \     ['percentwin'],
-      \     ['line', 'column'],
-      \     ['gitbranch', 'filetype', 'my_fileencoding', 'charhexvalue'] ,
+      \     ['line_column', 'charhexvalue'],
+      \     ['gitbranch', 'lsp_server', 'filetype', 'my_fileencoding'] ,
       \   ],
       \ },
       \ 'tabline': {'left': [['tabs']], 'right': []},
       \ 'tab': {'active': ['tabtitle'], 'inactive': ['tabtitle']},
       \ 'component': {
       \   'charhexvalue': '0x%02B',
-      \   'modified': '%m',
-      \   'line': '%3l/%LL',
-      \   'column': '%2vC',
+      \   'my_filename': '%f%{%&modified||!&modifiable||&readonly?" %m%r":""%}',
+      \   'line_column': '%3l/%LL %2vC',
       \ },
       \ 'component_function': {
       \   'gitbranch': 'gitbranch#name',
       \   'my_fileencoding': expand('<SID>') .. 'Fileencoding',
+      \   'alternate_name': expand('<SID>') .. 'AltName',
+      \   'lsp_server': expand('<SID>') .. 'LspServer',
       \ },
       \ 'component_expand': {'tabs': expand('<SID>') .. "LightlineTabs"},
       \ 'tab_component_function': {'tabtitle': expand('<SID>') .. 'TabTitle'},
       \ 'tabline_subseparator': {'left': '', 'right': ''},
       \ }
+
+function! s:AltName()
+  let alt = getbufinfo('#')
+  return alt->empty() ? '' :
+        \ '[#' .. (alt[0].changed ? '+' : ' ') .. (alt[0].name->fnamemodify(':t') ?? '(No Name)') .. ']'
+endfunction
+
+function! s:LspServer()
+  let lspserver = lsp#buffer#CurbufGetServer()
+  return !lspserver->empty() ? lspserver.name : ''
+endfunction
 
 function! s:Fileencoding()
   return substitute(&fenc ?? &enc, '^utf-8$\c', '', '')
