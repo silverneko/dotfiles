@@ -214,6 +214,9 @@ nnoremap <silent> <expr> gC comment#Toggle() .. '$'
 nnoremap <C-P> <ScriptCmd>call ctrlp#CtrlP()<CR>
 " CTRL-B to find buffer
 nnoremap <C-B> <ScriptCmd>Buffers<CR>
+" Better ergonomics. Mnemonic: Edit alternate buffer.
+nnoremap <C-E> <C-6>
+" :MRU to fuzzy search :oldfiles
 cnoreabbrev <expr> MRU ((getcmdtype() is# ':' && getcmdline() is# 'MRU') ? 'History' : 'MRU')
 
 " Tab navigations
