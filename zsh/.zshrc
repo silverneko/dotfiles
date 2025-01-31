@@ -22,6 +22,8 @@ export LANG="en_US.UTF-8"
 export EDITOR="vim"
 export PAGER="less"
 export GOPATH="${HOME}/go"
+# Colors should be set before zim init / compinit.
+export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 # Filter out WSL paths. They would cause jank of fast-syntax-highlight.
 filtered_path=()
@@ -113,7 +115,7 @@ source ${ZIM_HOME}/init.zsh
 # ------------------------------
 
 # "magic-enter" should clear unaccepted suggestions. Must be added *after* Zim init.
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty)
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(magic-enter)
 
 # Customize my prompt
 zstyle ':zim:git-info' verbose yes
@@ -133,14 +135,11 @@ fast-theme -q "${DOTFILES}/fsh_overlay.ini"
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
+autoload -U up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} up-line-or-beginning-search
 for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-search
-for key ('k') bindkey -M vicmd ${key} up-line-or-beginning-search
-for key ('j') bindkey -M vicmd ${key} down-line-or-beginning-search
 unset key
 
 # History
@@ -166,10 +165,15 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 #
 
 for map (emacs viins) {
+  # *Magic enter* shows some useful info about cwd.
+  bindkey -M $map '^M' magic-enter
+  # [vim-like] Ctrl-O jumps to previous working directory.
+  bindkey -M $map -s '^O' '^Upopd^M'
   # [vim-like] Ctrl-F to edit the command line.
   bindkey -M $map '^F' edit-command-line
-  # [vim-like] Ctrl-E to undo (or dismiss completion menu).
+  # Ctrl-E to undo (or [vim-like] dismiss completion menu).
   bindkey -M $map '^E' undo
+  # Ctrl-Y pastes from kill ring.
   # fzf-tab took over the original ^I key bindings. I'd rather fzf-tab binds to its own key
   # and leave ^I alone. Alas they don't provide the option to customize the key bindings.
   # Ctrl-Z (Fu*zz*y Find completion) to fzf-tab-complete.
@@ -188,15 +192,19 @@ export LESS_TERMCAP_me=$'\E[0m'     # Ends mode.
 export LESS_TERMCAP_ue=$'\E[0m'     # Ends underline.
 export LESS_TERMCAP_us=$'\E[1;32m'  # Begins underline.
 export LESS='--ignore-case --jump-target=4 --LONG-PROMPT --quit-if-one-screen --RAW-CONTROL-CHARS'
-export LS_COLORS='di=1;34:ln=35:so=32:pi=33:ex=31:bd=1;36:cd=1;33:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 # :help manpager.vim
 export MANPAGER="vim +MANPAGER --not-a-term -"
 
+# Prompt before overwrite
+alias cp="cp -i"
+alias mv="mv -i"
+
 alias d="dirs -v"
 alias sort="LC_ALL=C sort"
-alias grep='grep --color=auto'
+alias grep="grep --color=auto"
+alias diff="diff --color"
 
-alias ls='ls --group-directories-first --color=auto'
+alias ls="ls --group-directories-first --color=auto"
 if [ "${(k)commands[lsd]}" ]; then
   # HACK: "Convince" zsh that `--git` is a valid option.
   function lsd { command lsd --git --group-directories-first "$@" }
