@@ -8,7 +8,8 @@
 " :PlugInstall
 call plug#begin('~/.vim/plugged')
 
-Plug 'sainnhe/everforest'
+Plug 'lifepillar/vim-colortemplate'
+Plug 'silverneko/tachyon.vim'
 Plug 'itchyny/lightline.vim'
 
 Plug 'junegunn/fzf', #{ dir: '~/.fzf', do: { -> fzf#install() } }
@@ -52,7 +53,7 @@ packadd! comment
 syntax enable
 filetype plugin indent on
 
-set nocompatible
+if &cp | set nocompatible | endif
 set nomodeline noerrorbells
 set ruler signcolumn=yes number numberwidth=5
 set incsearch hlsearch
@@ -83,6 +84,15 @@ set guicursor+=a:blinkon0
 
 set backspace=indent,eol,start
 set list listchars=trail:␣,tab:»\ ,nbsp:¬
+
+set noshowmode
+set showcmd
+set cmdheight=1
+set laststatus=2
+" Show search count like "[1/5]"
+set shortmess-=S
+" Don't show completion messages like "match 1 of 2"
+set shortmess+=c
 
 " Tab things
 set tabstop=8        "A tab is 8 spaces
@@ -173,7 +183,7 @@ let g:loaded_netrwPlugin = 1
 
 " vim-matchup replaces matchit.vim
 let g:loaded_matchit = 1
-let g:matchup_matchparen_offscreen = #{method: 'popup', fullwidth: 1}
+let g:matchup_matchparen_offscreen = {}
 
 " :help signify.txt
 let g:signify_number_highlight = 1
@@ -268,20 +278,7 @@ Glaive codefmt google_java_executable="google-java-format --aosp"
 set t_Co=256
 set termguicolors
 set background=dark
-
-let g:everforest_background = 'hard'
-let g:everforest_colors_override = {}
-let g:everforest_better_performance = 1
-function! s:everforest_custom() abort
-  let l:palette = everforest#get_palette(g:everforest_background, g:everforest_colors_override)
-  call everforest#highlight('Todo', l:palette.fg, l:palette.none, 'bold,italic')
-  call everforest#highlight('PmenuMatch', l:palette.red, l:palette.none, 'bold')
-  call everforest#highlight('EndOfBuffer', l:palette.bg4, l:palette.bg_dim)
-endfunction
-augroup EverforestCustom | autocmd!
-  autocmd ColorScheme everforest call s:everforest_custom()
-augroup END
-colorscheme everforest
+colorscheme tachyon
 
 " :help tmux-integration
 if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
