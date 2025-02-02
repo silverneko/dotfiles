@@ -1,3 +1,5 @@
+set completeopt=menuone,noselect,noinsert
+
 " :help vimcomplete.txt
 augroup SetVimCompleteOptions | autocmd!
   autocmd VimEnter * call g:VimCompleteOptionsSet(#{
