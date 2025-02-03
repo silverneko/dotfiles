@@ -10,7 +10,7 @@ let g:lightline = {
       \   'right': [
       \     ['percentwin'],
       \     ['line_column', 'charhexvalue'],
-      \     ['gitbranch', 'lsp_server', 'filetype', 'my_fileencoding'] ,
+      \     ['gitbranch', 'filetype', 'lsp_server', 'my_fileencoding'],
       \   ],
       \ },
       \ 'inactive': {
@@ -43,7 +43,7 @@ endfunction
 
 function! s:LspServer()
   let lspserver = lsp#buffer#CurbufGetServer()
-  return !lspserver->empty() ? lspserver.name : ''
+  return !lspserver->empty() && lspserver.running ? lspserver.name : ''
 endfunction
 
 function! s:Fileencoding()

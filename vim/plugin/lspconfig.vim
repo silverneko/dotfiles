@@ -18,7 +18,7 @@ var lsp_options = {
 }
 
 var lsp_servers = [{
-  name: 'rust-analyzer',
+  name: 'analyzer',
   filetype: ['rust'],
   path: exepath('rust-analyzer'),
   args: [],
