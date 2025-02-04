@@ -3,7 +3,7 @@ set completeopt=menuone,noselect,noinsert
 " :help vimcomplete.txt
 augroup SetVimCompleteOptions | autocmd!
   autocmd VimEnter * call g:VimCompleteOptionsSet(#{
-        \ completor: #{infoPopup: v:false, alwaysOn: v:true, throttleTimeout: 300},
+        \ completor:  #{infoPopup: v:false, alwaysOn: v:true, throttleTimeout: 250},
         \ lsp:        #{enable: v:true, priority: 15},
         \ buffer:     #{enable: v:true, priority: 10, dup: v:false},
         \ path:       #{enable: v:true, priority: 5,
