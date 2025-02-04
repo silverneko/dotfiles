@@ -21,6 +21,7 @@ Plug 'andymass/vim-matchup'
 Plug 'justinmk/vim-sneak'
 Plug 'justinmk/vim-dirvish'
 Plug 'bfrg/vim-c-cpp-modern'
+Plug 'HerringtonDarkholme/yats.vim'  " Up to date typescript syntax
 "Plug 'fidian/hexmode'
 Plug 'ryanoasis/vim-devicons'
 
@@ -61,6 +62,7 @@ set ignorecase smartcase
 set encoding=utf-8
 set hidden
 
+set nostartofline
 set splitbelow
 set scrolloff=5
 set sidescroll=1
@@ -144,9 +146,35 @@ augroup END
 
 " :help restore-cursor
 augroup RestoreCursor | autocmd!
-  autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
-  " Center the cursor
-  autocmd BufWinEnter * normal zz
+  autocmd BufRead * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
+augroup END
+
+" https://vim.fandom.com/wiki/Avoid_scrolling_when_switch_buffers
+" Save current view settings on a per-window, per-buffer basis.
+function! AutoSaveWinView()
+  if !exists("w:SavedBufView")
+    let w:SavedBufView = {}
+  endif
+  let w:SavedBufView[bufnr("%")] = winsaveview()
+endfunction
+
+" Restore current view settings.
+function! AutoRestoreWinView()
+  let buf = bufnr("%")
+  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
+    let v = winsaveview()
+    let atStartOfFile = v.lnum == 1 && v.col == 0
+    if atStartOfFile && !&diff
+      call winrestview(w:SavedBufView[buf])
+    endif
+    unlet w:SavedBufView[buf]
+  endif
+endfunction
+
+" When switching buffers, preserve window view.
+augroup PreserveWindowView | autocmd!
+  autocmd BufLeave * call AutoSaveWinView()
+  autocmd BufEnter * call AutoRestoreWinView()
 augroup END
 
 " Hide cursorline on FocusLost; Show cursorline on FocusGained

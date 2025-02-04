@@ -17,13 +17,19 @@ var lsp_options = {
   ignoreMissingServer: true,  # Shut up about missing executables
 }
 
-var lsp_servers = [{
-  name: 'analyzer',
-  filetype: ['rust'],
-  path: exepath('rust-analyzer'),
-  args: [],
-  syncInit: true,
-}]
+var lsp_servers = [
+  { name: 'analyzer',
+    filetype: ['rust'],
+    path: exepath('rust-analyzer'),
+    args: [],
+    syncInit: true,
+  },
+  # { name: 'tsserver',
+  #   filetype: ['typescript'],
+  #   path: exepath('typescript-language-server'),
+  #   args: ['--stdio'],
+  # },
+]
 
 def LspAttached()
   # <Shift-K> to lookup *K*eyword
