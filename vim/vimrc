@@ -74,7 +74,7 @@ set sessionoptions-=options
 set viewoptions-=options
 " Persist g:UPPERCASE variables, used by some plugins, in .viminfo.
 " Bookkeep 500 :oldfiles
-set viminfo=!,'500,<50,s10,h
+set viminfo=!,'500,<50,s10,h,r/tmp,r/google
 " vim -p <FILES...> / vim <FILES...> && :tab all
 set tabpagemax=20
 " Disable a legacy behavior that can break plugin maps. (???)
