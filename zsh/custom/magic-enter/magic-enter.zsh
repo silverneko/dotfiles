@@ -1,3 +1,12 @@
+# *Magic enter* shows some useful info about cwd.
+
+d() {
+  builtin dirs -v | command tail -n +2
+  if [[ $(builtin dirs -p | command wc -l) -eq 1 ]]; then
+    print "(directory stack empty)"
+  fi
+}
+
 _in_git() {
   # NOTE: Doing this is much faster than calling git-rev-parse
   local git_root="${PWD}"
@@ -17,7 +26,7 @@ _prompt_magic_enter() {
     local -i v_files=$(command ls -q | command wc -l)
     local -i h_files=$(( a_files - v_files ))
     print "[${a_files} files, ${h_files} hidden]"
-    dirs -v
+    d
     if _in_git; then
       print
       command git status -sb 2>/dev/null
@@ -30,3 +39,7 @@ _prompt_magic_enter() {
 }
 
 zle -N magic-enter _prompt_magic_enter
+for map (emacs viins) bindkey -M $map '^M' magic-enter
+
+function pushd { builtin pushd "$@" >/dev/null; d }
+function popd { builtin popd "$@" >/dev/null && d }

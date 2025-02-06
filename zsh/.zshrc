@@ -165,8 +165,6 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 #
 
 for map (emacs viins) {
-  # *Magic enter* shows some useful info about cwd.
-  bindkey -M $map '^M' magic-enter
   # [vim-like] Ctrl-O jumps to previous working directory.
   bindkey -M $map -s '^O' '^Upopd^M'
   # [vim-like] Ctrl-F to edit the command line.
@@ -199,7 +197,6 @@ export MANPAGER="vim +MANPAGER --not-a-term -"
 alias cp="cp -i"
 alias mv="mv -i"
 
-alias d="dirs -v"
 alias sort="LC_ALL=C sort"
 alias grep="grep --color=auto"
 alias diff="diff --color"

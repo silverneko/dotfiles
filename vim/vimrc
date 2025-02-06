@@ -132,7 +132,7 @@ let &undodir=undo_dir
 set undofile
 
 " Reduce <Esc> timeout. Reduce insert mode enter / leave lag.
-set ttimeout
+set notimeout ttimeout
 augroup NoInsertKeycodes | autocmd!
   autocmd InsertEnter * set ttimeoutlen=0
   autocmd InsertLeave * set ttimeoutlen=100 "<--- default value; also try 100 or something
