@@ -13,11 +13,11 @@ def ShortPath(path: string): string
   return short
 enddef
 
-def GitRoot(): string
-  var dir = split(expand('%:p:h'), '[/\\]\.git\([/\\]\|$\)')[0]
-  var root = systemlist('git -C ' .. fzf#shellescape(dir) .. ' rev-parse --show-toplevel')[0]
-  return v:shell_error != 0 ? '' : root
-enddef
+# def GitRoot(): string
+#   var dir = split(expand('%:p:h'), '[/\\]\.git\([/\\]\|$\)')[0]
+#   var root = systemlist('git -C ' .. fzf#shellescape(dir) .. ' rev-parse --show-toplevel')[0]
+#   return v:shell_error != 0 ? '' : root
+# enddef
 
 def StartsWith(s: string, prefix: string): bool
   return s->match('^' .. prefix) != -1
@@ -25,8 +25,8 @@ enddef
 
 # TODO: Support repo root
 export def CtrlP()
-  var path = GitRoot()
-  if empty(path)
+  var path = gitbranch#dir(expand('%:p:h'))->fnamemodify(':h')
+  if path->empty()
     # Basedir of current file
     path = expand('%:p:h')
     # If base is subdir of cwd AND cwd is not root, then use cwd instead.
