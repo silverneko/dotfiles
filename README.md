@@ -20,6 +20,19 @@ unset -f link-dot
 
 ## Shell and utilities
 
+```sh
+sudo apt install fd-find ripgrep bat lsd
+```
+
+### git
+
+```
+# Show untracked stash
+git config --global stash.showIncludeUntracked true
+# If git-status is slow, try this
+git config --global core.untrackedCache true
+```
+
 ### Fzf
 
 Install and upgrade `fzf` with `vim-plug`.
@@ -27,12 +40,6 @@ Install and upgrade `fzf` with `vim-plug`.
 ```sh
 # [ -e ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # cd ~/.fzf && git pull && ./install
-```
-
-### Utilities
-
-```sh
-sudo apt install fd-find ripgrep bat lsd
 ```
 
 ### vim-plug
