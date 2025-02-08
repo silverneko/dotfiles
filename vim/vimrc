@@ -197,6 +197,8 @@ let g:loaded_netrwPlugin = 1
 " vim-matchup replaces matchit.vim
 let g:loaded_matchit = 1
 let g:matchup_matchparen_offscreen = {}
+" Unmap matchup-z% because vim-sneak uses the z motion.
+omap <Plug>(vimrc-ignored) <Plug>(matchup-z%)
 
 " :help signify.txt
 let g:signify_number_highlight = 1
