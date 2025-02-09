@@ -197,6 +197,7 @@ export MANPAGER="vim +MANPAGER --not-a-term -"
 alias cp="cp -i"
 alias mv="mv -i"
 
+alias zc="z -c"  # z jump with respect to cwd
 alias sort="LC_ALL=C sort"
 alias grep="grep --color=auto"
 alias diff="diff --color"
