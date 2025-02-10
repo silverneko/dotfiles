@@ -24,9 +24,18 @@ unset -f link-dot
 sudo apt install fd-find ripgrep bat lsd
 ```
 
+### tmux
+
+```sh
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+* `Prefix + I` to *Install* plugins.
+* `Prefix + U` to *Update* plugins.
+
 ### git
 
-```
+```sh
 # Show untracked stash
 git config --global stash.showIncludeUntracked true
 # If git-status is slow, try this
@@ -42,6 +51,9 @@ Install and upgrade `fzf` with `vim-plug`.
 # cd ~/.fzf && git pull && ./install
 ```
 
+
+## Vim
+
 ### vim-plug
 
 Update plugins:
@@ -55,9 +67,6 @@ Update vim-plug itself:
 :PlugUpgrade
 ```
 
-
-## Vim
-
 ### Mapped keys
 
 * `CTRL-E`              Cancel autocomplete
@@ -66,14 +75,14 @@ Update vim-plug itself:
 * `CTRL-B`              Pick buffer
 * `:MRU`                Pick `:oldfiles`
 * `-`                   [Dirvish] List parent dir of current file
+* `<Ctrl-C>`            [Visual mode] Copy selected text into system clipboard.
 
-- `]t`                  Go to next tab
-- `[t`                  Go to previous tab
-- `]T`                  Go to last tab
-- `[T`                  Go to first tab
-- `<Alt-Right>`         Move tab to the right
-- `<Alt-Left>`          Move tab to the left
-- `<Ctrl-C>`            [Visual mode] Copy selected text into system clipboard.
+* `]t`                  Go to next tab
+* `[t`                  Go to previous tab
+* `]T`                  Go to last tab
+* `[T`                  Go to first tab
+* `<Alt-Right>`         Move tab to the right
+* `<Alt-Left>`          Move tab to the left
 
 
 ### Dependencies

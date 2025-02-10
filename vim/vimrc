@@ -239,8 +239,12 @@ nnoremap <silent> <expr> gC comment#Toggle() .. '$'
 nnoremap <C-P> <ScriptCmd>call ctrlp#CtrlP()<CR>
 " CTRL-B to find buffer
 nnoremap <C-B> <ScriptCmd>Buffers<CR>
-" Better ergonomics. Mnemonic: Edit alternate buffer.
-nnoremap <C-E> <C-6>
+" Better ergonomics.
+" Mnemonic: _E_dit alternate buffer.
+nmap <C-E> <C-6>
+" Mnemonic: s_C_roll up / down.
+nmap <C-Up> <C-U>
+nmap <C-Down> <C-D>
 " :MRU to fuzzy search :oldfiles
 cnoreabbrev <expr> MRU ((getcmdtype() is# ':' && getcmdline() is# 'MRU') ? 'History' : 'MRU')
 
@@ -288,6 +292,10 @@ augroup END
 
 " Java format style
 Glaive codefmt google_java_executable="google-java-format --aosp"
+
+" :help ft-markdown-syntax
+let g:markdown_minlines = 150
+let g:markdown_fenced_languages = ['html', 'python', 'sh', 'bash']
 
 " Colorscheme
 set t_Co=256
