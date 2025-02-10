@@ -54,39 +54,50 @@ Install and upgrade `fzf` with `vim-plug`.
 
 ## Vim
 
+### Dependencies
+
+* `vim` 9.1+ (bleeding edge)
+
 ### vim-plug
 
 Update plugins:
-```
+```vim
 :PlugInstall  " Install new plugins only
 :PlugUpdate
 ```
 
 Update vim-plug itself:
-```
+```vim
 :PlugUpgrade
 ```
 
-### Mapped keys
+### Key mappings
 
-* `CTRL-E`              Cancel autocomplete
-* `CTRL-F`              Edit commandline
-* `CTRL-P`              Pick file
-* `CTRL-B`              Pick buffer
-* `:MRU`                Pick `:oldfiles`
-* `-`                   [Dirvish] List parent dir of current file
-* `<Ctrl-C>`            [Visual mode] Copy selected text into system clipboard.
+* Normal
 
-* `]t`                  Go to next tab
-* `[t`                  Go to previous tab
-* `]T`                  Go to last tab
-* `[T`                  Go to first tab
-* `<Alt-Right>`         Move tab to the right
-* `<Alt-Left>`          Move tab to the left
+    - `CTRL-P`              Pick file
+    - `CTRL-B`              Pick buffer
+    - `CTRL-E` `CTRL-6`     Edit alternate buffer
+    - `CTRL-↑` `CTRL-U`     Scroll up
+    - `CTRL-↓` `CTRL-D`     Scroll down
+    - `-`                   [Dirvish] List parent dir of current file
+    - `[t` / `]t`           Go to previous / next tab
+    - `[T` / `]T`           Go to first / last tab
+    - `<Alt-Right>`         Move tab to the right
+    - `<Alt-Left>`          Move tab to the left
 
+* Command
 
-### Dependencies
-- vim 9+
+    - `CTRL-F`              Edit commandline
+    - `:MRU`                Pick `:oldfiles`
+
+* Insert
+
+    - `CTRL-E`              Cancel autocomplete
+
+* Visual
+
+    - `CTRL-C`              Copy selected text into system clipboard.
 
 
 ### Hexmode
