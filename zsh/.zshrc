@@ -210,7 +210,7 @@ if [ "${(k)commands[lsd]}" ]; then
   alias lt="command lsd --tree --group-directories-first"
 fi
 alias ll="ls -lh"
-alias l="ll -A"
+alias l="ll"
 alias la="ll -A"
 alias lsa="ll -a"
 
