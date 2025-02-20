@@ -246,6 +246,9 @@ function lf {
   fi
 }
 
+alias sl="ls"
+alias gti="git"
+
 for source_file (
   "${DOTFILES}/doge_cat.sh"
   "${DOTFILES}/zshrc.google"

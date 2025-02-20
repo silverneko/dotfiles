@@ -11,8 +11,8 @@ link-dot() { [ -e "$2" ] && (set -x; mv "$2" "$2".old); mkdir -p $(dirname "$2")
 link-dot zsh/.zshenv ~/.zshenv
 link-dot vim ~/.vim
 link-dot tmux.conf ~/.tmux.conf
-link-dot wezterm.lua ~/.wezterm.lua
-link-dot ghostty.config ~/.config/ghostty/config
+link-dot wezterm ~/.config/wezterm
+link-dot ghostty ~/.config/ghostty
 link-dot lfrc ~/.config/lf/lfrc
 unset -f link-dot
 ```
