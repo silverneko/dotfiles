@@ -3,7 +3,9 @@
 return {
     foreground = '#fcfcfa',
     background = '#262427',
-    cursor_fg = '#fcfcfa',
+    cursor_fg = '#262427',
+    cursor_bg = '#fcfcfa',
+    cursor_border = '#fcfcfa',
     compose_cursor = '#fcfcfa',
     selection_fg = '#fcfcfa',
     selection_bg = '#545452',
