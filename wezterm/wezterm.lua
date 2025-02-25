@@ -17,4 +17,12 @@ config.enable_wayland = false
 --local gpus = wezterm.gui.enumerate_gpus()
 --config.webgpu_preferred_adapter = gpus[1]
 
+config.mouse_bindings = {
+  {
+    event = { Down = { streak = 3, button = 'Left' } },
+    action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
+    mods = 'NONE',
+  },
+}
+
 return config
