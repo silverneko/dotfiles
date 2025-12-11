@@ -22,6 +22,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'justinmk/vim-dirvish'
 Plug 'bfrg/vim-c-cpp-modern'
 Plug 'HerringtonDarkholme/yats.vim'  " Up to date typescript syntax
+Plug 'elixir-editors/vim-elixir'
 "Plug 'fidian/hexmode'
 Plug 'ryanoasis/vim-devicons'
 

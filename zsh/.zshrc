@@ -32,6 +32,7 @@ path=($filtered_path)
 unset filtered_path p
 
 path=(
+  "${HOME}/.asdf/shims"
   "${HOME}/bin"
   "${HOME}/.local/bin"
   "${HOME}/platform-tools"
@@ -252,7 +253,7 @@ alias gti="git"
 for source_file (
   "${DOTFILES}/doge_cat.sh"
   "${DOTFILES}/zshrc.google"
-) [ -f "$source_file" ] && . "$source_file"
+) [ -r "$source_file" ] && source "$source_file"
 unset FD_CMD BAT_CMD source_file
 
 # No duplicate entries in $path & $PATH.
