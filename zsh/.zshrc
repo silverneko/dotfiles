@@ -32,9 +32,9 @@ path=($filtered_path)
 unset filtered_path p
 
 path=(
-  "${HOME}/.asdf/shims"
   "${HOME}/bin"
   "${HOME}/.local/bin"
+  "${HOME}/.asdf/shims"
   "${HOME}/platform-tools"
   $path
   "/usr/local/games"
@@ -253,6 +253,7 @@ alias gti="git"
 for source_file (
   "${DOTFILES}/doge_cat.sh"
   "${DOTFILES}/zshrc.google"
+  "${DOTFILES}/local_customizations.sh"
 ) [ -r "$source_file" ] && source "$source_file"
 unset FD_CMD BAT_CMD source_file
 
