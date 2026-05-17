@@ -82,7 +82,7 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -117,6 +117,8 @@ source ${ZIM_HOME}/init.zsh
 
 # "magic-enter" should clear unaccepted suggestions. Must be added *after* Zim init.
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(magic-enter)
+# Don't generate suggestions for pasted stuff.
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
 
 # Customize my prompt
 zstyle ':zim:git-info' verbose yes
