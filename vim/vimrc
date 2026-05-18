@@ -305,7 +305,7 @@ set background=dark
 colorscheme tachyon
 
 " :help tmux-integration
-if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\)'
+if !has('gui_running') && &term =~ '^\(screen\|tmux\|xterm\|wezterm\)'
   " Insert / replace / normal = vertical bar / underline / block, :help termcap-cursor-shape
   let &t_SI = "\e[6 q"
   let &t_SR = "\e[4 q"

@@ -218,10 +218,10 @@ alias lsa="ll -a"
 # By default `fd` and `rg` are both smartcase (vim :h smartcase) and searches hidden files.
 # However .gitignore rules are still respected. To ignore .gitignore, pass `--no-ignore`.
 # Don't search under '.git' and '.repo'.
-alias rg="rg --smart-case --hidden -g '!.git/' -g '!.repo/'"
+alias rg="rg --smart-case --hidden --no-ignore-vcs -g '!.git/' -g '!.repo/'"
 FD_CMD="${(k)commands[fd]:-${(k)commands[fdfind]}}"
 if [ "$FD_CMD" ]; then
-  alias fd="${FD_CMD} --hidden --exclude '.repo'"
+  alias fd="${FD_CMD} --hidden --no-ignore-vcs -E '.git' -E '.repo'"
   # fdfind, if exist, should use the completion function of fd
   compdef _fd fdfind
 fi

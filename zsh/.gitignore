@@ -4,3 +4,4 @@
 .zsh_history*
 .zim/
 *.zwc
+functions/_rg
