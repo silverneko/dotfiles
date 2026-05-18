@@ -231,9 +231,10 @@ fi
 BAT_CMD="${(k)commands[bat]:-${(k)commands[batcat]}}"
 if [ "$BAT_CMD" ]; then
   export BAT_THEME="zenburn"
+  export BAT_STYLE="header"
   alias bat="$BAT_CMD"
   alias cat="bat"
-  alias batdiff="git diff --name-only --relative --diff-filter=d | xargs \"${BAT_CMD}\" --diff"
+  alias batdiff="git diff --name-only --relative --diff-filter=d | xargs \"${BAT_CMD}\" --style=default --diff"
   alias bd="batdiff"
 fi
 
