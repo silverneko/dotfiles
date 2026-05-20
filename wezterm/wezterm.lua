@@ -4,6 +4,15 @@ local config = wezterm.config_builder()
 -- config.color_scheme = 'Default Dark (base16)'
 config.colors = require 'colors.0x96f'
 config.font_size = 13
+config.font = wezterm.font_with_fallback {
+  {
+    family = 'CaskaydiaCove Nerd Font',
+  },
+  {
+    family = 'FiraCode Nerd Font',
+    harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1', 'cv11=1', 'ss05=1', 'ss09=1' },
+  },
+}
 
 config.force_reverse_video_cursor = true
 config.initial_cols = 120

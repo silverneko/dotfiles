@@ -1,3 +1,4 @@
 config:
   fallback-icon: "🤔"
+  # ""
   show-name: true
