@@ -195,6 +195,15 @@ endfunction
 " Disable netrw. Use FZF & dirvish to find files.
 let g:loaded_netrwPlugin = 1
 
+" fzf preview window settings
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '80%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+endif
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window = ['right,60%,border-left,<60(up,60%,border-bottom)', 'ctrl-/']
+
 " vim-matchup replaces matchit.vim
 let g:loaded_matchit = 1
 let g:matchup_matchparen_offscreen = {}

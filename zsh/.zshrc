@@ -84,10 +84,19 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 ZSH_AUTOSUGGEST_STRATEGY=(history)
 
+FZF_CTRL_R_OPTS=
+FZF_CTRL_T_OPTS="--preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
+FZF_ALT_C_OPTS="--preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
+export FZF_DEFAULT_OPTS="--tmux 80% --layout=default --bind=tab:toggle-out,shift-tab:toggle-in"
+
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':fzf-tab:*' show-group brief
 zstyle ':fzf-tab:*' prefix ''
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' popup-smart-tab no
+zstyle ':fzf-tab:*' fzf-bindings 'tab:toggle-out' 'shift-tab:toggle-in'
+zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # ------------------
 # Initialize modules
