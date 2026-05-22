@@ -34,16 +34,17 @@ path=($filtered_path)
 unset filtered_path p
 
 path=(
+  "${DOTFILES}/bin"
   "${HOME}/bin"
   "${HOME}/.local/bin"
   "${HOME}/.asdf/shims"
+  "${HOME}/.fzf/bin"
   "${HOME}/platform-tools"
+  "${GOPATH}/bin"
   $path
   "/usr/local/games"
   "/usr/games"
   "/usr/local/go/bin"
-  "${GOPATH}/bin"
-  "${HOME}/.fzf/bin"
 )
 
 # -----------------
@@ -213,6 +214,7 @@ alias cp="cp -i"
 alias mv="mv -i"
 
 alias zc="z -c"  # z jump with respect to cwd
+alias vl="v -l"  # list recently edited files
 alias sort="LC_ALL=C sort"
 alias grep="grep --color=auto"
 alias diff="diff --color"
