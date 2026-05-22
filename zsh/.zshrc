@@ -2,6 +2,8 @@
 # User configuration sourced by interactive shells
 #
 
+[ -n "$ZSH_DIAG" ] && zmodload zsh/zprof
+
 # -----------------
 # Zsh configuration
 # -----------------
@@ -271,3 +273,5 @@ unset FD_CMD BAT_CMD source_file
 
 # No duplicate entries in $path & $PATH.
 typeset -U path
+
+[ -n "$ZSH_DIAG" ] && zprof

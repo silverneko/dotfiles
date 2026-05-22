@@ -57,7 +57,7 @@ filetype plugin indent on
 
 if &cp | set nocompatible | endif
 set nomodeline noerrorbells
-set ruler signcolumn=yes number numberwidth=5
+set ruler signcolumn=yes number numberwidth=4
 set incsearch hlsearch
 set ignorecase smartcase
 set encoding=utf-8
