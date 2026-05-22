@@ -1,5 +1,7 @@
 # Dotfiles
 
+![WOMM](img/womm.png)
+
 ```sh
 git clone --depth 1 git@github.com:silverneko/dotfiles.git ~/.dotfiles
 # or

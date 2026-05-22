@@ -86,10 +86,11 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 ZSH_AUTOSUGGEST_STRATEGY=(history)
 
-FZF_CTRL_R_OPTS=
-FZF_CTRL_T_OPTS="--preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
-FZF_ALT_C_OPTS="--preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
-export FZF_DEFAULT_OPTS="--tmux 80% --layout=default --bind=tab:toggle-out,shift-tab:toggle-in"
+export FZF_CTRL_R_OPTS="--tmux 80% --layout=default"
+export FZF_CTRL_T_OPTS="--tmux 80% --layout=default --preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
+export FZF_ALT_C_OPTS="--tmux 80% --layout=default --preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
+export FZF_COMPLETION_OPTS="--tmux 80% --layout=default --preview-window 'right,60%,border-left,<60(up,60%,border-bottom)'"
+export FZF_DEFAULT_OPTS="--bind=tab:toggle-out,shift-tab:toggle-in"
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -259,6 +260,21 @@ function lf {
       pushd -- "$dir"
     fi
   fi
+}
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments ($@) to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+  local bat_cmd="${(k)commands[bat]:-${(k)commands[batcat]}}"
+  case "$command" in
+    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview 'printenv {}'              "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$bat_cmd -n --color=always --line-range :500 {}" "$@" ;;
+  esac
 }
 
 alias sl="ls"
