@@ -23,7 +23,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'bfrg/vim-c-cpp-modern'
 Plug 'HerringtonDarkholme/yats.vim'  " Up to date typescript syntax
 Plug 'elixir-editors/vim-elixir'
-"Plug 'fidian/hexmode'
+Plug 'fidian/hexmode'
 Plug 'ryanoasis/vim-devicons'
 
 Plug 'tpope/vim-endwise'
@@ -40,6 +40,11 @@ Plug 'yegappan/lsp'
 Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
+
+Plug 'bronson/vim-visual-star-search'
+Plug 'terryma/vim-expand-region'
+Plug 'tommcdo/vim-exchange'
+Plug 'wellle/targets.vim'
 
 call plug#end()
 

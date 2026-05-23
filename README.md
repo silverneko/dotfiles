@@ -94,6 +94,7 @@ Update vim-plug itself:
     - `CTRL-C`              Copy selected text into system clipboard.
 
 ### Hexmode
+
 Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
 will automatically convert it into hex.
 Or use `:Hexmode` to switch between hex editing and normal editing.
