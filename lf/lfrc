@@ -1,0 +1,8 @@
+map ? doc
+map . set hidden!
+
+# set hidden true
+set previewer ~/.config/lf/preview.sh
+
+# Gray cursor in the preview pane
+set cursorpreviewfmt "\033[7;90m"

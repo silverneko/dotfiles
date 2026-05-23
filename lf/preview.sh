@@ -6,7 +6,7 @@ case "$1" in
   *.tar) tar -tvf "$1" ;;
   *.gz) gunzip -l "$1" ;;
   *.zip) zipinfo "$1" ;;
-  *) batcat --color=always --style=header,header-filesize "$1" ;;
+  *) batcat --color=always --style=header,header-filesize --line-range :500 "$1" ;;
 esac
 
 true

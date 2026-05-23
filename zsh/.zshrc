@@ -147,7 +147,7 @@ PS1='
 unset info_keys
 
 fast-theme -q safari
-fast-theme -q "${DOTFILES}/fsh_overlay.ini"
+fast-theme -q "${ZDOTDIR}/fsh_overlay.ini"
 
 zmodload -F zsh/terminfo +p:terminfo
 # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
@@ -252,22 +252,15 @@ if [ "$BAT_CMD" ]; then
   alias bd="batdiff"
 fi
 
-function lf {
-  local tmp="$(mktemp)"
-  command lf -last-dir-path="$tmp" "${@:-$(pwd)}"
-  if [ -f "$tmp" ]; then
-    local dir="$(cat "$tmp")"
-    rm -f -- "$tmp"
-    if [ -d "$dir" ] && [ "$(pwd)" != "$dir" ]; then
-      pushd -- "$dir"
-    fi
-  fi
+lf () {
+  # `command` is needed in case `lfcd` is aliased to `lf`
+  pushd -- "$(command lf -print-last-dir "$@")"
 }
 
 # Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.
 # - You should make sure to pass the rest of the arguments ($@) to fzf.
-_fzf_comprun() {
+_fzf_comprun () {
   local command=$1
   shift
   local bat_cmd="${(k)commands[bat]:-${(k)commands[batcat]}}"
@@ -292,4 +285,4 @@ unset FD_CMD BAT_CMD source_file
 # No duplicate entries in $path & $PATH.
 typeset -U path
 
-[ -n "$ZSH_DIAG" ] && zprof
+[ -n "$ZSH_DIAG" ] && zprof ||:

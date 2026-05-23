@@ -1,0 +1,325 @@
+.\" vim: colorcolumn=100 textwidth=100
+.TH "TLRC" "1" "2026-05-22"  "tlrc 1.13.1" "tlrc manual"
+.nh
+.ad l
+.SH NAME
+tlrc - official tldr client written in Rust
+.
+.
+.SH SYNOPSIS
+\fBtldr\fR [\fIoptions\fR] [\fIpage\fR]...
+.
+.
+.SH DESCRIPTION
+If the \fIpage\fR argument is provided (with no other operations), \fItlrc\fR displays the tldr\&
+page entitled \fIpage\fR. If multiple arguments are provided, they are concatenated with hyphens\&
+between each argument (e.g. \fIgit\fR \fIcheckout\fR becomes \fIgit-checkout\fR). Page names are\&
+case insensitive. If multiple pages are found, a warning is shown and the page from the preferred\&
+platform (see \fB--platform\fR) is displayed. If the page only exists in other platforms, a\&
+warning is shown and the page from the first platform (in alphabetical order) is displayed.
+.br
+For other operations, see \fBOPTIONS\fR.
+.sp
+Pages are loaded from a cache directory. If this directory is empty, pages will be automatically\&
+downloaded when you run \fItldr\fR. After that \fItlrc\fR works completely offline until an\&
+automatic update is triggered (when the cache is more than 2 weeks old by default) or explicitly\&
+requested using \fB--update\fR.
+.
+.
+.SH OPTIONS
+.SS Operations
+Only one of these options can be used at a time.
+.TP 4
+.B -u, --update
+Update the cache of tldr pages.\&
+This will first download the sha256sums of all archives and compare them\&
+to the old sums to determine which languages need updating.\&
+If you want to force a redownload, run \fItldr\fR \fB--clean-cache\fR beforehand.
+.
+.TP 4
+.B -l, --list
+List all English pages in the current platform, one per line (names only). The special platform\&
+\fIcommon\fR contains documentation for cross-platform tools, and is always listed.
+.
+.TP 4
+.B -a, --list-all
+List all English pages, one per line (names only).
+.
+.TP 4
+\fB-s, --search\fR <KEYWORD>
+List pages containing a keyword, along with their respective language and platform. All platforms\&
+are searched by default. If \fB--platform\fR is specified, this behaves like\&
+\fB--list\fR (i.e. the specified platform and \fIcommon\fR are searched).
+.
+.TP 4
+.B --list-platforms
+List available platforms.
+.
+.TP 4
+.B --list-languages
+List available languages. Use \fB--info\fR for a language list with more information.
+.
+.TP 4
+.B -i, --info
+Show cache information (path, age, installed languages and the number of pages).
+.
+.TP 4
+\fB-r, --render\fR <FILE>
+Render the specified tldr page.
+.
+.TP 4
+.B --clean-cache
+Interactively delete contents of the cache directory.\&
+.br
+The \fItldr.sha256sums\fR file is always removed to force a redownload of all page archives\&
+during the next update. You can also choose to delete already downloaded languages.
+.
+.TP 4
+.B --gen-config
+Print the default config to standard output.
+.
+.TP 4
+.B --config-path
+Print the default config path and create the config directory if it does not exist.
+.
+.TP 4
+.B -v, --version
+Print version information.
+.
+.TP 4
+.B -h, --help
+Print a help message.
+.
+.SS Other options
+These options modify the behavior of operations.
+.
+.TP 4
+\fB-p, --platform\fR <PLATFORM>
+Specify the platform to use (linux, osx, windows, etc.).
+.sp
+Tldr pages are grouped by the operating system the documented command runs on. If a program can\&
+run on more than one operating system (and behaves in the same way), the page for it is put into\&
+the special \fIcommon\fR platform, which is always searched. Specifying \fB--platform\fR\&
+\fIcommon\fR is allowed and causes \fIcommon\fR to be the only searched platform.
+.sp
+Default: the operating system you are \fBcurrently running\fR
+.
+.TP 4
+\fB-L, --language\fR <LANGUAGE_CODE>
+Specify the language to show pages in.\&
+Can be used multiple times.\&
+Overrides all other language detection methods.\&
+\fItlrc\fR will not fall back to English when this option is used, and will instead\&
+show an error. Note that this option does not affect languages downloaded on \fB--update\fR.\&
+If you want to use languages not defined in environment variables, use the\&
+\fIcache.languages\fR option in the config file.
+.sp
+Default: taken from the config or the \fILANG\fR and \fILANGUAGE\fR environment variables.\&
+See
+.br
+.B \%https://github.com/tldr-pages/tldr/blob/main/CLIENT-SPECIFICATION.md#language
+for a detailed description of how \fItlrc\fR determines the language.
+.
+.TP 4
+.B --short-options
+In option placeholders, display short options wherever possible.
+.br
+Example: "\fI{{[-s|--long]}}\fR" will be displayed as "\fB-s\fR" when using this option.\&
+Equivalent of setting \fIoutput.option_style\fR="\fBshort\fR" in the config.
+.sp
+When used with \fB--long-options\fR, the above placeholder will be displayed\&
+as "\fB[-s|--long]\fR". Using both options is equivalent to\&
+setting \fIoutput.option_style\fR="\fBboth\fR" in the config.
+.
+.TP 4
+.B --long-options
+In option placeholders, display long options wherever possible.
+.br
+Example: "\fI{{[-s|--long]}}\fR" will be displayed as "\fB--long\fR" when using this option.\&
+Equivalent of setting \fIoutput.option_style\fR="\fBlong\fR" in the config.
+.sp
+This is the default.
+.
+.TP 4
+.B --edit
+Display a link to edit the shown page on GitHub. Equivalent of setting\&
+\fIoutput.edit_link\fR=\fBtrue\fR in the config.
+.sp
+The following link will be displayed:
+.br
+https://github.com/tldr-pages/tldr/edit/main/\
+\fB{{pages|pages.language}}\fR/\fB{{platform}}\fR/\fB{{page-name}}\fR.md
+.
+.TP 4
+.B -o, --offline
+Do not update the cache, even if it is stale and automatic updates are on.\&
+Similar to setting \fIcache.auto_update\fR=\fBfalse\fR in the config, except using this will\&
+show an error if the cache is empty.
+.
+.TP 4
+.B -c, --compact
+Strip empty lines from output. Equivalent of setting \fIoutput.compact\fR=\fBtrue\fR in the config.
+.br
+This option is \fBDEPRECATED\fR and \fBWILL BE REMOVED\fR in v2.0.0.
+.
+.TP 4
+.B --no-compact
+Do not strip empty lines from output. Equivalent of setting\&
+\fIoutput.compact\fR=\fBfalse\fR in the config. This always overrides \fB--compact\fR.
+.br
+This option is \fBDEPRECATED\fR and \fBWILL BE REMOVED\fR in v2.0.0.
+.
+.TP 4
+.B -R, --raw
+Print pages in raw Markdown. Equivalent of setting\&
+\fIoutput.mode\fR="\fBraw\fR" in the config.
+.
+.TP 4
+.B --no-raw
+Render pages instead of printing raw file contents. Equivalent of setting\&
+\fIoutput.raw_markdown\fR=\fBfalse\fR in the config. This always overrides \fB--raw\fR.
+.br
+This option is \fBDEPRECATED\fR and \fBWILL BE REMOVED\fR in v2.0.0.
+.
+.TP 4
+.B -q, --quiet
+Suppress status messages and warnings.\&
+In other words, this makes \fItlrc\fR print only pages and errors.
+.sp
+This always overrides \fB--verbose\fR.
+.
+.TP 4
+.B --verbose
+Be more verbose, print debug information. Useful to see what exactly is being done if you're\&
+having issues.
+.sp
+Can be specified twice for even more messages. Using \fB--verbose\fR more than twice has no other\&
+effect.
+.
+.TP 4
+\fB--color\fR <WHEN>
+Specify when to enable color.
+.br
+Can be one of the following: '\fBalways\fR', '\fBnever\fR', '\fBauto\fR'.
+.br
+\fBalways\fR forces colors on; \fBnever\fR forces colors off; and \fBauto\fR
+only automatically enables colors when outputting onto a tty and\&
+the \fINO_COLOR\fR environment variable is not set or is an empty string.
+.sp
+Default: \fBauto\fR
+.
+.TP 4
+\fB--config\fR <FILE>
+Specify an alternative path to the config file. This option overrides all config detection\&
+methods (i.e. OS-specific directories and the \fI$TLRC_CONFIG\fR environment variable).
+.sp
+Default: \fBplatform-dependent\fR (use \fB--config-path\fR to see the default path for your system)
+.
+.
+.SH CONFIGURATION
+To generate a default config file, run:
+.IP
+.nf
+\fItldr\fR --gen-config > "$(\fItldr\fR --config-path)"
+.fi
+.PP
+See \fB\%https://github.com/tldr-pages/tlrc#configuration\fR for an example config file\&
+with explanations.
+.sp
+The default config path depends on your operating system:
+.br
+Linux and BSD: \fI$XDG_CONFIG_HOME\fB/tlrc/config.toml\fR or \fB~/.config/tlrc/config.toml\fR if\&
+\fI$XDG_CONFIG_HOME\fR is unset
+.br
+macOS: \fB~/Library/Application Support/tlrc/config.toml\fR
+.br
+Windows: \fI%ROAMINGAPPDATA%\fB\\tlrc\\config.toml\fR
+.sp
+No matter the OS, you can set the \fI$TLRC_CONFIG\fR environment variable or use\&
+\fB--config\fR to override the default path. The command-line option takes precedence over all\&
+other detection methods.
+.
+.
+.SH DEPRECATED CONFIG OPTIONS
+These config options \fBWILL BE REMOVED\fR in v2.0.0. Please migrate to the new options:
+.TS
+allbox tab(;);
+l|l.
+IF YOU'RE USING THIS;USE THIS INSTEAD
+\fIoutput.compact\fR=\fBfalse\fR and \fIoutput.raw.markdown\fR=\fBfalse\fR;\
+\fIoutput.mode\fR="\fBnormal\fR"
+\fIoutput.compact\fR=\fBtrue\fR;\fIoutput.mode\fR="\fBvery_compact\fR"
+\fIoutput.raw_markdown\fR=\fBtrue\fR;\fIoutput.mode\fR="\fBraw\fR"
+.TE
+.
+.
+.SH EXAMPLES
+See the tldr page for \fItar\fR:
+.IP
+.nf
+\fBtldr\fR \fItar\fR
+.fi
+.PP
+.
+See the tldr page for \fIdiskpart\fR, from platform \fIwindows\fR:
+.IP
+.nf
+\fBtldr\fR --platform \fIwindows diskpart\fR
+.fi
+.PP
+.
+Search for pages that contain the string \fItar\fR:
+.IP
+.nf
+\fBtldr\fR --search \fItar\fR
+.fi
+.PP
+.
+.
+.SH EXIT STATUSES
+.TP
+0
+OK
+.
+.TP
+1
+I/O and various other errors
+.
+.TP
+2
+Invalid command-line arguments
+.
+.TP
+3
+TOML (config file) parse error
+.
+.TP
+4
+Errors related to cache updates (e.g. a failed HTTP GET request)
+.
+.TP
+5
+Tldr syntax error (e.g. a non-empty line that does not start with '# ', '> ', '- ' or '`')
+.
+.
+.SH AUTHOR
+Lena Pastwa <lena@lnps.me>
+.
+.
+.SH SEE ALSO
+tldr client specification
+.br
+.B \%https://github.com/tldr-pages/tldr/blob/main/CLIENT-SPECIFICATION.md
+.br
+.sp
+tlrc repository (report issues with the client here)
+.br
+.B \%https://github.com/tldr-pages/tlrc
+.sp
+tldr-pages repository (report issues with the pages here)
+.br
+.B \%https://github.com/tldr-pages/tldr
+.sp
+An online version of this man page is available here:
+.br
+.B \%https://tldr.sh/tlrc

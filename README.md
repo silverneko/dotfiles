@@ -4,7 +4,9 @@
 
 ```sh
 git clone --depth 1 git@github.com:silverneko/dotfiles.git ~/.dotfiles
-# or
+```
+
+```sh
 git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
 ```
 
@@ -12,28 +14,28 @@ git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
 link-dot() { [ -e "$2" ] && (set -x; mv "$2" "$2".old); mkdir -p $(dirname "$2"); (set -x; ln -s ~/.dotfiles/"$1" "$2") }
 link-dot zsh/.zshenv ~/.zshenv
 link-dot vim ~/.vim
-link-dot tmux.conf ~/.tmux.conf
+link-dot tmux ~/.config/tmux
 link-dot wezterm ~/.config/wezterm
 link-dot ghostty ~/.config/ghostty
-link-dot lfrc ~/.config/lf/lfrc
+link-dot lf ~/.config/lf
+link-dot tlrc ~/.config/tlrc
+link-dot procs.toml ~/.procs.toml
 unset -f link-dot
 ```
-
 
 ## Shell and utilities
 
 ```sh
-sudo apt install fd-find ripgrep bat lsd
+sudo apt install fd-find ripgrep bat lsd lf
 ```
-
-### tmux
 
 ```sh
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+curl https://sh.rustup.rs -sSf | sh
+rustup update
+cargo install --locked procs tlrc@1.13.1
 ```
 
-* `Prefix + I` to *Install* plugins.
-* `Prefix + U` to *Update* plugins.
+Install and upgrade `fzf` with `vim-plug`.
 
 ### git
 
@@ -44,21 +46,11 @@ git config --global stash.showIncludeUntracked true
 git config --global core.untrackedCache true
 ```
 
-### Fzf
-
-Install and upgrade `fzf` with `vim-plug`.
-
-```sh
-# [ -e ~/.fzf ] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-# cd ~/.fzf && git pull && ./install
-```
-
-
 ## Vim
 
 ### Dependencies
 
-* `vim` 9.1+ (bleeding edge)
+* `vim` 9.1+
 
 ### vim-plug
 
@@ -100,7 +92,6 @@ Update vim-plug itself:
 * Visual
 
     - `CTRL-C`              Copy selected text into system clipboard.
-
 
 ### Hexmode
 Simply editing a file in binary mode (eg. `vim -b some_file.jpg`)
