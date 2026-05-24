@@ -32,7 +32,7 @@ sudo apt install fd-find ripgrep bat lsd lf
 ```sh
 curl https://sh.rustup.rs -sSf | sh
 rustup update
-cargo install --locked procs tlrc@1.13.1
+cargo install --locked bottom procs tlrc@1.13.1
 ```
 
 Install and upgrade `fzf` with `vim-plug`.

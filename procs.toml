@@ -12,12 +12,12 @@ numeric_search = false
 nonnumeric_search = true
 align = "Left"
 
-[[columns]]
-kind = "Separator"
-style = "White|BrightBlack"
-numeric_search = false
-nonnumeric_search = false
-align = "Left"
+# [[columns]]
+# kind = "Separator"
+# style = "White|BrightBlack"
+# numeric_search = false
+# nonnumeric_search = false
+# align = "Left"
 
 [[columns]]
 kind = "State"
@@ -84,19 +84,19 @@ align = "Right"
 # align = "Left"
 # max_width = 20
 
-[[columns]]
-kind = "ReadBytes"
-style = "ByUnit"
-numeric_search = false
-nonnumeric_search = false
-align = "Right"
+# [[columns]]
+# kind = "ReadBytes"
+# style = "ByUnit"
+# numeric_search = false
+# nonnumeric_search = false
+# align = "Right"
 
-[[columns]]
-kind = "WriteBytes"
-style = "ByUnit"
-numeric_search = false
-nonnumeric_search = false
-align = "Right"
+# [[columns]]
+# kind = "WriteBytes"
+# style = "ByUnit"
+# numeric_search = false
+# nonnumeric_search = false
+# align = "Right"
 
 [[columns]]
 kind = "CpuTime"
@@ -126,12 +126,12 @@ numeric_search = false
 nonnumeric_search = false
 align = "Right"
 
-[[columns]]
-kind = "Separator"
-style = "White|BrightBlack"
-numeric_search = false
-nonnumeric_search = false
-align = "Left"
+# [[columns]]
+# kind = "Separator"
+# style = "White|BrightBlack"
+# numeric_search = false
+# nonnumeric_search = false
+# align = "Left"
 
 [[columns]]
 kind = "Command"

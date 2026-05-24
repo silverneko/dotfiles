@@ -24,7 +24,7 @@ bullet = 0
 example = 4
 
 [style.title]
-color = "magenta"
+color = "red"
 background = "default"
 bold = true
 underline = false
@@ -33,7 +33,7 @@ dim = false
 strikethrough = false
 
 [style.description]
-color = "default"
+color = "yellow"
 background = "default"
 bold = false
 underline = false
@@ -42,7 +42,7 @@ dim = false
 strikethrough = false
 
 [style.bullet]
-color = "yellow"
+color = "default"
 background = "default"
 bold = false
 underline = false
