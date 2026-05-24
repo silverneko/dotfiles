@@ -69,8 +69,6 @@ Update vim-plug itself:
     - `-`                   [Dirvish] List parent dir of current file
     - `[t` / `]t`           Go to previous / next tab
     - `[T` / `]T`           Go to first / last tab
-    - `<Alt-Right>`         Move tab to the right
-    - `<Alt-Left>`          Move tab to the left
 
 * Command
 

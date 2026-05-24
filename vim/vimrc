@@ -41,7 +41,6 @@ Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
 
-Plug 'bronson/vim-visual-star-search'
 Plug 'terryma/vim-expand-region'
 Plug 'tommcdo/vim-exchange'
 Plug 'wellle/targets.vim'
@@ -256,6 +255,10 @@ nnoremap <silent> <expr> gC comment#Toggle() .. '$'
 nnoremap <C-P> <ScriptCmd>call ctrlp#CtrlP()<CR>
 " CTRL-B to find buffer
 nnoremap <C-B> <ScriptCmd>Buffers<CR>
+" Use * and # to search text highlighted in visual mode.
+xmap * <Plug>(smart-visual-search-*)
+xmap # <Plug>(smart-visual-search-#)
+
 " Better ergonomics.
 " Mnemonic: _E_dit alternate buffer.
 nmap <C-E> <C-6>
@@ -270,8 +273,6 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [t :tabprevious<CR>
 nnoremap <silent> ]T :tablast<CR>
 nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> <A-Right> :<C-U>execute 'tabmove +' .. v:count1<CR>
-nnoremap <silent> <A-Left> :<C-U>execute 'tabmove -' .. v:count1<CR>
 
 " http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
 inoremap <C-U> <C-G>u<C-U>
