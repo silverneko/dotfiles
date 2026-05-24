@@ -1,0 +1,48 @@
+[alias]
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    lsignored = ls-files . --ignored --exclude-standard --others
+
+[core]
+    pager = less -x1,5
+    untrackedCache = true
+    ; excludesFile = ~/.config/git/ignore
+
+[color]
+    ui = auto
+
+[column]
+    ui = auto
+
+[format]
+    ; pretty = fuller
+
+[log]
+    follow = true
+
+[diff]
+    algorithm = histogram
+    context = 5
+    colorMoved = true
+    colorMovedWS = ignore-all-space
+
+[rebase]
+    autostash = true
+
+[merge]
+    conflictstyle = diff3
+
+[pull]
+    ff = only
+
+[push]
+    autoSetupRemote = true
+
+[commit]
+    verbose = true
+
+[stash]
+    showPatch = true
+    showIncludeUntracked = true
+
+[sendemail]
+    confirm = always

@@ -1,5 +1,3 @@
-*.swp
-.dotfiles
 vim/autoload/plug.vim.old
 *.google
 local_customizations.sh

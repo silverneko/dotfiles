@@ -1,0 +1,4 @@
+*.swp
+__pycache__
+*-target_files-*.zip
+.gemini

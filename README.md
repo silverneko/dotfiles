@@ -14,6 +14,7 @@ git clone --depth 1 https://github.com/silverneko/dotfiles.git ~/.dotfiles
 link-dot() { [ -e "$2" ] && (set -x; mv "$2" "$2".old); mkdir -p $(dirname "$2"); (set -x; ln -s ~/.dotfiles/"$1" "$2") }
 link-dot zsh/.zshenv ~/.zshenv
 link-dot vim ~/.vim
+link-dot git ~/.config/git
 link-dot tmux ~/.config/tmux
 link-dot wezterm ~/.config/wezterm
 link-dot ghostty ~/.config/ghostty
@@ -36,15 +37,6 @@ cargo install --locked bottom procs tlrc@1.13.1
 ```
 
 Install and upgrade `fzf` with `vim-plug`.
-
-### git
-
-```sh
-# Show untracked stash
-git config --global stash.showIncludeUntracked true
-# If git-status is slow, try this
-git config --global core.untrackedCache true
-```
 
 ## Vim
 
