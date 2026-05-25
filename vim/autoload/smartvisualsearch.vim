@@ -42,9 +42,14 @@ export def SmartVisualSearch(count: number, search_command: string)
   @/ = '\V' .. pattern
   histadd('/', @/)
 
+  # Anchor the cursor to prevent getting stuck on the current match
+  # Forward (/) starts from the end (`>)
+  # Backward searches (?) are already perfectly anchored by the yank command.
+  var anchor = search_command == '/' ? '`>' : ''
+
   # We cannot simply `execute()` "normal! {count}{search_command}\<CR>" here,
   # because v:searchforward would be restored when returning from a function.
   # `feedkeys()` is fine though, because the commands are queued and executed
   # only after the function is returned.
-  feedkeys($"{count}{search_command}\<CR>", 'n')
+  feedkeys($"{anchor}{count}{search_command}\<CR>", 'n')
 enddef
