@@ -41,6 +41,7 @@ Plug 'google/vim-maktaba'
 Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
 
+Plug 'silverneko/vim-smart-visual-search'
 Plug 'terryma/vim-expand-region'
 Plug 'tommcdo/vim-exchange'
 Plug 'wellle/targets.vim'
