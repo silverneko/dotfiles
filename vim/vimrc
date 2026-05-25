@@ -177,7 +177,7 @@ augroup FocusedCursorline | autocmd!
 augroup END
 
 augroup HighlightedYank | autocmd!
-  autocmd TextYankPost * call highlightedyank#HighlightedYank('Visual', 300, v:false)
+  autocmd TextYankPost * call highlightedyank#HighlightedYank('Visual', 400, v:false)
 augroup END
 
 augroup DrawColorcolumn | autocmd!
