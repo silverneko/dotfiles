@@ -49,9 +49,9 @@ zmodule Aloxaf/fzf-tab
 
 # Fish-like syntax highlighting for Zsh.
 # zsh-users/zsh-syntax-highlighting must be sourced after completion
-#zmodule zsh-users/zsh-syntax-highlighting
 zmodule zdharma-continuum/fast-syntax-highlighting
+# 🐠 ZSH port of Fish history search (up arrow)
+zmodule zsh-users/zsh-history-substring-search
 # Fish-like autosuggestions for Zsh.
 zmodule zsh-users/zsh-autosuggestions
 # }}} End configuration added by Zim install
-

@@ -79,6 +79,11 @@ ZSHZ_TRAILING_SLASH=1
 # Jump first uncommon segment. https://github.com/agkozak/zsh-z/blob/master/README.md#zshz_uncommon
 ZSHZ_UNCOMMON=1
 
+# zsh-users/zsh-history-substring-search
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="underline"
+HISTORY_SUBSTRING_SEARCH_PREFIXED=1
+HISTORY_SUBSTRING_SEARCH_FUZZY=1
+
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
@@ -150,12 +155,13 @@ fast-theme -q safari
 fast-theme -q "${ZDOTDIR}/fsh_overlay.ini"
 
 zmodload -F zsh/terminfo +p:terminfo
-# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-autoload -U up-line-or-beginning-search down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} up-line-or-beginning-search
-for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-search
+# Don't need these when zsh-history-substring-search is enabled.
+# # Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+# autoload -U up-line-or-beginning-search down-line-or-beginning-search
+# zle -N up-line-or-beginning-search
+# zle -N down-line-or-beginning-search
+# for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} up-line-or-beginning-search
+# for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} down-line-or-beginning-search
 unset key
 
 # History
