@@ -1,8 +1,8 @@
 # *Magic enter* shows some useful info about cwd.
 
 d() {
-  builtin dirs -v | command tail -n +2
-  if [[ $(builtin dirs -p | command wc -l) -eq 1 ]]; then
+  builtin dirs -v
+  if [[ $(builtin dirs -p | command wc -l) -le 1 ]]; then
     print "(directory stack empty)"
   fi
 }
@@ -39,7 +39,15 @@ _prompt_magic_enter() {
 }
 
 zle -N magic-enter _prompt_magic_enter
-for map (emacs viins) bindkey -M $map '^M' magic-enter
 
 function pushd { builtin pushd "$@" >/dev/null; d }
 function popd { builtin popd "$@" >/dev/null && d }
+
+_my_popd_widget() {
+  zle push-line     # Clears the current line. Auto-restore after next line.
+  BUFFER="popd"
+  zle accept-line
+  zle reset-prompt  # Restore original line.
+}
+
+zle -N my-popd-widget _my_popd_widget

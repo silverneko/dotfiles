@@ -187,8 +187,9 @@ setopt no_pushd_silent no_pushd_to_home pushd_minus
 #
 
 for map (emacs viins) {
+  bindkey -M $map '^M' magic-enter
   # [vim-like] Ctrl-O jumps to previous working directory.
-  bindkey -M $map -s '^O' '^Upopd^M'
+  bindkey -M $map '^O' my-popd-widget
   # [vim-like] Ctrl-F to edit the command line.
   bindkey -M $map '^F' edit-command-line
   # Ctrl-E to undo (or [vim-like] dismiss completion menu).
@@ -258,7 +259,7 @@ if [ "$BAT_CMD" ]; then
   alias bd="batdiff"
 fi
 
-lf () {
+lf() {
   # `command` is needed in case `lfcd` is aliased to `lf`
   pushd -- "$(command lf -print-last-dir "$@")"
 }
@@ -266,7 +267,7 @@ lf () {
 # Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.
 # - You should make sure to pass the rest of the arguments ($@) to fzf.
-_fzf_comprun () {
+_fzf_comprun() {
   local command=$1
   shift
   local bat_cmd="${(k)commands[bat]:-${(k)commands[batcat]}}"
