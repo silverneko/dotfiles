@@ -67,6 +67,7 @@ set incsearch hlsearch
 set ignorecase smartcase
 set encoding=utf-8
 set hidden
+set confirm
 
 set nostartofline
 set splitbelow
