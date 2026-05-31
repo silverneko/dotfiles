@@ -20,6 +20,7 @@ config.font = wezterm.font_with_fallback {
   },
 }
 
+config.warn_about_missing_glyphs = false
 config.force_reverse_video_cursor = true
 config.initial_cols = 120
 config.initial_rows = 30
