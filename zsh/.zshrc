@@ -137,6 +137,7 @@ source ${ZIM_HOME}/init.zsh
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(magic-enter)
 # Don't generate suggestions for pasted stuff.
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(my-popd-widget backward-kill-word backward-kill-line kill-line kill-whole-line)
 
 # Customize my prompt
 zstyle ':zim:git-info' verbose yes
@@ -195,6 +196,8 @@ for map (emacs viins) {
   # Ctrl-E to undo (or [vim-like] dismiss completion menu).
   bindkey -M $map '^E' undo
   # Ctrl-Y pastes from kill ring.
+  # Ctrl-K kill-line.
+  bindkey -M $map '^U' backward-kill-line
   # fzf-tab took over the original ^I key bindings. I'd rather fzf-tab binds to its own key
   # and leave ^I alone. Alas they don't provide the option to customize the key bindings.
   # Ctrl-Z (Fu*zz*y Find completion) to fzf-tab-complete.
