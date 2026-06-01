@@ -22,15 +22,20 @@ _in_git() {
 
 _prompt_magic_enter() {
   if [[ -z ${BUFFER} && ${CONTEXT} == start ]]; then
-    local -i a_files=$(command ls -Aq | command wc -l)
-    local -i v_files=$(command ls -q | command wc -l)
-    local -i h_files=$(( a_files - v_files ))
-    print "[${a_files} files, ${h_files} hidden]"
-    d
     if _in_git; then
       print
       command git status -sb 2>/dev/null
     fi
+    if [ "${(k)commands[gcertstatus]}" ]; then
+      print
+      command gcertstatus --check_loas2 --nocheck_ssh
+    fi
+    local -i a_files=$(command ls -Aq | command wc -l)
+    local -i v_files=$(command ls -q | command wc -l)
+    local -i h_files=$(( a_files - v_files ))
+    print
+    print "[${a_files} files, ${h_files} hidden]"
+    d
     print -Pn ${PS1}
     zle redisplay
   else

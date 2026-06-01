@@ -17,8 +17,8 @@ bindkey -e
 # Need to be binded *before* fzf integration.
 for map (emacs viins) bindkey -M $map '^I' complete-word
 
-# Remove path separator from WORDCHARS.
-WORDCHARS=${WORDCHARS//[\/]}
+# Remove path and file extension separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/.=\{\}]}
 
 export LANG="en_US.UTF-8"
 export EDITOR="vim"
