@@ -1,6 +1,6 @@
 [alias]
     lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    lsignored = ls-files . --ignored --exclude-standard --others
+    ls-ignored = ls-files . --ignored --exclude-standard --others
 
 [core]
     pager = less -x1,5
