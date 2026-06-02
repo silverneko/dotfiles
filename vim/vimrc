@@ -70,7 +70,7 @@ set hidden
 set confirm
 
 set nostartofline
-set splitbelow
+set splitbelow splitright
 set scrolloff=5
 set sidescroll=1
 set sidescrolloff=5
@@ -202,6 +202,7 @@ endfunction
 
 " Disable netrw. Use FZF & dirvish to find files.
 let g:loaded_netrwPlugin = 1
+let g:dirvish_mode = ':sort ,^.*[\/],'
 
 " fzf preview window settings
 if exists('$TMUX')
